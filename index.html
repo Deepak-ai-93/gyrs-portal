@@ -205,6 +205,98 @@
     </section>
 
     <!-- ==========================================================================
+         NAUKRI-STYLE 2-COLUMN JOB EXPLORER (FILTERS + JOBS LIST)
+         ========================================================================== -->
+    <section class="py-5 bg-white border-bottom" id="jobExplorer">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-end flex-wrap gap-2 mb-4">
+          <div>
+            <span class="badge bg-primary-subtle text-primary border border-primary px-3 py-1 rounded-pill mb-2 fw-bold">
+              Live Vacancy Directory
+            </span>
+            <h2 class="fw-bold text-dark mb-1">Explore Open Jobs in Gujarat</h2>
+            <p class="text-muted mb-0">Verified state government positions, public department vacancies, and private industrial roles.</p>
+          </div>
+          <div class="text-muted small">
+            Showing <span id="filteredJobCount" class="fw-bold text-primary fs-5">6</span> matching opportunities
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <!-- Left Column: Filter Sidebar (Naukri.com Style) -->
+          <div class="col-lg-3">
+            <div class="naukri-filter-sidebar">
+              <div class="naukri-filter-header">
+                <span class="fw-bold text-dark"><i class="fas fa-sliders-h me-1 text-primary"></i> All Filters</span>
+                <button id="resetFiltersBtn" class="btn btn-link btn-sm text-decoration-none text-primary p-0 fw-semibold" type="button">
+                  Clear All
+                </button>
+              </div>
+
+              <!-- Filter 1: District / Location -->
+              <div class="naukri-filter-group">
+                <label class="naukri-filter-label"><i class="fas fa-map-marker-alt text-danger"></i> Location / District</label>
+                <select id="sidebarFilterDistrict" class="form-select form-select-sm" onchange="document.getElementById('filterDistrict').value = this.value; document.getElementById('filterDistrict').dispatchEvent(new Event('change'));">
+                  <option value="ALL">All Districts (Gujarat)</option>
+                  <option value="Ahmedabad">Ahmedabad</option>
+                  <option value="Gandhinagar">Gandhinagar (GIFT City)</option>
+                  <option value="Surat">Surat</option>
+                  <option value="Vadodara">Vadodara</option>
+                  <option value="Rajkot">Rajkot</option>
+                  <option value="Kutch">Kutch (Energy Belt)</option>
+                </select>
+              </div>
+
+              <!-- Filter 2: Technical Skill / Sector -->
+              <div class="naukri-filter-group">
+                <label class="naukri-filter-label"><i class="fas fa-tools text-primary"></i> Required Skill</label>
+                <select id="filterSkill" class="form-select form-select-sm">
+                  <option value="ALL">All Skills</option>
+                  <option value="Python">Python / IT Software</option>
+                  <option value="Web Development">Web Development</option>
+                  <option value="Gujarati Typing">Typing & Documentation</option>
+                  <option value="Electrical">Electrical & Solar</option>
+                  <option value="Automation">Automation & Mechanical</option>
+                  <option value="Cyber Security">Cyber Security</option>
+                </select>
+              </div>
+
+              <!-- Filter 3: Job Type / Mode -->
+              <div class="naukri-filter-group">
+                <label class="naukri-filter-label"><i class="fas fa-briefcase text-success"></i> Employment Type</label>
+                <select id="sidebarFilterType" class="form-select form-select-sm" onchange="document.getElementById('filterType').value = this.value; document.getElementById('filterType').dispatchEvent(new Event('change'));">
+                  <option value="ALL">All Types</option>
+                  <option value="Full-Time">Full-Time (Direct)</option>
+                  <option value="Govt Direct">Official Government</option>
+                  <option value="Govt Contract">Government Contract</option>
+                  <option value="Apprenticeship">Apprenticeship & Trainee</option>
+                </select>
+              </div>
+
+              <!-- Verified Trust Badge Box -->
+              <div class="p-3 bg-light rounded-3 border mt-4">
+                <div class="fw-bold text-dark small mb-2"><i class="fas fa-shield-alt text-success me-1"></i> Trust & Compliance</div>
+                <ul class="list-unstyled small text-muted mb-0" style="font-size: 0.78rem;">
+                  <li class="mb-1">✓ 100% Free Candidate Registration</li>
+                  <li class="mb-1">✓ Zero Intermediaries or Agents</li>
+                  <li>✓ Official Gujarat State Verified Postings</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Job Listings Feed -->
+          <div class="col-lg-9">
+            <!-- Filtered Jobs Container (Rendered dynamically by JS in Naukri Style) -->
+            <div class="row g-3" id="filteredJobsGrid">
+              <!-- Rendered by app.js -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
          HOW IT WORKS: 4-STEP TRANSPARENT PROCESS TRACKER (Clear & User-Friendly)
          ========================================================================== -->
     <section class="py-5 bg-light border-bottom" id="howItWorks">
@@ -295,98 +387,6 @@
               <a href="student-login.html" class="btn btn-outline-secondary fw-semibold px-3 py-2 text-decoration-none">
                 <i class="fas fa-sign-in-alt me-1"></i> Candidate Login / OTP
               </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==========================================================================
-         NAUKRI-STYLE 2-COLUMN JOB EXPLORER (FILTERS + JOBS LIST)
-         ========================================================================== -->
-    <section class="py-5 bg-white border-bottom" id="jobExplorer">
-      <div class="container">
-        <div class="d-flex justify-content-between align-items-end flex-wrap gap-2 mb-4">
-          <div>
-            <span class="badge bg-primary-subtle text-primary border border-primary px-3 py-1 rounded-pill mb-2 fw-bold">
-              Live Vacancy Directory
-            </span>
-            <h2 class="fw-bold text-dark mb-1">Explore Open Jobs in Gujarat</h2>
-            <p class="text-muted mb-0">Verified state government positions, public department vacancies, and private industrial roles.</p>
-          </div>
-          <div class="text-muted small">
-            Showing <span id="filteredJobCount" class="fw-bold text-primary fs-5">6</span> matching opportunities
-          </div>
-        </div>
-
-        <div class="row g-4">
-          <!-- Left Column: Filter Sidebar (Naukri.com Style) -->
-          <div class="col-lg-3">
-            <div class="naukri-filter-sidebar">
-              <div class="naukri-filter-header">
-                <span class="fw-bold text-dark"><i class="fas fa-sliders-h me-1 text-primary"></i> All Filters</span>
-                <button id="resetFiltersBtn" class="btn btn-link btn-sm text-decoration-none text-primary p-0 fw-semibold" type="button">
-                  Clear All
-                </button>
-              </div>
-
-              <!-- Filter 1: District / Location -->
-              <div class="naukri-filter-group">
-                <label class="naukri-filter-label"><i class="fas fa-map-marker-alt text-danger"></i> Location / District</label>
-                <select id="sidebarFilterDistrict" class="form-select form-select-sm" onchange="document.getElementById('filterDistrict').value = this.value; document.getElementById('filterDistrict').dispatchEvent(new Event('change'));">
-                  <option value="ALL">All Districts (Gujarat)</option>
-                  <option value="Ahmedabad">Ahmedabad</option>
-                  <option value="Gandhinagar">Gandhinagar (GIFT City)</option>
-                  <option value="Surat">Surat</option>
-                  <option value="Vadodara">Vadodara</option>
-                  <option value="Rajkot">Rajkot</option>
-                  <option value="Kutch">Kutch (Energy Belt)</option>
-                </select>
-              </div>
-
-              <!-- Filter 2: Technical Skill / Sector -->
-              <div class="naukri-filter-group">
-                <label class="naukri-filter-label"><i class="fas fa-tools text-primary"></i> Required Skill</label>
-                <select id="filterSkill" class="form-select form-select-sm">
-                  <option value="ALL">All Skills</option>
-                  <option value="Python">Python / IT Software</option>
-                  <option value="Web Development">Web Development</option>
-                  <option value="Gujarati Typing">Typing & Documentation</option>
-                  <option value="Electrical">Electrical & Solar</option>
-                  <option value="Automation">Automation & Mechanical</option>
-                  <option value="Cyber Security">Cyber Security</option>
-                </select>
-              </div>
-
-              <!-- Filter 3: Job Type / Mode -->
-              <div class="naukri-filter-group">
-                <label class="naukri-filter-label"><i class="fas fa-briefcase text-success"></i> Employment Type</label>
-                <select id="sidebarFilterType" class="form-select form-select-sm" onchange="document.getElementById('filterType').value = this.value; document.getElementById('filterType').dispatchEvent(new Event('change'));">
-                  <option value="ALL">All Types</option>
-                  <option value="Full-Time">Full-Time (Direct)</option>
-                  <option value="Govt Direct">Official Government</option>
-                  <option value="Govt Contract">Government Contract</option>
-                  <option value="Apprenticeship">Apprenticeship & Trainee</option>
-                </select>
-              </div>
-
-              <!-- Verified Trust Badge Box -->
-              <div class="p-3 bg-light rounded-3 border mt-4">
-                <div class="fw-bold text-dark small mb-2"><i class="fas fa-shield-alt text-success me-1"></i> Trust & Compliance</div>
-                <ul class="list-unstyled small text-muted mb-0" style="font-size: 0.78rem;">
-                  <li class="mb-1">✓ 100% Free Candidate Registration</li>
-                  <li class="mb-1">✓ Zero Intermediaries or Agents</li>
-                  <li>✓ Official Gujarat State Verified Postings</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <!-- Right Column: Job Listings Feed -->
-          <div class="col-lg-9">
-            <!-- Filtered Jobs Container (Rendered dynamically by JS in Naukri Style) -->
-            <div class="row g-3" id="filteredJobsGrid">
-              <!-- Rendered by app.js -->
             </div>
           </div>
         </div>
