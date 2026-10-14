@@ -1859,7 +1859,7 @@ View full details & Apply Now: ${detailsUrl}
           </div>
           <h5 class="fw-bold text-dark mb-1">No Active Applications in Pipeline</h5>
           <p class="text-muted small mb-3" style="max-width: 480px; margin: 0 auto;">
-            Your candidate profile is 96% complete and verified. Explore recommended opportunities below and submit with 1-Click Fast Track.
+            Your candidate profile is 96% complete and verified. Explore recommended opportunities below — open a job, read its details and press Apply Now.
           </p>
           <button class="btn btn-primary fw-bold px-4" onclick="document.getElementById('tabStudentMatches-tab')?.click()">
             <i class="fas fa-sparkles me-1"></i> View Recommended Matches
@@ -1915,7 +1915,7 @@ View full details & Apply Now: ${detailsUrl}
               </div>
             </div>
             <div class="d-flex gap-2">
-              <a href="${job.ojasUrl}" target="_blank" class="btn btn-sm btn-primary fw-bold px-3">
+              <a href="job-details.html?id=${job.id}" class="btn btn-sm btn-primary fw-bold px-3">
                 <i class="fas fa-file-download me-1"></i> Download Call Letter
               </a>
               <button class="btn btn-sm btn-outline-secondary fw-semibold" onclick="window.openJobDetailsModal(${job.id})">
@@ -2085,7 +2085,7 @@ View full details & Apply Now: ${detailsUrl}
   window.applyStudentJob = function(jobId) {
     const student = getCurrentStudent();
     if (!student) {
-      showToast("Please sign in as a candidate to apply via 1-Click Fast Track.", "info", "sign-in-alt");
+      showToast("Please sign in as a candidate to apply for this job.", "info", "sign-in-alt");
       setTimeout(() => {
         window.location.href = "student-login.html";
       }, 700);
@@ -2099,7 +2099,7 @@ View full details & Apply Now: ${detailsUrl}
       if (typeof renderStudentDashboard === "function" && document.getElementById("studentApplicationsTrackerList")) {
         renderStudentDashboard();
       }
-      showToast("Application submitted successfully via 1-Click Fast Track!", "success", "paper-plane");
+      showToast("Application tracked successfully! Opening the official Apply portal...", "success", "paper-plane");
     } else {
       showToast("You have already applied for this position.", "info", "info-circle");
     }
@@ -2235,7 +2235,6 @@ View full details & Apply Now: ${detailsUrl}
         <p class="small text-muted mb-2">Read the official advertisement PDF before applying — vacancy, reservation, syllabus and instructions.</p>
         <div class="d-flex gap-2 flex-wrap">
           <a href="${job.notificationPdf}" target="_blank" class="btn btn-sm btn-danger fw-bold px-3"><i class="fas fa-file-pdf me-1"></i> View / Download Notification PDF</a>
-          <a href="${job.officialWebsite}" target="_blank" class="btn btn-sm btn-outline-secondary fw-semibold"><i class="fas fa-globe me-1"></i> Official Website</a>
         </div>
       </div>
 
@@ -2255,7 +2254,6 @@ View full details & Apply Now: ${detailsUrl}
     if (linksBox) {
       linksBox.innerHTML = `
         <a href="${job.notificationPdf}" target="_blank" class="btn btn-danger btn-sm fw-bold"><i class="fas fa-file-pdf me-1"></i> Notification PDF</a>
-        <a href="${job.officialWebsite}" target="_blank" class="btn btn-outline-secondary btn-sm fw-semibold"><i class="fas fa-globe me-1"></i> Official Website</a>
         ${isApplied ?
           `<a href="${job.applyUrl}" target="_blank" class="btn btn-success btn-sm fw-bold"><i class="fas fa-check-circle me-1"></i> Open Apply Portal</a>` :
           `<a href="${job.applyUrl}" target="_blank" onclick="window.applyStudentJob(${job.id})" class="btn btn-primary btn-sm fw-bold"><i class="fas fa-paper-plane me-1"></i> Apply Now</a>`
