@@ -404,11 +404,66 @@
               <div class="col-md-4">
                 <label class="form-label fw-semibold small">Employment Type *</label>
                 <select id="addJobType" class="form-select" required>
+                  <option value="Full-Time">Full-Time (Govt & Private)</option>
+                  <option value="Govt Direct">Official Government (Direct)</option>
+                  <option value="Govt Contract">Government Contract</option>
+                  <option value="Apprenticeship">Apprenticeship & Trainee</option>
                   <option value="Government Permanent">Government Permanent</option>
                   <option value="State Apprenticeship">State Apprenticeship</option>
                   <option value="Contractual PSUs">Contractual PSUs</option>
                   <option value="Technical Cadre">Technical Cadre</option>
                 </select>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Qualification Required *</label>
+                <select id="addJobQual" class="form-select" required>
+                  <option value="B.Tech / B.E. (Computer / IT)">B.Tech / B.E. (Computer / IT)</option>
+                  <option value="MCA / Software Engineering">MCA / Software Engineering</option>
+                  <option value="ITI / Diploma (Mechanical/Electrical)">ITI / Diploma (Mechanical/Electrical)</option>
+                  <option value="12th Pass / Graduate">12th Pass / Graduate</option>
+                  <option value="B.Com / Accounting">B.Com / Accounting</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label fw-semibold small">AI Match Score</label>
+                <input type="number" id="addJobScore" class="form-control" value="90" min="50" max="99">
+              </div>
+              <div class="col-md-3">
+                <label class="form-label fw-semibold small">Total Posts *</label>
+                <input type="text" id="addJobPosts" class="form-control" placeholder="e.g. 48" required>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Advt No *</label>
+                <input type="text" id="addJobAdvt" class="form-control" placeholder="e.g. GIL/2026/04" required>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Posted Date *</label>
+                <input type="date" id="addJobPosted" class="form-control" required>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Last Date to Apply *</label>
+                <input type="date" id="addJobLastDate" class="form-control" required>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Age Limit</label>
+                <input type="text" id="addJobAge" class="form-control" placeholder="e.g. 21 - 35 Years">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Application Fee</label>
+                <input type="text" id="addJobFees" class="form-control" placeholder="e.g. General: ₹500 | SC/ST: ₹250">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Vacancy Breakup</label>
+                <input type="text" id="addJobBreakup" class="form-control" placeholder="e.g. UR: 20 | SEBC: 12 | SC: 6">
               </div>
             </div>
 
@@ -422,10 +477,53 @@
               <textarea id="addJobDesc" class="form-control" rows="3" placeholder="Provide complete role description, responsibilities, and eligibility criteria..." required></textarea>
             </div>
 
-            <div class="mb-3">
-              <label class="form-label fw-semibold small">Direct Application Portal URL *</label>
-              <input type="url" id="addJobOjasUrl" class="form-control" value="https://ojas.gujarat.gov.in/" required>
-              <div class="form-text small">Candidates clicking Apply will be directed to this official application link.</div>
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Eligibility (one per line)</label>
+                <textarea id="addJobEligibility" class="form-control" rows="3" placeholder="One eligibility point per line..."></textarea>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Roles & Responsibilities (one per line)</label>
+                <textarea id="addJobResp" class="form-control" rows="3" placeholder="One responsibility per line..."></textarea>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Selection Process (comma-separated)</label>
+                <input type="text" id="addJobSelection" class="form-control" placeholder="e.g. Scrutiny, Written Test, Interview">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">How to Apply (one step per line)</label>
+                <textarea id="addJobHowTo" class="form-control" rows="2" placeholder="One step per line..."></textarea>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-3 border border-danger bg-light mb-3">
+              <h6 class="fw-bold small mb-2"><i class="fas fa-file-pdf text-danger me-1"></i> Official Notification PDF *</h6>
+              <div class="row g-2">
+                <div class="col-md-7">
+                  <label class="form-label small text-muted mb-1">Notification PDF Link (URL)</label>
+                  <input type="url" id="addJobNotifUrl" class="form-control" placeholder="https://ojas.gujarat.gov.in/pdf/...">
+                </div>
+                <div class="col-md-5">
+                  <label class="form-label small text-muted mb-1">Or Upload PDF File</label>
+                  <input type="file" id="addJobNotifFile" class="form-control" accept="application/pdf,.pdf">
+                  <div class="form-text small" id="addJobNotifFileHint">PDF up to ~3MB. Uploaded file is used first.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-1">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Official Website URL</label>
+                <input type="url" id="addJobWebsite" class="form-control" value="https://ojas.gujarat.gov.in/">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Apply Now URL (Direct Application Link) *</label>
+                <input type="url" id="addJobOjasUrl" class="form-control" value="https://ojas.gujarat.gov.in/" required>
+                <div class="form-text small">Candidates clicking Apply Now go here.</div>
+              </div>
             </div>
           </div>
           <div class="modal-footer bg-light">
@@ -482,11 +580,66 @@
               <div class="col-md-4">
                 <label class="form-label fw-semibold small">Type *</label>
                 <select id="editJobType" class="form-select" required>
+                  <option value="Full-Time">Full-Time (Govt & Private)</option>
+                  <option value="Govt Direct">Official Government (Direct)</option>
+                  <option value="Govt Contract">Government Contract</option>
+                  <option value="Apprenticeship">Apprenticeship & Trainee</option>
                   <option value="Government Permanent">Government Permanent</option>
                   <option value="State Apprenticeship">State Apprenticeship</option>
                   <option value="Contractual PSUs">Contractual PSUs</option>
                   <option value="Technical Cadre">Technical Cadre</option>
                 </select>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Qualification Required *</label>
+                <select id="editJobQual" class="form-select" required>
+                  <option value="B.Tech / B.E. (Computer / IT)">B.Tech / B.E. (Computer / IT)</option>
+                  <option value="MCA / Software Engineering">MCA / Software Engineering</option>
+                  <option value="ITI / Diploma (Mechanical/Electrical)">ITI / Diploma (Mechanical/Electrical)</option>
+                  <option value="12th Pass / Graduate">12th Pass / Graduate</option>
+                  <option value="B.Com / Accounting">B.Com / Accounting</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label fw-semibold small">AI Match Score</label>
+                <input type="number" id="editJobScore" class="form-control" min="50" max="99">
+              </div>
+              <div class="col-md-3">
+                <label class="form-label fw-semibold small">Total Posts *</label>
+                <input type="text" id="editJobPosts" class="form-control" required>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Advt No *</label>
+                <input type="text" id="editJobAdvt" class="form-control" required>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Posted Date</label>
+                <input type="text" id="editJobPosted" class="form-control" placeholder="02 Oct 2026">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Last Date to Apply</label>
+                <input type="text" id="editJobLastDate" class="form-control" placeholder="02 Nov 2026">
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Age Limit</label>
+                <input type="text" id="editJobAge" class="form-control">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Application Fee</label>
+                <input type="text" id="editJobFees" class="form-control">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Vacancy Breakup</label>
+                <input type="text" id="editJobBreakup" class="form-control">
               </div>
             </div>
 
@@ -500,9 +653,53 @@
               <textarea id="editJobDesc" class="form-control" rows="3" required></textarea>
             </div>
 
-            <div class="mb-3">
-              <label class="form-label fw-semibold small">Official Application URL *</label>
-              <input type="url" id="editJobOjasUrl" class="form-control" required>
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Eligibility (one per line)</label>
+                <textarea id="editJobEligibility" class="form-control" rows="3"></textarea>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Roles & Responsibilities (one per line)</label>
+                <textarea id="editJobResp" class="form-control" rows="3"></textarea>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Selection Process (comma-separated)</label>
+                <input type="text" id="editJobSelection" class="form-control">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">How to Apply (one step per line)</label>
+                <textarea id="editJobHowTo" class="form-control" rows="2"></textarea>
+              </div>
+            </div>
+
+            <div class="p-3 rounded-3 border border-danger bg-light mb-3">
+              <h6 class="fw-bold small mb-2"><i class="fas fa-file-pdf text-danger me-1"></i> Official Notification PDF</h6>
+              <div class="row g-2">
+                <div class="col-md-7">
+                  <label class="form-label small text-muted mb-1">Notification PDF Link (URL)</label>
+                  <input type="url" id="editJobNotifUrl" class="form-control">
+                  <div class="form-text small" id="editJobNotifCurrent">Current: —</div>
+                </div>
+                <div class="col-md-5">
+                  <label class="form-label small text-muted mb-1">Replace with Upload (PDF)</label>
+                  <input type="file" id="editJobNotifFile" class="form-control" accept="application/pdf,.pdf">
+                  <div class="form-text small">Leave empty to keep existing PDF.</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-1">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Official Website URL</label>
+                <input type="url" id="editJobWebsite" class="form-control">
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Apply Now URL *</label>
+                <input type="url" id="editJobOjasUrl" class="form-control" required>
+              </div>
             </div>
           </div>
           <div class="modal-footer bg-light">
@@ -637,7 +834,7 @@
   <!-- Bootstrap 5 JS Bundle CDN -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Custom Application Script -->
-  <script src="js/app.js?v=5"></script>
+  <script src="js/app.js?v=6"></script>
 </body>
 </html>
 

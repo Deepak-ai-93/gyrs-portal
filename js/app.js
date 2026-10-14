@@ -896,21 +896,94 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // ---- Admin job-form helpers (PDF upload + field parsing) ----
+  function readFileAsDataURL(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = () => reject(reader.error);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function formatDateInput(value, fallback) {
+    if (!value) return fallback;
+    try {
+      const d = new Date(value + "T00:00:00");
+      if (isNaN(d)) return value;
+      return d.toLocaleDateString("en-GB", { day: "2-digit", month: "short", year: "numeric" });
+    } catch { return value; }
+  }
+
+  function splitLines(id) {
+    const el = document.getElementById(id);
+    if (!el) return [];
+    return el.value.split("\n").map(s => s.trim()).filter(Boolean);
+  }
+
+  function splitComma(id) {
+    const el = document.getElementById(id);
+    if (!el) return [];
+    return el.value.split(",").map(s => s.trim()).filter(Boolean);
+  }
+
+  function val(id, fallback = "") {
+    const el = document.getElementById(id);
+    return el ? el.value.trim() : fallback;
+  }
+
+  // Shows selected PDF name/size under the file input
+  document.getElementById("addJobNotifFile")?.addEventListener("change", (e) => {
+    const f = e.target.files[0];
+    const hint = document.getElementById("addJobNotifFileHint");
+    if (hint) hint.textContent = f ? `Selected: ${f.name} (${(f.size / 1024).toFixed(0)} KB)` : "PDF up to ~3MB. Uploaded file is used first.";
+  });
+
   // Admin Actions: Add New Job Form Submit
   const addJobForm = document.getElementById("addJobForm");
-  addJobForm?.addEventListener("submit", (e) => {
+  addJobForm?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const title = document.getElementById("addJobTitle").value.trim();
     const dept = document.getElementById("addJobDept").value.trim();
     const district = document.getElementById("addJobDistrict").value;
     const salary = document.getElementById("addJobSalary").value.trim();
-    const qual = document.getElementById("addJobQual").value;
+    const qual = val("addJobQual", "B.Tech / B.E. (Computer / IT)");
     const type = document.getElementById("addJobType").value;
     const skillsRaw = document.getElementById("addJobSkills").value.trim();
     const skills = skillsRaw ? skillsRaw.split(",").map(s => s.trim()).filter(Boolean) : ["General"];
-    const score = parseInt(document.getElementById("addJobScore").value) || 90;
-    const ojasUrl = document.getElementById("addJobOjasUrl").value.trim() || "https://ojas.gujarat.gov.in/";
+    const score = parseInt(val("addJobScore", "90")) || 90;
+    const ojasUrl = val("addJobOjasUrl") || "https://ojas.gujarat.gov.in/";
     const desc = document.getElementById("addJobDesc").value.trim();
+
+    const advtNo = val("addJobAdvt") || `GYRS/2026/${Date.now().toString().slice(-4)}`;
+    const totalPosts = val("addJobPosts", "As per notification");
+    const postedDate = formatDateInput(val("addJobPosted"), new Date().toLocaleDateString("en-GB", { day: '2-digit', month: 'short', year: 'numeric' }));
+    const lastDate = formatDateInput(val("addJobLastDate"), "Refer notification");
+    const ageLimit = val("addJobAge", "As per Govt rules");
+    const fees = val("addJobFees", "Refer notification");
+    const breakup = val("addJobBreakup", "As per roster");
+    const eligibility = splitLines("addJobEligibility");
+    const responsibilities = splitLines("addJobResp");
+    const selection = splitComma("addJobSelection");
+    const howTo = splitLines("addJobHowTo");
+    const website = val("addJobWebsite") || "https://ojas.gujarat.gov.in/";
+    let notifUrl = val("addJobNotifUrl") || ojasUrl;
+
+    // PDF file upload takes priority over URL
+    const fileInput = document.getElementById("addJobNotifFile");
+    const file = fileInput?.files?.[0];
+    if (file) {
+      if (file.size > 3 * 1024 * 1024) {
+        showToast("PDF is larger than 3MB — using the URL link instead (browser storage limit).", "info", "info-circle");
+      } else {
+        try {
+          notifUrl = await readFileAsDataURL(file);
+          showToast("Notification PDF attached to this posting.", "success", "file-pdf");
+        } catch {
+          showToast("Could not read PDF file — using the URL link instead.", "info", "info-circle");
+        }
+      }
+    }
 
     appState.jobs = getJobs();
     const nextId = appState.jobs.length > 0 ? Math.max(...appState.jobs.map(j => j.id)) + 1 : 1;
@@ -928,27 +1001,35 @@ document.addEventListener("DOMContentLoaded", () => {
       type: type,
       ojasUrl: ojasUrl,
       applyUrl: ojasUrl,
-      officialWebsite: "https://ojas.gujarat.gov.in/",
-      notificationPdf: ojasUrl,
-      advtNo: `GYRS/2026/${String(nextId).padStart(2, "0")}`,
-      totalPosts: "As per notification",
-      postedDate: new Date().toLocaleDateString("en-GB", { day: '2-digit', month: 'short', year: 'numeric' }),
-      lastDate: "Refer notification",
-      ageLimit: "As per Govt rules",
-      fees: "Refer notification",
-      vacancyBreakup: "As per roster",
-      eligibility: [qual, `Working knowledge of ${skills.slice(0, 2).join(", ")}`],
-      responsibilities: [desc],
-      selectionProcess: ["Application Scrutiny", "Written / Skill Test", "Interview", "Document Verification"],
-      howToApply: ["Read the notification PDF carefully.", "Click Apply Now to open the official portal.", "Fill the form and upload documents.", "Track status in GYRS dashboard."],
+      officialWebsite: website,
+      notificationPdf: notifUrl,
+      advtNo: advtNo,
+      totalPosts: totalPosts,
+      postedDate: postedDate,
+      lastDate: lastDate,
+      ageLimit: ageLimit,
+      fees: fees,
+      vacancyBreakup: breakup,
+      eligibility: eligibility.length ? eligibility : [qual, `Working knowledge of ${skills.slice(0, 2).join(", ")}`],
+      responsibilities: responsibilities.length ? responsibilities : [desc],
+      selectionProcess: selection.length ? selection : ["Application Scrutiny", "Written / Skill Test", "Interview", "Document Verification"],
+      howToApply: howTo.length ? howTo : ["Read the notification PDF carefully.", "Click Apply Now to open the official portal.", "Fill the form and upload documents.", "Track status in GYRS dashboard."],
       description: desc
     };
 
     appState.jobs.unshift(newJob);
-    saveJobs(appState.jobs);
+    try {
+      saveJobs(appState.jobs);
+    } catch {
+      appState.jobs.shift();
+      showToast("Browser storage full (PDF too large). Try a smaller PDF or use a URL link.", "danger", "exclamation-triangle");
+      return;
+    }
 
     addJobModal?.hide();
     addJobForm.reset();
+    const hint = document.getElementById("addJobNotifFileHint");
+    if (hint) hint.textContent = "PDF up to ~3MB. Uploaded file is used first.";
     showToast(`New job posting #${nextId} published successfully!`, "success", "check-circle");
 
     // Re-render
@@ -963,8 +1044,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Admin Actions: Edit Job Posting
   window.editJobPosting = function(jobId) {
     appState.jobs = getJobs();
-    const job = appState.jobs.find(j => j.id === jobId);
-    if (!job) return;
+    const raw = appState.jobs.find(j => j.id === jobId);
+    if (!raw) return;
+    const job = withJobDefaults(raw);
 
     document.getElementById("editJobId").value = job.id;
     document.getElementById("editJobTitle").value = job.title;
@@ -975,14 +1057,31 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("editJobType").value = job.type;
     document.getElementById("editJobSkills").value = job.skills.join(", ");
     document.getElementById("editJobScore").value = job.matchScore || 90;
-    document.getElementById("editJobOjasUrl").value = job.ojasUrl;
+    document.getElementById("editJobPosts").value = job.totalPosts;
+    document.getElementById("editJobAdvt").value = job.advtNo;
+    document.getElementById("editJobPosted").value = job.postedDate;
+    document.getElementById("editJobLastDate").value = job.lastDate;
+    document.getElementById("editJobAge").value = job.ageLimit;
+    document.getElementById("editJobFees").value = job.fees;
+    document.getElementById("editJobBreakup").value = job.vacancyBreakup;
+    document.getElementById("editJobEligibility").value = (job.eligibility || []).join("\n");
+    document.getElementById("editJobResp").value = (job.responsibilities || []).join("\n");
+    document.getElementById("editJobSelection").value = (job.selectionProcess || []).join(", ");
+    document.getElementById("editJobHowTo").value = (job.howToApply || []).join("\n");
+    document.getElementById("editJobNotifUrl").value = (job.notificationPdf || "").startsWith("data:") ? "" : (job.notificationPdf || "");
+    document.getElementById("editJobWebsite").value = job.officialWebsite || "";
+    document.getElementById("editJobOjasUrl").value = job.applyUrl || job.ojasUrl;
     document.getElementById("editJobDesc").value = job.description;
+    const cur = document.getElementById("editJobNotifCurrent");
+    if (cur) cur.textContent = "Current: " + ((job.notificationPdf || "").startsWith("data:") ? "uploaded PDF file attached" : (job.notificationPdf || "—"));
+    const ef = document.getElementById("editJobNotifFile");
+    if (ef) ef.value = "";
 
     editJobModal?.show();
   };
 
   const editJobForm = document.getElementById("editJobForm");
-  editJobForm?.addEventListener("submit", (e) => {
+  editJobForm?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const jobId = parseInt(document.getElementById("editJobId").value);
     appState.jobs = getJobs();
@@ -991,22 +1090,62 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const skillsRaw = document.getElementById("editJobSkills").value.trim();
     const skills = skillsRaw ? skillsRaw.split(",").map(s => s.trim()).filter(Boolean) : [];
+    const prev = withJobDefaults(appState.jobs[index]);
+
+    // PDF: uploaded file replaces, else URL field, else keep existing
+    let notifPdf = prev.notificationPdf;
+    const efile = document.getElementById("editJobNotifFile")?.files?.[0];
+    const eurl = val("editJobNotifUrl");
+    if (efile) {
+      if (efile.size > 3 * 1024 * 1024) {
+        showToast("PDF larger than 3MB — keeping existing PDF (browser storage limit).", "info", "info-circle");
+      } else {
+        try { notifPdf = await readFileAsDataURL(efile); } catch { /* keep existing */ }
+      }
+    } else if (eurl) {
+      notifPdf = eurl;
+    }
+
+    const elig = splitLines("editJobEligibility");
+    const resp = splitLines("editJobResp");
+    const sel = splitComma("editJobSelection");
+    const how = splitLines("editJobHowTo");
 
     appState.jobs[index] = {
       ...appState.jobs[index],
       title: document.getElementById("editJobTitle").value.trim(),
       department: document.getElementById("editJobDept").value.trim(),
       district: document.getElementById("editJobDistrict").value,
+      location: document.getElementById("editJobDistrict").value,
       salary: document.getElementById("editJobSalary").value.trim(),
       qualification: document.getElementById("editJobQual").value,
       type: document.getElementById("editJobType").value,
       skills: skills,
       matchScore: parseInt(document.getElementById("editJobScore").value) || 90,
-      ojasUrl: document.getElementById("editJobOjasUrl").value.trim(),
+      totalPosts: val("editJobPosts", prev.totalPosts),
+      advtNo: val("editJobAdvt", prev.advtNo),
+      postedDate: val("editJobPosted", prev.postedDate),
+      lastDate: val("editJobLastDate", prev.lastDate),
+      ageLimit: val("editJobAge", prev.ageLimit),
+      fees: val("editJobFees", prev.fees),
+      vacancyBreakup: val("editJobBreakup", prev.vacancyBreakup),
+      eligibility: elig.length ? elig : prev.eligibility,
+      responsibilities: resp.length ? resp : prev.responsibilities,
+      selectionProcess: sel.length ? sel : prev.selectionProcess,
+      howToApply: how.length ? how : prev.howToApply,
+      notificationPdf: notifPdf,
+      officialWebsite: val("editJobWebsite") || prev.officialWebsite,
+      applyUrl: val("editJobOjasUrl") || prev.applyUrl,
+      ojasUrl: val("editJobOjasUrl") || prev.ojasUrl,
       description: document.getElementById("editJobDesc").value.trim()
     };
 
-    saveJobs(appState.jobs);
+    try {
+      saveJobs(appState.jobs);
+    } catch {
+      showToast("Browser storage full (PDF too large). Try a smaller PDF or use a URL link.", "danger", "exclamation-triangle");
+      return;
+    }
     editJobModal?.hide();
     showToast(`Job posting #${jobId} updated successfully!`, "success", "check-circle");
 
