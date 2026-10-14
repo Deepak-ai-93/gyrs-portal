@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Candidate Workspace & Application Tracker | Gujarat Youth Rojgar Setu (GYRS)</title>
+  <meta name="description" content="Dedicated candidate portal and real-time application tracker for Gujarat Youth Rojgar Setu (GYRS).">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎓</text></svg>">
+  
+  <!-- Google Fonts (Plus Jakarta Sans & Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome 6.4 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Bootstrap 5.3.2 CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom Modern Styling -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-light">
+
+  <!-- Top State Government Header Bar -->
+  <div class="top-gov-bar py-1 bg-dark text-white border-bottom">
+    <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div class="d-flex align-items-center gap-3">
+        <span class="fw-bold text-warning"><i class="fas fa-landmark me-1"></i> Government of Gujarat</span>
+        <span class="d-none d-md-inline opacity-75">Directorate of Employment & Training (DET)</span>
+      </div>
+      <div>
+        <a href="https://ojas.gujarat.gov.in/" target="_blank" class="ojas-redirect-btn py-1 px-2 text-decoration-none">
+          <i class="fas fa-external-link-alt"></i> State Recruitment Exchange
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dedicated Student Dashboard Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-gyrs sticky-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="student-dashboard.html">
+        <div class="d-flex flex-column">
+          <span class="brand-title"><i class="fas fa-user-graduate text-primary me-1"></i> CANDIDATE WORKSPACE</span>
+          <span class="brand-subtext">Gujarat Youth Rojgar Setu (GYRS)</span>
+        </div>
+      </a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#studentNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="studentNav">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fw-semibold">
+          <li class="nav-item"><a class="nav-link active" href="student-dashboard.html"><i class="fas fa-columns me-1"></i> My Dashboard</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#jobExplorer"><i class="fas fa-search me-1"></i> Explore Jobs</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#howItWorks"><i class="fas fa-tasks me-1"></i> How It Works</a></li>
+          <li class="nav-item"><a class="nav-link" href="https://ojas.gujarat.gov.in/" target="_blank"><i class="fas fa-external-link-alt me-1"></i> Direct Recruitment</a></li>
+        </ul>
+        <div class="d-flex align-items-center gap-2">
+          <a href="index.html" class="btn btn-outline-primary btn-sm fw-bold">
+            <i class="fas fa-briefcase me-1"></i> Browse All Vacancies
+          </a>
+          <button id="studentLogoutBtn" class="btn btn-outline-danger btn-sm fw-semibold">
+            <i class="fas fa-sign-out-alt me-1"></i> Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Student Dashboard Container -->
+  <main class="py-4">
+    <div class="container">
+
+      <!-- Candidate Executive Hero Banner -->
+      <div class="candidate-hero-card">
+        <div class="d-flex justify-content-between align-items-start flex-wrap gap-4">
+          <div class="d-flex align-items-center gap-3 flex-wrap">
+            <div class="candidate-avatar-wrap">
+              <div class="candidate-avatar-lg" id="studentAvatarInitials">
+                JT
+              </div>
+              <div class="candidate-verified-badge" title="State Verified Candidate">
+                <i class="fas fa-check"></i>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
+                <h4 class="fw-bold mb-0 text-dark" id="studentWelcomeName">Jagan Trivedi</h4>
+                <span id="studentEnrollmentId" class="badge bg-primary-subtle text-primary border border-primary fw-bold px-2 py-1">GYRS-2026-001</span>
+                <span id="studentVerificationStatusBadge" class="badge bg-success-subtle text-success border border-success px-2 py-1">
+                  <i class="fas fa-check-circle me-1"></i> State Verified Candidate
+                </span>
+              </div>
+              <div class="text-muted small d-flex align-items-center gap-3 flex-wrap mb-2">
+                <span><i class="fas fa-graduation-cap text-primary me-1"></i> <span id="studentHeroDegree">B.Tech / B.E. (Computer / IT)</span></span>
+                <span><i class="fas fa-map-marker-alt text-danger me-1"></i> <span id="studentHeroDistrict">Ahmedabad, Gujarat</span></span>
+                <span><i class="fas fa-envelope text-muted me-1"></i> <span id="studentHeroEmail">jagan.trivedi@gyrs.gov.in</span></span>
+              </div>
+              <!-- Profile Readiness Gauge -->
+              <div class="d-flex align-items-center gap-3" style="max-width: 440px;">
+                <div class="flex-grow-1">
+                  <div class="d-flex justify-content-between small mb-1">
+                    <span class="text-muted fw-semibold">Profile Readiness Score</span>
+                    <span class="fw-bold text-success" id="studentProfilePercent">96% Completed</span>
+                  </div>
+                  <div class="progress" style="height: 6px; border-radius: 10px;">
+                    <div class="progress-bar bg-success" role="progressbar" style="width: 96%" aria-valuenow="96" aria-valuemin="0" aria-valuemax="100"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex gap-2 flex-wrap">
+            <button class="btn btn-primary btn-sm fw-bold px-3 shadow-sm" id="studentEditProfileBtn">
+              <i class="fas fa-edit me-1"></i> Edit Profile
+            </button>
+            <button class="btn btn-outline-secondary btn-sm fw-semibold" onclick="window.print()">
+              <i class="fas fa-id-card me-1"></i> Print Dossier / Resume
+            </button>
+            <button class="btn btn-outline-danger btn-sm fw-semibold" onclick="document.getElementById('studentLogoutBtn')?.click()">
+              <i class="fas fa-sign-out-alt me-1"></i> Logout
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Candidate KPI Statistics Cards -->
+      <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-lg-3">
+          <div class="admin-stat-card stat-primary">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <div class="text-muted small fw-bold">Active Applications</div>
+                <div class="admin-stat-number text-primary" id="studentStatAppliedCount">3</div>
+                <div class="small text-success fw-semibold"><i class="fas fa-paper-plane me-1"></i>Live in Pipeline</div>
+              </div>
+              <div class="admin-stat-icon bg-primary-subtle text-primary">
+                <i class="fas fa-paper-plane"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+          <div class="admin-stat-card stat-success">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <div class="text-muted small fw-bold">AI Profile Readiness</div>
+                <div class="admin-stat-number text-success" id="studentStatProfileScore">96%</div>
+                <div class="small text-success fw-semibold"><i class="fas fa-check-double me-1"></i>DET Verified</div>
+              </div>
+              <div class="admin-stat-icon bg-success-subtle text-success">
+                <i class="fas fa-brain"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+          <div class="admin-stat-card stat-purple">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <div class="text-muted small fw-bold">Verified Skills</div>
+                <div class="admin-stat-number text-purple" id="studentStatSkillsCount">4</div>
+                <div class="small text-muted fw-semibold">Industry Aligned</div>
+              </div>
+              <div class="admin-stat-icon bg-purple-subtle" style="background-color: #f3e8ff; color: #9333ea;">
+                <i class="fas fa-award"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+          <div class="admin-stat-card stat-warning">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <div class="text-muted small fw-bold">Apprentice Stipend</div>
+                <div class="admin-stat-number text-warning">₹9,000</div>
+                <div class="small text-dark fw-semibold"><i class="fas fa-rupee-sign me-1"></i>CM Scheme Eligible</div>
+              </div>
+              <div class="admin-stat-icon bg-warning-subtle text-warning">
+                <i class="fas fa-hand-holding-usd"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Segmented Navigation Pills -->
+      <ul class="nav dashboard-nav-pills mb-4" id="studentTabs" role="tablist">
+        <li class="nav-item flex-fill" role="presentation">
+          <button class="nav-link active w-100" id="tabStudentApps-tab" data-bs-toggle="pill" data-bs-target="#tabStudentApps" type="button" role="tab">
+            <i class="fas fa-paper-plane me-2 text-primary"></i>My Applications & Live Tracker
+            <span class="badge bg-primary ms-1" id="studentTabAppsCount">3</span>
+          </button>
+        </li>
+        <li class="nav-item flex-fill" role="presentation">
+          <button class="nav-link w-100" id="tabStudentMatches-tab" data-bs-toggle="pill" data-bs-target="#tabStudentMatches" type="button" role="tab">
+            <i class="fas fa-sparkles me-2 text-warning"></i>Recommended Opportunities
+          </button>
+        </li>
+        <li class="nav-item flex-fill" role="presentation">
+          <button class="nav-link w-100" id="tabStudentDossier-tab" data-bs-toggle="pill" data-bs-target="#tabStudentDossier" type="button" role="tab">
+            <i class="fas fa-id-card me-2 text-success"></i>Candidate Dossier & Credentials
+          </button>
+        </li>
+        <li class="nav-item flex-fill" role="presentation">
+          <button class="nav-link w-100" id="tabStudentMelas-tab" data-bs-toggle="pill" data-bs-target="#tabStudentMelas" type="button" role="tab">
+            <i class="fas fa-calendar-alt me-2 text-info"></i>Rozgar Melas & Drives
+          </button>
+        </li>
+      </ul>
+
+      <!-- Tab Content Area -->
+      <div class="tab-content" id="studentTabsContent">
+        <!-- TAB 1: APPLICATIONS & LIVE TRACKER -->
+        <div class="tab-pane fade show active" id="tabStudentApps" role="tabpanel">
+          <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <div>
+              <h5 class="fw-bold mb-1 text-dark">
+                <i class="fas fa-route text-primary me-2"></i>Live 4-Stage Application Lifecycle Pipeline
+              </h5>
+              <p class="text-muted small mb-0">Monitor your recruitment stages in real-time: Submission ➔ Screening ➔ Interview Call ➔ Offer Letter.</p>
+            </div>
+            <a href="index.html#jobExplorer" class="btn btn-outline-primary btn-sm fw-bold">
+              <i class="fas fa-search me-1"></i> Explore More Vacancies
+            </a>
+          </div>
+
+          <!-- Dynamic Container for Stepper Cards -->
+          <div id="studentApplicationsTrackerList">
+            <!-- Rendered dynamically by app.js with .application-tracker-item cards -->
+          </div>
+        </div>
+
+        <!-- TAB 2: RECOMMENDED JOBS -->
+        <div class="tab-pane fade" id="tabStudentMatches" role="tabpanel">
+          <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <div>
+              <h5 class="fw-bold mb-1 text-dark">
+                <i class="fas fa-sparkles text-warning me-2"></i>AI-Matched Opportunities For You
+              </h5>
+              <p class="text-muted small mb-0">High-relevance government and public sector positions matching your degree and verified skills.</p>
+            </div>
+            <a href="index.html#jobExplorer" class="btn btn-outline-primary btn-sm fw-bold">
+              <i class="fas fa-external-link-alt me-1"></i> View All Openings
+            </a>
+          </div>
+
+          <div class="row g-3" id="studentRecommendedJobsGrid">
+            <!-- Populated dynamically by app.js -->
+          </div>
+        </div>
+
+        <!-- TAB 3: CANDIDATE DOSSIER & CREDENTIALS -->
+        <div class="tab-pane fade" id="tabStudentDossier" role="tabpanel">
+          <div class="row g-4">
+            <!-- Left Dossier Column -->
+            <div class="col-lg-5">
+              <div class="admin-management-card h-100">
+                <div class="text-center pb-3 border-bottom mb-3">
+                  <div class="candidate-avatar-wrap mb-2">
+                    <div class="candidate-avatar-lg mx-auto" id="studentDossierAvatar">JT</div>
+                    <div class="candidate-verified-badge" style="bottom: 4px; right: 8px;">
+                      <i class="fas fa-check"></i>
+                    </div>
+                  </div>
+                  <h5 class="fw-bold mb-1 text-dark" id="studentDossierName">Jagan Trivedi</h5>
+                  <div class="badge bg-primary-subtle text-primary border border-primary px-3 py-1 font-monospace" id="studentDossierRoll">GYRS-2026-001</div>
+                </div>
+
+                <div class="mb-3">
+                  <div class="small text-muted fw-semibold">Highest Qualification</div>
+                  <div class="fw-bold text-dark" id="studentDossierDegree">B.Tech / B.E. (Computer / IT)</div>
+                </div>
+
+                <div class="mb-3">
+                  <div class="small text-muted fw-semibold">Home District</div>
+                  <div class="fw-bold text-dark" id="studentDossierDistrict">Ahmedabad, Gujarat</div>
+                </div>
+
+                <div class="mb-3">
+                  <div class="small text-muted fw-semibold">Registered Email</div>
+                  <div class="fw-bold text-dark" id="studentDossierEmail">jagan.trivedi@gyrs.gov.in</div>
+                </div>
+
+                <div class="mb-3">
+                  <div class="small text-muted fw-semibold">Phone Number</div>
+                  <div class="fw-bold text-dark" id="studentDossierPhone">+91 98765 43210</div>
+                </div>
+
+                <div class="pt-3 border-top">
+                  <button class="btn btn-outline-primary btn-sm w-100 fw-bold" onclick="document.getElementById('studentEditProfileBtn')?.click()">
+                    <i class="fas fa-edit me-1"></i> Edit Candidate Profile
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Dossier Column: Skills & Verification Stamp -->
+            <div class="col-lg-7">
+              <div class="admin-management-card mb-4">
+                <h6 class="fw-bold text-dark mb-3">
+                  <i class="fas fa-certificate text-primary me-2"></i>Verified Technical & Professional Skills
+                </h6>
+                <div id="studentDossierSkills" class="d-flex flex-wrap gap-2 mb-3">
+                  <!-- Badges filled by app.js -->
+                </div>
+                <div class="small text-muted">
+                  These competencies are cross-verified with GKS (Gujarat Knowledge Society) certification and ITI databases.
+                </div>
+              </div>
+
+              <div class="admin-management-card">
+                <h6 class="fw-bold text-dark mb-3">
+                  <i class="fas fa-shield-alt text-success me-2"></i>State Verification & Government Authentication
+                </h6>
+                <div class="p-3 bg-light rounded-3 border mb-3">
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="fw-bold text-dark"><i class="fas fa-id-card text-secondary me-1"></i> State Candidate Verification ID</span>
+                    <span class="badge bg-success">Active & Verified</span>
+                  </div>
+                  <div class="small text-muted">Candidate identity authenticated through Aadhaar-seeded Gujarat State Employment directory.</div>
+                </div>
+
+                <div class="p-3 bg-success-subtle border border-success rounded-3 d-flex align-items-center justify-content-between">
+                  <div>
+                    <div class="fw-bold text-success small"><i class="fas fa-check-double me-1"></i> Directorate of Employment & Training Stamp</div>
+                    <div class="small text-dark">Approved for Direct Placement Melas & Apprenticeship Stipend (DET-GJ-2026).</div>
+                  </div>
+                  <button class="btn btn-success btn-sm fw-bold px-3" onclick="window.print()">
+                    <i class="fas fa-download me-1"></i> Download ID
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 4: ROZGAR MELAS & RECRUITMENT DRIVES -->
+        <div class="tab-pane fade" id="tabStudentMelas" role="tabpanel">
+          <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <div>
+              <h5 class="fw-bold mb-1 text-dark">
+                <i class="fas fa-calendar-alt text-info me-2"></i>Upcoming Mega Rozgar Melas & Walk-in Drives
+              </h5>
+              <p class="text-muted small mb-0">Government-sponsored direct interview drives organized by the Directorate of Employment & Training.</p>
+            </div>
+            <span class="badge bg-info-subtle text-info border border-info px-3 py-1">Statewide Calendar 2026</span>
+          </div>
+
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="admin-management-card h-100">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <span class="badge bg-primary-subtle text-primary border border-primary">Gandhinagar District</span>
+                  <span class="badge bg-warning text-dark fw-bold">Oct 28 - 29, 2026</span>
+                </div>
+                <h6 class="fw-bold text-dark mb-1">Statewide IT & Electronics Mega Rozgar Mela</h6>
+                <div class="small text-muted mb-2"><i class="fas fa-map-pin text-danger me-1"></i> Mahatma Mandir Convention Centre, Gandhinagar</div>
+                <div class="small text-dark mb-3"><i class="fas fa-users text-primary me-1"></i> <strong>1,200+ Openings</strong> • GIL, TCS, Tech Mahindra, L&T Infotech</div>
+                <button class="btn btn-outline-primary btn-sm w-100 fw-bold" onclick="showToast('Registered for Gandhinagar Mega Rozgar Mela! Pass sent to your email.', 'success', 'check-circle')">
+                  <i class="fas fa-ticket-alt me-1"></i> Pre-Register For Entry Pass
+                </button>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="admin-management-card h-100">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <span class="badge bg-primary-subtle text-primary border border-primary">Ahmedabad District</span>
+                  <span class="badge bg-success text-white fw-bold">Nov 05 - 06, 2026</span>
+                </div>
+                <h6 class="fw-bold text-dark mb-1">Gujarat Engineering & Apprentice Placement Drive</h6>
+                <div class="small text-muted mb-2"><i class="fas fa-map-pin text-danger me-1"></i> LD College of Engineering Campus, Navrangpura, Ahmedabad</div>
+                <div class="small text-dark mb-3"><i class="fas fa-users text-primary me-1"></i> <strong>850+ Openings</strong> • AMC, GETCO, Tata Motors Sanand, Adani Power</div>
+                <button class="btn btn-outline-primary btn-sm w-100 fw-bold" onclick="showToast('Registered for Ahmedabad Engineering Drive! Pass sent to your email.', 'success', 'check-circle')">
+                  <i class="fas fa-ticket-alt me-1"></i> Pre-Register For Entry Pass
+                </button>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="admin-management-card h-100">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <span class="badge bg-primary-subtle text-primary border border-primary">Surat District</span>
+                  <span class="badge bg-info text-white fw-bold">Nov 12, 2026</span>
+                </div>
+                <h6 class="fw-bold text-dark mb-1">Clean Energy, Solar & Technical Skills Mela</h6>
+                <div class="small text-muted mb-2"><i class="fas fa-map-pin text-danger me-1"></i> SVNIT Auditorium, Ichchhanath, Surat</div>
+                <div class="small text-dark mb-3"><i class="fas fa-users text-primary me-1"></i> <strong>620+ Openings</strong> • GEDA, Torrent Power, Suzlon, Hazira Port</div>
+                <button class="btn btn-outline-primary btn-sm w-100 fw-bold" onclick="showToast('Registered for Surat Solar Skills Mela! Pass sent to your email.', 'success', 'check-circle')">
+                  <i class="fas fa-ticket-alt me-1"></i> Pre-Register For Entry Pass
+                </button>
+              </div>
+            </div>
+
+            <div class="col-md-6">
+              <div class="admin-management-card h-100">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                  <span class="badge bg-primary-subtle text-primary border border-primary">Vadodara District</span>
+                  <span class="badge bg-secondary text-white fw-bold">Nov 18, 2026</span>
+                </div>
+                <h6 class="fw-bold text-dark mb-1">Pharmaceutical & Chemical Apprentice Conclave</h6>
+                <div class="small text-muted mb-2"><i class="fas fa-map-pin text-danger me-1"></i> Faculty of Tech & Engg, MSU, Kalabhavan, Vadodara</div>
+                <div class="small text-dark mb-3"><i class="fas fa-users text-primary me-1"></i> <strong>490+ Openings</strong> • GIDC, Sun Pharma, Alembic, GSFC</div>
+                <button class="btn btn-outline-primary btn-sm w-100 fw-bold" onclick="showToast('Registered for Vadodara Conclave! Pass sent to your email.', 'success', 'check-circle')">
+                  <i class="fas fa-ticket-alt me-1"></i> Pre-Register For Entry Pass
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Job Opportunity Details Modal -->
+  <div class="modal fade" id="jobDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title fw-bold" id="jobDetailsModalTitle">
+            <i class="fas fa-briefcase text-warning me-2"></i>Job Opportunity Details
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4" id="jobDetailsModalBody">
+          <!-- Filled dynamically by JS -->
+        </div>
+        <div class="modal-footer bg-light" id="jobDetailsModalFooter">
+          <!-- Buttons dynamically injected by JS with ojas apply link -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Student Self Profile Edit Modal -->
+  <div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content border-0 shadow-lg rounded-4">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title fw-bold">
+            <i class="fas fa-user-edit text-warning me-2"></i>Edit My Profile
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="editProfileForm">
+          <div class="modal-body p-4">
+            <div class="mb-3">
+              <label class="form-label small fw-semibold">Full Name *</label>
+              <input type="text" id="selfProfileName" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold">District Location *</label>
+              <select id="selfProfileDistrict" class="form-select" required>
+                <option value="Ahmedabad">Ahmedabad</option>
+                <option value="Gandhinagar">Gandhinagar</option>
+                <option value="Surat">Surat</option>
+                <option value="Vadodara">Vadodara</option>
+                <option value="Rajkot">Rajkot</option>
+                <option value="Kutch">Kutch</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold">Qualification *</label>
+              <select id="selfProfileQual" class="form-select" required>
+                <option value="B.Tech / B.E. (Computer / IT)">B.Tech / B.E. (Computer / IT)</option>
+                <option value="MCA / Software Engineering">MCA / Software Engineering</option>
+                <option value="ITI / Diploma (Mechanical/Electrical)">ITI / Diploma (Mechanical/Electrical)</option>
+                <option value="12th Pass / Graduate">12th Pass / Graduate</option>
+                <option value="B.Com / Accounting">B.Com / Accounting</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold">Mobile Phone *</label>
+              <input type="tel" id="selfProfilePhone" class="form-control" maxlength="10" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label small fw-semibold">Skills (comma-separated) *</label>
+              <input type="text" id="selfProfileSkills" class="form-control" required>
+            </div>
+          </div>
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary fw-bold btn-sm px-3">Save Profile</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="gyrs-toast-container" id="toastContainer"></div>
+
+  <!-- Bootstrap 5 JS Bundle CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom Application Script -->
+  <script src="js/app.js?v=4"></script>
+</body>
+</html>
+

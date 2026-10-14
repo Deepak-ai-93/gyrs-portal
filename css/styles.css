@@ -1,0 +1,1268 @@
+/* ==========================================================================
+   GYRS - Gujarat Youth Rojgar Setu (Gujarat Yuva Rojgar System)
+   Naukri.com-Inspired Modern, Clean, Simple & Responsive UI Design System
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  /* Naukri-Inspired Modern Color Palette */
+  --naukri-blue: #1e40af;
+  --naukri-blue-hover: #1d4ed8;
+  --naukri-blue-light: #eff6ff;
+  --naukri-blue-subtle: #dbeafe;
+  --naukri-dark: #0f172a;
+  --naukri-slate: #1e293b;
+  --naukri-muted: #64748b;
+  --naukri-border: #e2e8f0;
+  --naukri-bg: #f8fafc;
+  --naukri-surface: #ffffff;
+  --naukri-green: #15803d;
+  --naukri-green-light: #dcfce7;
+  --naukri-orange: #ea580c;
+  --naukri-orange-light: #ffedd5;
+  --naukri-amber: #d97706;
+  --naukri-amber-light: #fef3c7;
+  --naukri-purple: #7c3aed;
+  --naukri-purple-light: #ede9fe;
+
+  /* Legacy Compat */
+  --primary-blue: #1e40af;
+  --secondary-blue: #0f172a;
+  --accent-saffron: #f97316;
+  --accent-green: #15803d;
+  --card-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.06), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+  --card-shadow-hover: 0 16px 32px -4px rgba(15, 23, 42, 0.12), 0 4px 12px -2px rgba(15, 23, 42, 0.06);
+}
+
+/* Base Document Styling */
+body {
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--naukri-bg);
+  color: var(--naukri-slate);
+  overflow-x: hidden;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Neutralized font class to guarantee English font */
+.gujarati-text {
+  font-family: inherit !important;
+}
+
+/* ==========================================================================
+   TOP GOVERNMENT BANNER & MAIN NAVIGATION
+   ========================================================================== */
+.top-gov-bar {
+  background-color: #0b192c;
+  color: #cbd5e1;
+  font-size: 0.8rem;
+  border-bottom: 3px solid var(--accent-saffron);
+}
+
+.top-gov-bar a {
+  color: #e2e8f0;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.top-gov-bar a:hover {
+  color: #fdba74;
+}
+
+.navbar-gyrs {
+  background: var(--naukri-surface);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid var(--naukri-border);
+  padding: 0.75rem 1rem;
+}
+
+.brand-title {
+  font-weight: 800;
+  color: var(--naukri-blue);
+  font-size: 1.35rem;
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+}
+
+.brand-subtext {
+  font-size: 0.75rem;
+  color: var(--naukri-muted);
+  font-weight: 600;
+}
+
+.navbar-nav .nav-link {
+  color: var(--naukri-slate);
+  font-weight: 600;
+  font-size: 0.92rem;
+  padding: 0.5rem 0.9rem !important;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+  color: var(--naukri-blue);
+  background-color: var(--naukri-blue-light);
+}
+
+/* Quick Portal Switcher Bar */
+.portal-switcher-bar {
+  background: #f1f5f9;
+  border-bottom: 1px solid var(--naukri-border);
+}
+
+.btn-portal-switch {
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: var(--naukri-muted);
+  background: transparent;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  padding: 0.35rem 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.btn-portal-switch:hover {
+  background: #ffffff;
+  color: var(--naukri-slate);
+}
+
+.btn-portal-switch.active {
+  background: var(--naukri-blue);
+  color: #ffffff;
+  border-color: var(--naukri-blue);
+  box-shadow: 0 2px 6px rgba(30, 64, 175, 0.3);
+}
+
+/* ==========================================================================
+   OJAS NEWS TICKER MARQUEE
+   ========================================================================== */
+.news-ticker-container {
+  background: #eff6ff;
+  border-bottom: 1px solid #bfdbfe;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.ticker-title {
+  background: var(--naukri-blue);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 0.55rem 1.25rem;
+  white-space: nowrap;
+  z-index: 2;
+  box-shadow: 4px 0 10px rgba(0,0,0,0.08);
+}
+
+/* ==========================================================================
+   NAUKRI.COM HERO & UNIFIED SEARCH BOX
+   ========================================================================== */
+.naukri-hero {
+  background: linear-gradient(180deg, #f0f7ff 0%, #ffffff 100%);
+  padding: 3.5rem 0 2.5rem;
+  position: relative;
+  border-bottom: 1px solid var(--naukri-border);
+}
+
+.naukri-hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--naukri-blue-light);
+  color: var(--naukri-blue);
+  border: 1px solid #bfdbfe;
+  padding: 0.35rem 1rem;
+  border-radius: 50px;
+  font-weight: 700;
+  font-size: 0.82rem;
+}
+
+.naukri-hero-title {
+  font-size: 2.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--naukri-dark);
+  line-height: 1.2;
+}
+
+.naukri-hero-subtitle {
+  font-size: 1.1rem;
+  color: var(--naukri-muted);
+  max-width: 720px;
+  line-height: 1.6;
+}
+
+/* Signature Unified 3-Segment Search Card */
+.naukri-search-card {
+  background: #ffffff;
+  border: 1px solid var(--naukri-border);
+  border-radius: 18px;
+  box-shadow: 0 16px 40px -8px rgba(15, 23, 42, 0.12), 0 4px 12px -2px rgba(15, 23, 42, 0.05);
+  padding: 0.65rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.naukri-search-card:focus-within {
+  border-color: var(--naukri-blue);
+  box-shadow: 0 20px 48px -8px rgba(30, 64, 175, 0.2);
+}
+
+.naukri-search-segment {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.85rem;
+  position: relative;
+}
+
+.naukri-search-segment:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 20%;
+  height: 60%;
+  width: 1px;
+  background: var(--naukri-border);
+}
+
+.naukri-search-segment i {
+  font-size: 1.15rem;
+  color: var(--naukri-blue);
+}
+
+.naukri-search-segment input,
+.naukri-search-segment select {
+  border: none;
+  outline: none;
+  box-shadow: none;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--naukri-slate);
+  background: transparent;
+  width: 100%;
+  padding: 0.35rem 0;
+}
+
+.naukri-search-segment input::placeholder {
+  color: #94a3b8;
+  font-weight: 400;
+}
+
+.naukri-search-btn {
+  background: var(--naukri-blue);
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  padding: 0.85rem 2rem;
+  font-weight: 700;
+  font-size: 1rem;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.2s ease;
+}
+
+.naukri-search-btn:hover {
+  background: var(--naukri-blue-hover);
+  color: #ffffff;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(30, 64, 175, 0.3);
+}
+
+/* Trending Search Chips */
+.trending-chips-wrap {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.naukri-chip {
+  background: #ffffff;
+  border: 1px solid var(--naukri-border);
+  color: var(--naukri-slate);
+  font-size: 0.82rem;
+  font-weight: 600;
+  padding: 0.35rem 0.85rem;
+  border-radius: 50px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.naukri-chip:hover {
+  background: var(--naukri-blue-light);
+  color: var(--naukri-blue);
+  border-color: #bfdbfe;
+  transform: translateY(-1px);
+}
+
+/* Metrics Counter Strip */
+.naukri-metric-box {
+  background: #ffffff;
+  border: 1px solid var(--naukri-border);
+  border-radius: 14px;
+  padding: 1.25rem 1rem;
+  text-align: center;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.2s ease;
+}
+
+.naukri-metric-box:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.naukri-metric-number {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--naukri-blue);
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.naukri-metric-label {
+  font-size: 0.82rem;
+  color: var(--naukri-muted);
+  font-weight: 600;
+  margin-top: 0.25rem;
+}
+
+/* ==========================================================================
+   HOW IT WORKS: 4-STEP TRANSPARENT PROCESS TRACKER
+   ========================================================================== */
+.process-tracker-card {
+  background: #ffffff;
+  border: 1px solid var(--naukri-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  height: 100%;
+  position: relative;
+  box-shadow: var(--card-shadow);
+  transition: all 0.25s ease;
+}
+
+.process-tracker-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--naukri-blue);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.process-step-badge {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--naukri-blue-light);
+  color: var(--naukri-blue);
+  font-weight: 800;
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.15rem;
+  border: 1px solid #bfdbfe;
+}
+
+.process-step-title {
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--naukri-dark);
+  margin-bottom: 0.5rem;
+}
+
+.process-step-desc {
+  font-size: 0.875rem;
+  color: var(--naukri-muted);
+  line-height: 1.5;
+  margin-bottom: 0.85rem;
+}
+
+.process-step-pill {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--naukri-green);
+  background: var(--naukri-green-light);
+  padding: 0.25rem 0.65rem;
+  border-radius: 50px;
+  display: inline-block;
+}
+
+/* ==========================================================================
+   NAUKRI-STYLE JOB EXPLORER & JOB CARDS
+   ========================================================================== */
+/* Left Filter Sidebar */
+.naukri-filter-sidebar {
+  background: #ffffff;
+  border: 1px solid var(--naukri-border);
+  border-radius: 16px;
+  padding: 1.35rem;
+  box-shadow: var(--card-shadow);
+  position: sticky;
+  top: 90px;
+}
+
+.naukri-filter-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid var(--naukri-border);
+  margin-bottom: 1.15rem;
+}
+
+.naukri-filter-group {
+  margin-bottom: 1.25rem;
+}
+
+.naukri-filter-label {
+  font-size: 0.825rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--naukri-slate);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+/* Naukri Job Card */
+.naukri-job-card {
+  background: #ffffff;
+  border: 1px solid var(--naukri-border);
+  border-radius: 16px;
+  padding: 1.4rem;
+  box-shadow: var(--card-shadow);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.naukri-job-card:hover {
+  transform: translateY(-3px);
+  border-color: #93c5fd;
+  box-shadow: 0 16px 36px -4px rgba(30, 64, 175, 0.12), 0 4px 12px -2px rgba(15, 23, 42, 0.05);
+}
+
+.naukri-job-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--naukri-dark);
+  line-height: 1.3;
+  margin-bottom: 0.25rem;
+  transition: color 0.2s ease;
+}
+
+.naukri-job-card:hover .naukri-job-title {
+  color: var(--naukri-blue);
+}
+
+.naukri-job-company {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--naukri-slate);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.company-rating-badge {
+  background: #fef9c3;
+  color: #854d0e;
+  border: 1px solid #fef08a;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.15rem 0.45rem;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* Metadata Icon Row */
+.naukri-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 0.85rem;
+  font-size: 0.85rem;
+  color: #475569;
+}
+
+.naukri-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.naukri-meta-item i {
+  color: #94a3b8;
+  font-size: 0.95rem;
+}
+
+.naukri-meta-item.salary-item {
+  font-weight: 700;
+  color: var(--naukri-green);
+}
+
+.naukri-meta-item.salary-item i {
+  color: var(--naukri-green);
+}
+
+/* Snippet */
+.naukri-job-snippet {
+  font-size: 0.875rem;
+  color: var(--naukri-muted);
+  line-height: 1.5;
+  margin-bottom: 1rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Skills Pills */
+.naukri-skills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1.15rem;
+}
+
+.naukri-skill-pill {
+  background: #f1f5f9;
+  color: #334155;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+}
+
+/* Card Footer */
+.naukri-job-footer {
+  margin-top: auto;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--naukri-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.naukri-post-time {
+  font-size: 0.78rem;
+  color: #94a3b8;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.naukri-apply-btn {
+  background: var(--naukri-blue);
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 0.45rem 1.15rem;
+  border-radius: 8px;
+  border: none;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.naukri-apply-btn:hover {
+  background: var(--naukri-blue-hover);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.ojas-portal-btn {
+  background: #ffffff;
+  color: #b45309;
+  border: 1px solid #fde68a;
+  background-color: #fffbeb;
+  font-weight: 600;
+  font-size: 0.82rem;
+  padding: 0.45rem 0.9rem;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.2s ease;
+}
+
+.ojas-portal-btn:hover {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+/* ==========================================================================
+   TOP EMPLOYERS & HIRING DEPARTMENTS SECTION
+   ========================================================================== */
+.naukri-company-card {
+  background: #ffffff;
+  border: 1px solid var(--naukri-border);
+  border-radius: 14px;
+  padding: 1.25rem;
+  box-shadow: var(--card-shadow);
+  transition: all 0.2s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.naukri-company-card:hover {
+  border-color: var(--naukri-blue);
+  transform: translateY(-3px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.company-logo-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: var(--naukri-blue-light);
+  color: var(--naukri-blue);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+  margin-bottom: 0.85rem;
+}
+
+/* Category Grid Cards */
+.category-card {
+  background: #ffffff;
+  border: 1px solid var(--naukri-border);
+  border-radius: 14px;
+  padding: 1.15rem;
+  box-shadow: var(--card-shadow);
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+.category-card:hover {
+  border-color: var(--naukri-blue);
+  background: var(--naukri-blue-light);
+  transform: translateY(-2px);
+  color: var(--naukri-blue);
+}
+
+.category-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: #f1f5f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  color: var(--naukri-blue);
+  flex-shrink: 0;
+}
+
+.category-card:hover .category-icon-box {
+  background: #ffffff;
+}
+
+/* ==========================================================================
+   USER-FRIENDLY & MODERN STUDENT PORTAL UI
+   ========================================================================== */
+.candidate-hero-card {
+  background: #ffffff;
+  border: 1px solid var(--naukri-border);
+  border-radius: 20px;
+  padding: 1.75rem 2rem;
+  box-shadow: var(--card-shadow);
+  margin-bottom: 1.75rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.candidate-hero-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #1e40af 0%, #3b82f6 50%, #10b981 100%);
+}
+
+.candidate-avatar-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.candidate-avatar-lg {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%);
+  color: #ffffff;
+  font-size: 1.9rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 4px solid #eff6ff;
+  box-shadow: 0 4px 14px rgba(30, 64, 175, 0.2);
+}
+
+.candidate-verified-badge {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 24px;
+  height: 24px;
+  background: #10b981;
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  border: 2px solid #ffffff;
+}
+
+/* Segmented Navigation Tabs */
+.dashboard-nav-pills {
+  background: #f1f5f9;
+  padding: 0.4rem;
+  border-radius: 14px;
+  display: inline-flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.dashboard-nav-pills .nav-link {
+  color: var(--naukri-slate);
+  font-weight: 700;
+  font-size: 0.88rem;
+  border-radius: 10px;
+  padding: 0.65rem 1.25rem;
+  transition: all 0.2s ease;
+  border: none;
+  background: transparent;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex: 1 1 auto;
+  justify-content: center;
+}
+
+.dashboard-nav-pills .nav-link:hover {
+  color: var(--naukri-blue);
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.dashboard-nav-pills .nav-link.active {
+  background: #ffffff;
+  color: var(--naukri-blue);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Modern Metric Tiles */
+.modern-metric-card {
+  background: #ffffff;
+  border: 1px solid var(--naukri-border);
+  border-radius: 16px;
+  padding: 1.35rem 1.4rem;
+  box-shadow: var(--card-shadow);
+  transition: transform 0.2s ease;
+}
+
+.modern-metric-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--card-shadow-hover);
+}
+
+.metric-icon-box {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+}
+
+/* Visual 4-Step Interactive Application Tracker Card */
+.application-tracker-item {
+  background: #ffffff;
+  border: 1px solid var(--naukri-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
+  margin-bottom: 1.25rem;
+  transition: all 0.25s ease;
+}
+
+.application-tracker-item:hover {
+  border-color: #bfdbfe;
+  box-shadow: var(--card-shadow-hover);
+}
+
+/* 4-Stage Stepper Pipeline */
+.application-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  margin: 1.5rem 0 1rem;
+  padding: 0 1rem;
+}
+
+.application-stepper::before {
+  content: "";
+  position: absolute;
+  top: 18px;
+  left: 3rem;
+  right: 3rem;
+  height: 3px;
+  background: #e2e8f0;
+  z-index: 1;
+}
+
+.stepper-stage {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80px;
+}
+
+.stage-icon {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 3px solid #cbd5e1;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+  transition: all 0.25s ease;
+}
+
+.stage-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+.stepper-stage.completed .stage-icon {
+  background: #10b981;
+  border-color: #10b981;
+  color: #ffffff;
+}
+
+.stepper-stage.completed .stage-title {
+  color: #0f172a;
+  font-weight: 700;
+}
+
+.stepper-stage.active .stage-icon {
+  background: var(--naukri-blue);
+  border-color: var(--naukri-blue);
+  color: #ffffff;
+  box-shadow: 0 0 0 4px #dbeafe;
+}
+
+.stepper-stage.active .stage-title {
+  color: var(--naukri-blue);
+  font-weight: 800;
+}
+
+.interview-callout-box {
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 12px;
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+/* ==========================================================================
+   USER-FRIENDLY & MODERN ADMIN CONTROL CENTER UI
+   ========================================================================== */
+.admin-hero-card {
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+  color: #ffffff;
+  border-radius: 20px;
+  padding: 1.75rem 2rem;
+  box-shadow: 0 12px 30px -6px rgba(15, 23, 42, 0.3);
+  margin-bottom: 1.75rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.admin-hero-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  background: linear-gradient(90deg, #ef4444 0%, #f97316 50%, #eab308 100%);
+}
+
+.admin-management-card {
+  background: #ffffff;
+  border: 1px solid var(--naukri-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  box-shadow: var(--card-shadow);
+}
+
+.admin-toolbar-wrap {
+  background: #f8fafc;
+  border: 1px solid var(--naukri-border);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Status Badge Styles */
+.status-pill {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: 50px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.status-verified {
+  background: #dcfce7;
+  color: #15803d;
+  border: 1px solid #bbf7d0;
+}
+
+.status-placed {
+  background: #f3e8ff;
+  color: #7e22ce;
+  border: 1px solid #e9d5ff;
+}
+
+.status-shortlisted {
+  background: #dbeafe;
+  color: #1d4ed8;
+  border: 1px solid #bfdbfe;
+}
+
+.status-review {
+  background: #fef3c7;
+  color: #b45309;
+  border: 1px solid #fde68a;
+}
+
+.status-pending {
+  background: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+/* ==========================================================================
+   TOAST NOTIFICATION ENGINE
+   ========================================================================== */
+.gyrs-toast-container {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  z-index: 1090;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.gyrs-toast {
+  pointer-events: auto;
+  min-width: 300px;
+  max-width: 420px;
+  background: #ffffff;
+  color: #1e293b;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  border-left: 5px solid var(--naukri-blue);
+  padding: 0.85rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  animation: slideInRight 0.3s ease forwards;
+}
+
+.gyrs-toast.toast-success { border-left-color: #16a34a; }
+.gyrs-toast.toast-danger { border-left-color: #dc2626; }
+.gyrs-toast.toast-warning { border-left-color: #d97706; }
+.gyrs-toast.toast-info { border-left-color: #2563eb; }
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Responsive Table Scroll */
+.table-responsive-custom {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  width: 100%;
+}
+
+/* ==========================================================================
+   STANDALONE AUTHENTICATION PAGES (STUDENT & ADMIN LOGIN)
+   ========================================================================== */
+.auth-page-wrapper {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+  padding: 2.5rem 1rem;
+}
+
+.auth-page-wrapper.admin-auth-theme {
+  background: linear-gradient(135deg, #0b0f19 0%, #1e293b 50%, #0f172a 100%);
+}
+
+.auth-card-modern {
+  background: #ffffff;
+  border: 1px solid var(--naukri-border);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px -10px rgba(15, 23, 42, 0.12), 0 0 1px 1px rgba(15, 23, 42, 0.05);
+  width: 100%;
+  max-width: 500px;
+  overflow: hidden;
+  transition: all 0.25s ease;
+}
+
+.auth-card-modern.admin-card-theme {
+  background: #1e293b;
+  color: #ffffff;
+  border-color: #334155;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.auth-card-header {
+  padding: 2rem 2rem 1.25rem;
+  text-align: center;
+  position: relative;
+}
+
+.auth-card-body {
+  padding: 1.5rem 2rem 2.25rem;
+}
+
+.auth-brand-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.otp-box-display {
+  background: #f8fafc;
+  border: 2px dashed #cbd5e1;
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  margin-bottom: 1.25rem;
+}
+
+.otp-demo-pill {
+  display: inline-block;
+  background: #fef3c7;
+  color: #92400e;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   COMPREHENSIVE RESPONSIVE DESIGN (ALL SCREEN MEDIA BREAKPOINTS)
+   ========================================================================== */
+
+/* Tablets and Medium Screens (<= 991px) */
+@media (max-width: 991.98px) {
+  .naukri-hero {
+    padding: 2.5rem 0 2rem;
+  }
+  .naukri-hero-title {
+    font-size: 2.15rem;
+  }
+  .naukri-search-card {
+    flex-direction: column;
+    align-items: stretch;
+    border-radius: 14px;
+    padding: 0.85rem;
+  }
+  .naukri-search-segment:not(:last-child)::after {
+    display: none;
+  }
+  .naukri-search-segment {
+    border-bottom: 1px solid var(--naukri-border);
+    padding: 0.65rem 0.5rem;
+  }
+  .naukri-search-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 0.75rem 1rem;
+    margin-top: 0.25rem;
+  }
+  .naukri-filter-sidebar {
+    position: static;
+    margin-bottom: 1.5rem;
+  }
+  .candidate-hero-card,
+  .admin-hero-card {
+    padding: 1.5rem 1.25rem;
+  }
+  .portal-switcher-bar .container {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+}
+
+/* Mobile Devices & Large Phones (<= 768px) */
+@media (max-width: 767.98px) {
+  .naukri-hero-title {
+    font-size: 1.75rem;
+  }
+  .naukri-hero-subtitle {
+    font-size: 0.95rem;
+  }
+  .portal-switcher-bar {
+    padding: 0.5rem 0;
+  }
+  .portal-switcher-bar .btn-group {
+    display: flex;
+    width: 100%;
+  }
+  .btn-portal-switch {
+    flex: 1 1 auto;
+    font-size: 0.75rem;
+    padding: 0.45rem 0.3rem;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .candidate-avatar-lg {
+    width: 65px;
+    height: 65px;
+    font-size: 1.6rem;
+  }
+  .application-stepper {
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    padding: 0;
+  }
+  .application-stepper::before {
+    display: none;
+  }
+  .stepper-stage {
+    flex: 1 1 40%;
+    min-width: auto;
+  }
+  .table-responsive-custom table {
+    min-width: 650px;
+  }
+  .gyrs-toast {
+    min-width: 260px;
+    max-width: calc(100vw - 2rem);
+  }
+  .gyrs-toast-container {
+    right: 1rem;
+    bottom: 1rem;
+    left: 1rem;
+  }
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+}
+
+/* Small Mobile Screens (<= 480px) */
+@media (max-width: 480px) {
+  .brand-title {
+    font-size: 1.05rem;
+  }
+  .brand-subtext {
+    font-size: 0.65rem;
+  }
+  .top-gov-bar {
+    font-size: 0.72rem;
+  }
+  .naukri-hero-title {
+    font-size: 1.45rem;
+  }
+  .naukri-search-segment input,
+  .naukri-search-segment select {
+    font-size: 0.88rem;
+  }
+  .naukri-chip {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.65rem;
+  }
+  .naukri-metric-number {
+    font-size: 1.4rem;
+  }
+  .btn-portal-switch {
+    font-size: 0.68rem;
+    padding: 0.35rem 0.2rem;
+  }
+  .dashboard-nav-pills {
+    flex-direction: column;
+  }
+  .dashboard-nav-pills .nav-link {
+    width: 100%;
+    text-align: center;
+  }
+}

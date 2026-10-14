@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GYRS Portal | Admin Panel</title>
+  <meta name="description" content="GYRS Portal Admin Panel. Statewide management of job vacancies, candidate verification, and placement records.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+  
+  <!-- Google Fonts (Plus Jakarta Sans & Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome 6.4 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Bootstrap 5.3.2 CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom Modern Styling -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-light">
+
+  <!-- Top State Government Header Bar -->
+  <div class="top-gov-bar py-1 bg-black text-white border-bottom border-secondary">
+    <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div class="d-flex align-items-center gap-3">
+        <span class="fw-bold text-danger"><i class="fas fa-shield-alt me-1"></i> GYRS Portal</span>
+        <span class="d-none d-md-inline opacity-75">Gujarat Youth Rojgar Setu • Admin Panel</span>
+      </div>
+      <div>
+        <a href="index.html" class="text-white-50 text-decoration-none small">
+          <i class="fas fa-external-link-alt me-1"></i> View Public Job Board
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dedicated Admin Dashboard Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="admin-dashboard.html">
+        <div class="d-flex flex-column">
+          <span class="brand-title text-white"><i class="fas fa-user-shield text-danger me-1"></i> GYRS PORTAL</span>
+          <span class="brand-subtext text-white-50">Admin Panel</span>
+        </div>
+      </a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="adminNav">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fw-semibold">
+          <li class="nav-item"><a class="nav-link active text-white" href="admin-dashboard.html"><i class="fas fa-tachometer-alt me-1"></i> Overview</a></li>
+          <li class="nav-item"><a class="nav-link text-white-50" href="#tabAdminJobs" onclick="document.getElementById('tabAdminJobs-tab')?.click()"><i class="fas fa-briefcase me-1"></i> Job Engine</a></li>
+          <li class="nav-item"><a class="nav-link text-white-50" href="#tabAdminStudents" onclick="document.getElementById('tabAdminStudents-tab')?.click()"><i class="fas fa-users me-1"></i> Candidate Roster</a></li>
+          <li class="nav-item"><a class="nav-link text-white-50" href="#tabAdminAudit" onclick="document.getElementById('tabAdminAudit-tab')?.click()"><i class="fas fa-history me-1"></i> Audit Trail</a></li>
+        </ul>
+        <div class="d-flex align-items-center gap-2">
+          <button class="btn btn-success btn-sm fw-bold px-3 shadow-sm" onclick="document.getElementById('openAddJobModalBtn')?.click()">
+            <i class="fas fa-plus-circle me-1"></i> + Post New Job
+          </button>
+          <a href="index.html" class="btn btn-outline-light btn-sm fw-semibold">
+            <i class="fas fa-globe me-1"></i> Public Site
+          </a>
+          <button id="adminLogoutBtn" class="btn btn-danger btn-sm fw-semibold">
+            <i class="fas fa-sign-out-alt me-1"></i> Logout Admin
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Admin Dashboard Container -->
+  <main class="py-4">
+    <div class="container">
+
+      <!-- Admin Executive Command Hero Banner -->
+      <div class="admin-hero-card">
+        <div class="d-flex justify-content-between align-items-start flex-wrap gap-4">
+          <div>
+            <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+              <span class="badge bg-danger text-white fw-bold px-3 py-1 rounded-pill">
+                <i class="fas fa-shield-alt me-1"></i> GYRS Portal
+              </span>
+              <span class="badge bg-white text-dark fw-bold px-3 py-1 rounded-pill">Admin Panel</span>
+              <span class="badge bg-success text-white px-3 py-1 rounded-pill">
+                <i class="fas fa-lock me-1"></i> Full Administrative Access
+              </span>
+            </div>
+            <h3 class="fw-extrabold mb-1">GYRS Portal Admin Panel</h3>
+            <p class="mb-0 text-light opacity-90 small" style="max-width: 650px;">
+              Gujarat Youth Rojgar Setu (GYRS) Portal Administration. Feed real-time job openings and supervise statewide student candidate verification rosters across all 33 districts.
+            </p>
+          </div>
+          <div class="d-flex gap-2 flex-wrap">
+            <button class="btn btn-success btn-sm fw-bold px-3 shadow-sm" id="adminHeroPostJobBtn" onclick="document.getElementById('openAddJobModalBtn')?.click()">
+              <i class="fas fa-plus-circle me-1"></i> + Post New Job Opening
+            </button>
+            <button class="btn btn-outline-light btn-sm fw-semibold" id="adminHeroExportCsvBtn" onclick="document.getElementById('exportCsvBtn')?.click()">
+              <i class="fas fa-file-csv me-1"></i> Export Roster CSV
+            </button>
+            <button class="btn btn-outline-light btn-sm fw-semibold" onclick="window.print()">
+              <i class="fas fa-print me-1"></i> Print Report
+            </button>
+            <button class="btn btn-danger btn-sm bg-danger fw-semibold border-light" onclick="document.getElementById('adminLogoutBtn')?.click()">
+              <i class="fas fa-sign-out-alt me-1"></i> Logout
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin Top Statistics KPI Cards -->
+      <div class="row g-3 mb-4">
+        <div class="col-sm-6 col-lg-3">
+          <div class="admin-stat-card stat-primary">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <div class="text-muted small fw-bold">Total Students Roster</div>
+                <div class="admin-stat-number text-primary" id="adminStatTotalStudents">8</div>
+                <div class="small text-muted fw-semibold">Across 33 Districts</div>
+              </div>
+              <div class="admin-stat-icon bg-primary-subtle text-primary">
+                <i class="fas fa-users"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+          <div class="admin-stat-card stat-success">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <div class="text-muted small fw-bold">Verified Candidates</div>
+                <div class="admin-stat-number text-success" id="adminStatVerifiedStudents">5</div>
+                <div class="small text-success fw-semibold"><i class="fas fa-check-double me-1"></i>Aadhaar Verified</div>
+              </div>
+              <div class="admin-stat-icon bg-success-subtle text-success">
+                <i class="fas fa-user-check"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+          <div class="admin-stat-card stat-purple">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <div class="text-muted small fw-bold">Active Job Postings</div>
+                <div class="admin-stat-number text-purple" id="adminStatActiveJobs">6</div>
+                <div class="small text-primary fw-semibold"><i class="fas fa-briefcase me-1"></i>Live Vacancies</div>
+              </div>
+              <div class="admin-stat-icon bg-purple-subtle" style="background-color: #f3e8ff; color: #9333ea;">
+                <i class="fas fa-building"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+          <div class="admin-stat-card stat-warning">
+            <div class="d-flex justify-content-between align-items-center">
+              <div>
+                <div class="text-muted small fw-bold">Placement Ratio</div>
+                <div class="admin-stat-number text-warning" id="adminStatPlacedStudents">78.4%</div>
+                <div class="small text-dark fw-semibold"><i class="fas fa-award me-1"></i>State Benchmark</div>
+              </div>
+              <div class="admin-stat-icon bg-warning-subtle text-warning">
+                <i class="fas fa-handshake"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Segmented Navigation Pills -->
+      <ul class="nav dashboard-nav-pills mb-4" id="adminTabs" role="tablist">
+        <li class="nav-item flex-fill" role="presentation">
+          <button class="nav-link active w-100" id="tabAdminJobs-tab" data-bs-toggle="pill" data-bs-target="#tabAdminJobs" type="button" role="tab">
+            <i class="fas fa-briefcase me-2 text-primary"></i>Job Postings Engine (Feed Jobs)
+            <span class="badge bg-primary ms-1" id="adminTabJobsCount">6</span>
+          </button>
+        </li>
+        <li class="nav-item flex-fill" role="presentation">
+          <button class="nav-link w-100" id="tabAdminStudents-tab" data-bs-toggle="pill" data-bs-target="#tabAdminStudents" type="button" role="tab">
+            <i class="fas fa-user-graduate me-2 text-success"></i>Student Candidate Roster
+            <span class="badge bg-success ms-1" id="adminTabStudentsCount">8</span>
+          </button>
+        </li>
+        <li class="nav-item flex-fill" role="presentation">
+          <button class="nav-link w-100" id="tabAdminAudit-tab" data-bs-toggle="pill" data-bs-target="#tabAdminAudit" type="button" role="tab">
+            <i class="fas fa-history me-2 text-warning"></i>Statewide Applications Audit Pipeline
+          </button>
+        </li>
+      </ul>
+
+      <!-- Tab Content Area -->
+      <div class="tab-content" id="adminTabsContent">
+        <!-- TAB 1: JOB POSTINGS ENGINE (FEED JOBS) -->
+        <div class="tab-pane fade show active" id="tabAdminJobs" role="tabpanel">
+          <div class="admin-management-card">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+              <div>
+                <h5 class="fw-bold mb-0 text-dark">
+                  <i class="fas fa-briefcase text-primary me-2"></i>Job Postings Engine (Feed & Manage Vacancies)
+                </h5>
+                <p class="text-muted small mb-0">Admins can create, edit, update, or remove job opportunities published to candidates.</p>
+              </div>
+              <div class="d-flex gap-2">
+                <button class="btn btn-success fw-bold btn-sm px-3 shadow-sm" id="openAddJobModalBtn">
+                  <i class="fas fa-plus-circle me-1"></i> + Post New Job Opening
+                </button>
+              </div>
+            </div>
+
+            <!-- Job Feed Search & Filter Bar -->
+            <div class="row g-2 mb-3">
+              <div class="col-md-7">
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text bg-light"><i class="fas fa-search text-muted"></i></span>
+                  <input type="text" id="adminJobSearch" class="form-control" placeholder="Search postings by job title or department...">
+                </div>
+              </div>
+              <div class="col-md-5">
+                <select id="adminJobDeptFilter" class="form-select form-select-sm">
+                  <option value="ALL">All Departments</option>
+                  <option value="GIL">Gujarat Informatics Ltd (GIL)</option>
+                  <option value="AMC">Ahmedabad Municipal Corp (AMC)</option>
+                  <option value="GEDA">Renewable Energy (GEDA)</option>
+                  <option value="GIDC">Industrial Dev (GIDC)</option>
+                  <option value="GETCO">GETCO Energy</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Jobs Table -->
+            <div class="table-responsive-custom">
+              <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>ID</th>
+                    <th>Job Title</th>
+                    <th>Department</th>
+                    <th>District</th>
+                    <th>Salary</th>
+                    <th>Type</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="adminJobsTableBody">
+                  <!-- Filled dynamically by app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 2: STUDENT CANDIDATE ROSTER -->
+        <div class="tab-pane fade" id="tabAdminStudents" role="tabpanel">
+          <div class="admin-management-card">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+              <div>
+                <h5 class="fw-bold mb-0 text-dark">
+                  <i class="fas fa-user-graduate text-success me-2"></i>Student Candidate Roster Management
+                </h5>
+                <p class="text-muted small mb-0">Supervise registered candidates: view credentials, edit profile data, update placement status, or export records.</p>
+              </div>
+              <div class="d-flex gap-2">
+                <button class="btn btn-outline-primary btn-sm fw-semibold" id="exportCsvBtn">
+                  <i class="fas fa-file-csv me-1"></i> Export Roster to CSV
+                </button>
+              </div>
+            </div>
+
+            <!-- Student Roster Filter Controls -->
+            <div class="row g-2 mb-3">
+              <div class="col-md-5">
+                <div class="input-group input-group-sm">
+                  <span class="input-group-text bg-light"><i class="fas fa-search text-muted"></i></span>
+                  <input type="text" id="adminStudentSearch" class="form-control" placeholder="Search by name, roll no, or skill...">
+                </div>
+              </div>
+              <div class="col-md-4">
+                <select id="adminFilterDistrict" class="form-select form-select-sm">
+                  <option value="ALL">All Districts</option>
+                  <option value="Ahmedabad">Ahmedabad</option>
+                  <option value="Gandhinagar">Gandhinagar</option>
+                  <option value="Surat">Surat</option>
+                  <option value="Vadodara">Vadodara</option>
+                  <option value="Rajkot">Rajkot</option>
+                  <option value="Kutch">Kutch</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <select id="adminFilterStatus" class="form-select form-select-sm">
+                  <option value="ALL">All Statuses</option>
+                  <option value="Verified">Verified</option>
+                  <option value="Placed">Placed</option>
+                  <option value="Pending">Pending</option>
+                  <option value="Shortlisted">Shortlisted</option>
+                  <option value="Under Review">Under Review</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Student Roster Table -->
+            <div class="table-responsive-custom">
+              <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>Roll No</th>
+                    <th>Candidate Name</th>
+                    <th>Qualification</th>
+                    <th>District</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="adminStudentTableBody">
+                  <!-- Filled dynamically by app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 3: STATEWIDE APPLICATIONS AUDIT -->
+        <div class="tab-pane fade" id="tabAdminAudit" role="tabpanel">
+          <div class="admin-management-card">
+            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+              <div>
+                <h5 class="fw-bold mb-0 text-dark">
+                  <i class="fas fa-history text-secondary me-2"></i>Recent Statewide Applications Audit Log
+                </h5>
+                <p class="text-muted small mb-0">Live audit trail of candidate submissions, AI match scores, and current recruitment stages.</p>
+              </div>
+              <span class="badge bg-success-subtle text-success border border-success px-3 py-1">Live Sync Active</span>
+            </div>
+
+            <div class="table-responsive-custom">
+              <table class="table table-sm table-striped align-middle mb-0">
+                <thead class="table-light">
+                  <tr>
+                    <th>App ID</th>
+                    <th>Student Name</th>
+                    <th>Applied Position</th>
+                    <th>Date</th>
+                    <th>Match Score</th>
+                    <th>Current Stage</th>
+                  </tr>
+                </thead>
+                <tbody id="adminRecentApplicationsTableBody">
+                  <!-- Filled dynamically by app.js -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- MODALS FOR ADMIN MANAGEMENT -->
+
+  <!-- Add Job Modal -->
+  <div class="modal fade" id="addJobModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title fw-bold">
+            <i class="fas fa-plus-circle me-2"></i>Post New Job Opening (Feed Jobs)
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="addJobForm">
+          <div class="modal-body p-4">
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Job Title *</label>
+                <input type="text" id="addJobTitle" class="form-control" placeholder="e.g. Cloud Solutions Architect" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Department / Corporation *</label>
+                <input type="text" id="addJobDept" class="form-control" placeholder="e.g. Gujarat Informatics Ltd (GIL)" required>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">District Location *</label>
+                <select id="addJobDistrict" class="form-select" required>
+                  <option value="Gandhinagar">Gandhinagar</option>
+                  <option value="Ahmedabad">Ahmedabad</option>
+                  <option value="Surat">Surat</option>
+                  <option value="Vadodara">Vadodara</option>
+                  <option value="Rajkot">Rajkot</option>
+                  <option value="Kutch">Kutch</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Monthly Salary / Stipend *</label>
+                <input type="text" id="addJobSalary" class="form-control" placeholder="e.g. ₹42,000 / month" required>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Employment Type *</label>
+                <select id="addJobType" class="form-select" required>
+                  <option value="Government Permanent">Government Permanent</option>
+                  <option value="State Apprenticeship">State Apprenticeship</option>
+                  <option value="Contractual PSUs">Contractual PSUs</option>
+                  <option value="Technical Cadre">Technical Cadre</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold small">Key Skills Required (comma-separated) *</label>
+              <input type="text" id="addJobSkills" class="form-control" placeholder="e.g. Cloud, Python, Linux, Networking" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold small">Detailed Job Description & Requirements *</label>
+              <textarea id="addJobDesc" class="form-control" rows="3" placeholder="Provide complete role description, responsibilities, and eligibility criteria..." required></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold small">Direct Application Portal URL *</label>
+              <input type="url" id="addJobOjasUrl" class="form-control" value="https://ojas.gujarat.gov.in/" required>
+              <div class="form-text small">Candidates clicking Apply will be directed to this official application link.</div>
+            </div>
+          </div>
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-success fw-bold btn-sm px-3">
+              <i class="fas fa-check-circle me-1"></i> Publish Job Opening
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Job Modal -->
+  <div class="modal fade" id="editJobModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title fw-bold">
+            <i class="fas fa-edit me-2"></i>Edit Job Opening
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="editJobForm">
+          <input type="hidden" id="editJobId">
+          <div class="modal-body p-4">
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Job Title *</label>
+                <input type="text" id="editJobTitle" class="form-control" required>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label fw-semibold small">Department / Corporation *</label>
+                <input type="text" id="editJobDept" class="form-control" required>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">District Location *</label>
+                <select id="editJobDistrict" class="form-select" required>
+                  <option value="Gandhinagar">Gandhinagar</option>
+                  <option value="Ahmedabad">Ahmedabad</option>
+                  <option value="Surat">Surat</option>
+                  <option value="Vadodara">Vadodara</option>
+                  <option value="Rajkot">Rajkot</option>
+                  <option value="Kutch">Kutch</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Monthly Salary *</label>
+                <input type="text" id="editJobSalary" class="form-control" required>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Type *</label>
+                <select id="editJobType" class="form-select" required>
+                  <option value="Government Permanent">Government Permanent</option>
+                  <option value="State Apprenticeship">State Apprenticeship</option>
+                  <option value="Contractual PSUs">Contractual PSUs</option>
+                  <option value="Technical Cadre">Technical Cadre</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold small">Skills (comma-separated) *</label>
+              <input type="text" id="editJobSkills" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold small">Job Description *</label>
+              <textarea id="editJobDesc" class="form-control" rows="3" required></textarea>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold small">Official Application URL *</label>
+              <input type="url" id="editJobOjasUrl" class="form-control" required>
+            </div>
+          </div>
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary fw-bold btn-sm px-3">
+              <i class="fas fa-save me-1"></i> Update Vacancy Record
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Student Record Modal -->
+  <div class="modal fade" id="editStudentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="modal-header bg-danger text-white">
+          <h5 class="modal-title fw-bold">
+            <i class="fas fa-user-edit me-2"></i>Edit Student Candidate Record
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="editStudentForm">
+          <div class="modal-body p-4">
+            <div class="row g-3 mb-3">
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Roll Number / Candidate ID</label>
+                <input type="text" id="editStudentId" class="form-control bg-light font-monospace" readonly>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Candidate Full Name *</label>
+                <input type="text" id="editStudentName" class="form-control" required>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Username *</label>
+                <input type="text" id="editStudentUsername" class="form-control" required>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Password *</label>
+                <input type="text" id="editStudentPassword" class="form-control" required>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Email Address *</label>
+                <input type="email" id="editStudentEmail" class="form-control" required>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Mobile Phone *</label>
+                <input type="tel" id="editStudentPhone" class="form-control" required>
+              </div>
+            </div>
+
+            <div class="row g-3 mb-3">
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">District Location *</label>
+                <select id="editStudentDistrict" class="form-select" required>
+                  <option value="Ahmedabad">Ahmedabad</option>
+                  <option value="Gandhinagar">Gandhinagar</option>
+                  <option value="Surat">Surat</option>
+                  <option value="Vadodara">Vadodara</option>
+                  <option value="Rajkot">Rajkot</option>
+                  <option value="Kutch">Kutch</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Qualification *</label>
+                <select id="editStudentQual" class="form-select" required>
+                  <option value="B.Tech / B.E. (Computer / IT)">B.Tech / B.E. (Computer / IT)</option>
+                  <option value="MCA / Software Engineering">MCA / Software Engineering</option>
+                  <option value="ITI / Diploma (Mechanical/Electrical)">ITI / Diploma (Mechanical/Electrical)</option>
+                  <option value="12th Pass / Graduate">12th Pass / Graduate</option>
+                  <option value="B.Com / Accounting">B.Com / Accounting</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label fw-semibold small">Placement / Verification Status *</label>
+                <select id="editStudentStatus" class="form-select" required>
+                  <option value="Verified">Verified</option>
+                  <option value="Placed">Placed</option>
+                  <option value="Shortlisted">Shortlisted</option>
+                  <option value="Under Review">Under Review</option>
+                  <option value="Pending">Pending</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label fw-semibold small">Skills (comma-separated) *</label>
+              <input type="text" id="editStudentSkills" class="form-control" required>
+            </div>
+          </div>
+          <div class="modal-footer bg-light">
+            <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-danger fw-bold btn-sm px-3">
+              <i class="fas fa-check-circle me-1"></i> Update Student Record
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- View Student Dossier Modal -->
+  <div class="modal fade" id="viewStudentModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow-lg rounded-4">
+        <div class="modal-header bg-dark text-white">
+          <h5 class="modal-title fw-bold">
+            <i class="fas fa-id-card text-warning me-2"></i>Candidate Profile Dossier
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4" id="viewStudentDossierBody">
+          <!-- Filled dynamically by JS -->
+        </div>
+        <div class="modal-footer bg-light">
+          <button type="button" class="btn btn-outline-primary btn-sm" onclick="window.print()">
+            <i class="fas fa-print me-1"></i> Print / Download PDF
+          </button>
+          <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="gyrs-toast-container" id="toastContainer"></div>
+
+  <!-- Bootstrap 5 JS Bundle CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom Application Script -->
+  <script src="js/app.js?v=4"></script>
+</body>
+</html>
+

@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GYRS - Gujarat Youth Rojgar Setu | Government & Industry Employment Portal</title>
+  <meta name="description" content="Gujarat Youth Rojgar Setu (GYRS) - Official AI-Powered Career Portal, State Recruitment Integration & Skill Placement Platform by Government of Gujarat.">
+  
+  <!-- Bootstrap 5 CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <!-- Google Plus Jakarta Sans & Inter Fonts (English) -->
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Custom Styles (Naukri.com-Inspired UI) -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- ==========================================================================
+       TOP GOVERNMENT & ACCESSIBILITY BAR
+       ========================================================================== -->
+  <div class="top-gov-bar py-1">
+    <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div class="d-flex align-items-center gap-2 small">
+        <span class="fw-bold"><i class="fas fa-landmark text-warning me-1"></i> Government of Gujarat</span>
+        <span class="d-none d-md-inline text-secondary">|</span>
+        <span class="d-none d-lg-inline text-light-50">Directorate of Employment and Training (DET)</span>
+      </div>
+      <div class="d-flex align-items-center gap-3 small">
+        <a href="https://ojas.gujarat.gov.in/" target="_blank" class="ojas-redirect-btn py-1 px-2 text-decoration-none">
+          <i class="fas fa-external-link-alt me-1"></i> State Recruitment Exchange
+        </a>
+        <a href="#accessibility" class="text-white text-decoration-none d-none d-sm-inline">
+          <i class="fas fa-universal-access me-1"></i> Accessibility
+        </a>
+        <span class="text-light-50 d-none d-md-inline">
+          <i class="fas fa-phone-alt me-1 text-warning"></i> Toll-Free: 1800-233-5500
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       MAIN PORTAL NAVBAR (NAUKRI.COM INSPIRED)
+       ========================================================================== -->
+  <nav class="navbar navbar-expand-lg navbar-gyrs sticky-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <div class="d-flex flex-column">
+          <span class="brand-title"><i class="fas fa-briefcase text-primary me-1"></i> GYRS GUJARAT</span>
+          <span class="brand-subtext">Gujarat Youth Rojgar Setu</span>
+        </div>
+      </a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#gyrsNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="gyrsNavbar">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fw-semibold">
+          <li class="nav-item"><a class="nav-link active" href="index.html" id="navLinkPublic"><i class="fas fa-home me-1"></i> Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#jobExplorer" id="navLinkJobs"><i class="fas fa-search me-1"></i> Explore Jobs</a></li>
+          <li class="nav-item"><a class="nav-link" href="#howItWorks"><i class="fas fa-tasks me-1"></i> How It Works</a></li>
+          <li class="nav-item"><a class="nav-link text-primary fw-bold" href="student-dashboard.html" id="navLinkStudent"><i class="fas fa-user-graduate me-1"></i> Candidate Portal</a></li>
+          <li class="nav-item"><a href="https://ojas.gujarat.gov.in/" target="_blank" class="nav-link text-warning fw-bold"><i class="fas fa-external-link-alt me-1"></i> Direct Recruitment</a></li>
+        </ul>
+        <div class="d-flex align-items-center gap-2">
+          <div id="userProfileBadge" class="d-none me-1">
+            <span class="badge bg-primary-subtle text-primary border border-primary px-3 py-2 rounded-pill small">
+              <i class="fas fa-user-circle me-1"></i> <span id="userFullNameDisplay">Candidate</span>
+            </span>
+          </div>
+          <a href="student-login.html" id="loginBtn" class="btn btn-outline-primary fw-bold px-3 btn-sm-block text-decoration-none">
+            <i class="fas fa-sign-in-alt me-1"></i> Candidate Sign In / OTP
+          </a>
+          <button id="logoutBtn" class="btn btn-outline-danger fw-bold px-3 btn-sm-block d-none">
+            <i class="fas fa-sign-out-alt me-1"></i> Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ==========================================================================
+       VIEW: PUBLIC PORTAL (NAUKRI.COM INSPIRED CLIENT SIDE)
+       ========================================================================== -->
+  <div id="viewPublic" class="portal-view">
+
+    <!-- State Live Circulars Ticker (English) -->
+    <div class="news-ticker-container">
+      <div class="ticker-title">
+        <i class="fas fa-bullhorn me-1"></i> State Live Alerts
+      </div>
+      <marquee class="py-2 text-dark fs-7 fw-medium" scrollamount="6">
+        <span class="text-danger fw-bold me-2">[NEW]</span> GPSC Class 1 & 2 Recruitment Open: 320+ Executive Engineer & Administrative Posts. &nbsp;&nbsp;|&nbsp;&nbsp; 
+        <span class="text-success fw-bold me-2">[ROJGAR MELA]</span> Gujarat Mega Rozgar Mela in Ahmedabad on Oct 25 at GMDC Ground — Over 5,000+ On-Spot Offer Letters. &nbsp;&nbsp;|&nbsp;&nbsp; 
+        <span class="text-primary fw-bold me-2">[SCHEME]</span> Mukhyamantri Apprentice Yojana: Monthly stipend up to ₹9,000 for Technical Graduates. &nbsp;&nbsp;|&nbsp;&nbsp; 
+        <span class="text-dark fw-bold me-2">[OFFICIAL LINK]</span> Apply on Official Gujarat Recruitment Portal: <a href="https://ojas.gujarat.gov.in/" target="_blank" class="text-primary fw-bold">https://ojas.gujarat.gov.in/</a>
+      </marquee>
+    </div>
+
+    <!-- Naukri.com-Style Hero Section -->
+    <section class="naukri-hero" id="home">
+      <div class="container text-center">
+        <div class="naukri-hero-badge mb-3">
+          <i class="fas fa-shield-alt text-primary"></i> Directorate of Employment & Training • Government of Gujarat
+        </div>
+        <h1 class="naukri-hero-title mb-3">
+          Find your dream job in Gujarat
+        </h1>
+        <p class="naukri-hero-subtitle mx-auto mb-4">
+          Connecting over 1.2M+ youth with 50,000+ Government vacancies, State recruitments, and leading private sector employers across 33 districts.
+        </p>
+
+        <!-- Unified 3-Segment Search Bar (Signature Naukri Style) -->
+        <div class="row justify-content-center mb-4">
+          <div class="col-xl-10 col-lg-11">
+            <div class="naukri-search-card">
+              <!-- Segment 1: Keyword / Designation / Company -->
+              <div class="naukri-search-segment">
+                <i class="fas fa-search"></i>
+                <input type="text" id="filterSearch" placeholder="Enter skills, job title, or company (e.g. Python, Civil Engineer, Nurse)...">
+              </div>
+
+              <!-- Segment 2: Job Type / Experience -->
+              <div class="naukri-search-segment">
+                <i class="fas fa-briefcase"></i>
+                <select id="filterType">
+                  <option value="ALL">All Job Types / Experience</option>
+                  <option value="Full-Time">Full-Time (Govt & Private)</option>
+                  <option value="Govt Direct">Official Government (Direct)</option>
+                  <option value="Govt Contract">Government Contract</option>
+                  <option value="Apprenticeship">Apprenticeship & Trainee</option>
+                </select>
+              </div>
+
+              <!-- Segment 3: District / Location -->
+              <div class="naukri-search-segment">
+                <i class="fas fa-map-marker-alt"></i>
+                <select id="filterDistrict">
+                  <option value="ALL">All Gujarat Districts</option>
+                  <option value="Ahmedabad">Ahmedabad</option>
+                  <option value="Gandhinagar">Gandhinagar (GIFT City)</option>
+                  <option value="Surat">Surat</option>
+                  <option value="Vadodara">Vadodara</option>
+                  <option value="Rajkot">Rajkot</option>
+                  <option value="Kutch">Kutch (Energy Belt)</option>
+                </select>
+              </div>
+
+              <!-- Action Button -->
+              <button id="naukriSearchBtn" class="naukri-search-btn" type="button">
+                <i class="fas fa-search"></i> Search Jobs
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trending Popular Search Chips -->
+        <div class="d-flex justify-content-center align-items-center flex-wrap gap-2 text-muted small">
+          <span class="fw-bold text-dark"><i class="fas fa-fire text-danger me-1"></i> Popular Searches:</span>
+          <div class="trending-chips-wrap justify-content-center">
+            <span class="naukri-chip" data-search-chip="Software Engineer">Software Engineer</span>
+            <span class="naukri-chip" data-search-chip="Civil Engineer">Civil Engineer</span>
+            <span class="naukri-chip" data-search-chip="Staff Nurse">Staff Nurse</span>
+            <span class="naukri-chip" data-search-chip="Data Entry">Data Entry Operator</span>
+            <span class="naukri-chip" data-search-chip="GIFT City">GIFT City IT</span>
+            <span class="naukri-chip" data-search-chip="Apprenticeship">Apprentice Yojana</span>
+            <span class="naukri-chip" data-search-chip="Solar">Solar Technician</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Key Metrics Strip -->
+    <section class="py-4 bg-white border-bottom">
+      <div class="container">
+        <div class="row g-3">
+          <div class="col-6 col-lg-3">
+            <div class="naukri-metric-box">
+              <div class="naukri-metric-number">48,500+</div>
+              <div class="naukri-metric-label">Active Vacancies</div>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="naukri-metric-box">
+              <div class="naukri-metric-number">12,400+</div>
+              <div class="naukri-metric-label">Hiring Employers</div>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="naukri-metric-box">
+              <div class="naukri-metric-number">33 Districts</div>
+              <div class="naukri-metric-label">Statewide Coverage</div>
+            </div>
+          </div>
+          <div class="col-6 col-lg-3">
+            <div class="naukri-metric-box">
+              <div class="naukri-metric-number">94.2%</div>
+              <div class="naukri-metric-label">AI Match Accuracy</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         HOW IT WORKS: 4-STEP TRANSPARENT PROCESS TRACKER (Clear & User-Friendly)
+         ========================================================================== -->
+    <section class="py-5 bg-light border-bottom" id="howItWorks">
+      <div class="container">
+        <div class="text-center mb-5">
+          <span class="badge bg-primary-subtle text-primary border border-primary px-3 py-1 rounded-pill mb-2 fw-bold">
+            Transparent Hiring Architecture
+          </span>
+          <h2 class="fw-bold text-dark">How Gujarat Rojgar Setu Works</h2>
+          <p class="text-muted mx-auto" style="max-width: 680px;">
+            A simple, user-friendly 4-step path enabling candidates to easily understand, apply, and track their entire employment lifecycle.
+          </p>
+        </div>
+
+        <div class="row g-4 mb-4">
+          <!-- Step 1 -->
+          <div class="col-md-6 col-lg-3">
+            <div class="process-tracker-card">
+              <div class="process-step-badge">01</div>
+              <h5 class="process-step-title">Create Free Profile</h5>
+              <p class="process-step-desc">
+                Register candidate profile with educational qualifications, certified skills, and district. Instant Aadhaar & student verification.
+              </p>
+              <div class="process-step-pill">
+                <i class="fas fa-check-circle me-1"></i> Aadhaar Verified
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="col-md-6 col-lg-3">
+            <div class="process-tracker-card">
+              <div class="process-step-badge">02</div>
+              <h5 class="process-step-title">Explore & 1-Click Apply</h5>
+              <p class="process-step-desc">
+                Filter verified government and corporate openings across all 33 districts. Apply instantly in 1-Click or via official direct recruitment portal.
+              </p>
+              <div class="process-step-pill">
+                <i class="fas fa-bolt me-1"></i> Fast-Track Apply
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="col-md-6 col-lg-3">
+            <div class="process-tracker-card">
+              <div class="process-step-badge">03</div>
+              <h5 class="process-step-title">Track Application Status</h5>
+              <p class="process-step-desc">
+                Monitor your live application lifecycle in the Candidate Dashboard: Applied ➔ Screening ➔ Shortlisted ➔ Interview Call.
+              </p>
+              <div class="process-step-pill">
+                <i class="fas fa-eye me-1"></i> Real-Time Tracker
+              </div>
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="col-md-6 col-lg-3">
+            <div class="process-tracker-card">
+              <div class="process-step-badge">04</div>
+              <h5 class="process-step-title">Rozgar Mela & Offer</h5>
+              <p class="process-step-desc">
+                Attend scheduled interview calls, document verification, or state Rozgar Melas and receive your official verified appointment letter.
+              </p>
+              <div class="process-step-pill">
+                <i class="fas fa-award me-1"></i> Verified Placement
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Interactive Action Bar in Process Tracker -->
+        <div class="card border-0 shadow-sm rounded-4 p-4 bg-white border-start border-4 border-primary">
+          <div class="row align-items-center gy-3">
+            <div class="col-lg-8">
+              <h5 class="fw-bold text-dark mb-1">
+                <i class="fas fa-compass text-primary me-2"></i> Ready to track your application or register as a new candidate?
+              </h5>
+              <p class="text-muted small mb-0">
+                Logged-in candidates can view their active applications, interview invites, and recommended jobs anytime in the Candidate Dashboard.
+              </p>
+            </div>
+            <div class="col-lg-4 d-flex justify-content-lg-end gap-2 flex-wrap">
+              <a href="student-dashboard.html" class="btn btn-primary fw-bold px-3 py-2 text-decoration-none">
+                <i class="fas fa-user-graduate me-1"></i> Open Candidate Dashboard
+              </a>
+              <a href="student-login.html" class="btn btn-outline-secondary fw-semibold px-3 py-2 text-decoration-none">
+                <i class="fas fa-sign-in-alt me-1"></i> Candidate Login / OTP
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         NAUKRI-STYLE 2-COLUMN JOB EXPLORER (FILTERS + JOBS LIST)
+         ========================================================================== -->
+    <section class="py-5 bg-white border-bottom" id="jobExplorer">
+      <div class="container">
+        <div class="d-flex justify-content-between align-items-end flex-wrap gap-2 mb-4">
+          <div>
+            <span class="badge bg-primary-subtle text-primary border border-primary px-3 py-1 rounded-pill mb-2 fw-bold">
+              Live Vacancy Directory
+            </span>
+            <h2 class="fw-bold text-dark mb-1">Explore Open Jobs in Gujarat</h2>
+            <p class="text-muted mb-0">Verified state government positions, public department vacancies, and private industrial roles.</p>
+          </div>
+          <div class="text-muted small">
+            Showing <span id="filteredJobCount" class="fw-bold text-primary fs-5">6</span> matching opportunities
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <!-- Left Column: Filter Sidebar (Naukri.com Style) -->
+          <div class="col-lg-3">
+            <div class="naukri-filter-sidebar">
+              <div class="naukri-filter-header">
+                <span class="fw-bold text-dark"><i class="fas fa-sliders-h me-1 text-primary"></i> All Filters</span>
+                <button id="resetFiltersBtn" class="btn btn-link btn-sm text-decoration-none text-primary p-0 fw-semibold" type="button">
+                  Clear All
+                </button>
+              </div>
+
+              <!-- Filter 1: District / Location -->
+              <div class="naukri-filter-group">
+                <label class="naukri-filter-label"><i class="fas fa-map-marker-alt text-danger"></i> Location / District</label>
+                <select id="sidebarFilterDistrict" class="form-select form-select-sm" onchange="document.getElementById('filterDistrict').value = this.value; document.getElementById('filterDistrict').dispatchEvent(new Event('change'));">
+                  <option value="ALL">All Districts (Gujarat)</option>
+                  <option value="Ahmedabad">Ahmedabad</option>
+                  <option value="Gandhinagar">Gandhinagar (GIFT City)</option>
+                  <option value="Surat">Surat</option>
+                  <option value="Vadodara">Vadodara</option>
+                  <option value="Rajkot">Rajkot</option>
+                  <option value="Kutch">Kutch (Energy Belt)</option>
+                </select>
+              </div>
+
+              <!-- Filter 2: Technical Skill / Sector -->
+              <div class="naukri-filter-group">
+                <label class="naukri-filter-label"><i class="fas fa-tools text-primary"></i> Required Skill</label>
+                <select id="filterSkill" class="form-select form-select-sm">
+                  <option value="ALL">All Skills</option>
+                  <option value="Python">Python / IT Software</option>
+                  <option value="Web Development">Web Development</option>
+                  <option value="Gujarati Typing">Typing & Documentation</option>
+                  <option value="Electrical">Electrical & Solar</option>
+                  <option value="Automation">Automation & Mechanical</option>
+                  <option value="Cyber Security">Cyber Security</option>
+                </select>
+              </div>
+
+              <!-- Filter 3: Job Type / Mode -->
+              <div class="naukri-filter-group">
+                <label class="naukri-filter-label"><i class="fas fa-briefcase text-success"></i> Employment Type</label>
+                <select id="sidebarFilterType" class="form-select form-select-sm" onchange="document.getElementById('filterType').value = this.value; document.getElementById('filterType').dispatchEvent(new Event('change'));">
+                  <option value="ALL">All Types</option>
+                  <option value="Full-Time">Full-Time (Direct)</option>
+                  <option value="Govt Direct">Official Government</option>
+                  <option value="Govt Contract">Government Contract</option>
+                  <option value="Apprenticeship">Apprenticeship & Trainee</option>
+                </select>
+              </div>
+
+              <!-- Verified Trust Badge Box -->
+              <div class="p-3 bg-light rounded-3 border mt-4">
+                <div class="fw-bold text-dark small mb-2"><i class="fas fa-shield-alt text-success me-1"></i> Trust & Compliance</div>
+                <ul class="list-unstyled small text-muted mb-0" style="font-size: 0.78rem;">
+                  <li class="mb-1">✓ 100% Free Candidate Registration</li>
+                  <li class="mb-1">✓ Zero Intermediaries or Agents</li>
+                  <li>✓ Official Gujarat State Verified Postings</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Job Listings Feed -->
+          <div class="col-lg-9">
+            <!-- Filtered Jobs Container (Rendered dynamically by JS in Naukri Style) -->
+            <div class="row g-3" id="filteredJobsGrid">
+              <!-- Rendered by app.js -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         TOP RECRUITING DEPARTMENTS & GUJARAT EMPLOYERS (NAUKRI COMPANIES SECTION)
+         ========================================================================== -->
+    <section class="py-5 bg-light border-bottom" id="topEmployers">
+      <div class="container">
+        <div class="text-center mb-5">
+          <span class="badge bg-secondary-subtle text-secondary border px-3 py-1 rounded-pill mb-2 fw-bold">
+            Trusted Employers
+          </span>
+          <h2 class="fw-bold text-dark">Top Hiring Departments & Organizations</h2>
+          <p class="text-muted mx-auto" style="max-width: 650px;">
+            Partner government boards, state public sector undertakings, and major industrial projects recruiting through GYRS.
+          </p>
+        </div>
+
+        <div class="row g-3 mb-4">
+          <div class="col-md-6 col-lg-4">
+            <div class="naukri-company-card">
+              <div class="company-logo-badge"><i class="fas fa-building text-primary"></i></div>
+              <h5 class="fw-bold text-dark mb-1">Roads & Buildings Department (R&B)</h5>
+              <div class="text-muted small mb-2">Government of Gujarat • Gandhinagar</div>
+              <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
+                <span class="badge bg-primary-subtle text-primary fw-bold">42+ Vacancies</span>
+                <span class="small text-primary fw-semibold"><i class="fas fa-arrow-right"></i> View Jobs</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4">
+            <div class="naukri-company-card">
+              <div class="company-logo-badge"><i class="fas fa-city text-primary"></i></div>
+              <h5 class="fw-bold text-dark mb-1">GIFT City Authority (Fintech Zone)</h5>
+              <div class="text-muted small mb-2">Gandhinagar International Tech City</div>
+              <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
+                <span class="badge bg-success-subtle text-success fw-bold">60+ Vacancies</span>
+                <span class="small text-primary fw-semibold"><i class="fas fa-arrow-right"></i> View Jobs</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4">
+            <div class="naukri-company-card">
+              <div class="company-logo-badge"><i class="fas fa-bolt text-primary"></i></div>
+              <h5 class="fw-bold text-dark mb-1">GETCO - Gujarat Energy Transmission</h5>
+              <div class="text-muted small mb-2">State Power Utility • Vadodara</div>
+              <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
+                <span class="badge bg-warning-subtle text-dark fw-bold">35+ Vacancies</span>
+                <span class="small text-primary fw-semibold"><i class="fas fa-arrow-right"></i> View Jobs</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4">
+            <div class="naukri-company-card">
+              <div class="company-logo-badge"><i class="fas fa-hospital-alt text-primary"></i></div>
+              <h5 class="fw-bold text-dark mb-1">Health & Family Welfare Department</h5>
+              <div class="text-muted small mb-2">State Healthcare Directorate • Surat & Rajkot</div>
+              <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
+                <span class="badge bg-danger-subtle text-danger fw-bold">120+ Vacancies</span>
+                <span class="small text-primary fw-semibold"><i class="fas fa-arrow-right"></i> View Jobs</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4">
+            <div class="naukri-company-card">
+              <div class="company-logo-badge"><i class="fas fa-industry text-primary"></i></div>
+              <h5 class="fw-bold text-dark mb-1">Dholera Special Investment Region (SIR)</h5>
+              <div class="text-muted small mb-2">Mega Industrial & Green Field Hub</div>
+              <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
+                <span class="badge bg-info-subtle text-info fw-bold">80+ Vacancies</span>
+                <span class="small text-primary fw-semibold"><i class="fas fa-arrow-right"></i> View Jobs</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6 col-lg-4">
+            <div class="naukri-company-card">
+              <div class="company-logo-badge"><i class="fas fa-laptop-code text-primary"></i></div>
+              <h5 class="fw-bold text-dark mb-1">Gujarat Informatics Limited (GIL)</h5>
+              <div class="text-muted small mb-2">Department of Science & Technology</div>
+              <div class="d-flex justify-content-between align-items-center mt-auto pt-2 border-top">
+                <span class="badge bg-purple-subtle text-purple fw-bold">25+ Vacancies</span>
+                <span class="small text-primary fw-semibold"><i class="fas fa-arrow-right"></i> View Jobs</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         POPULAR JOB CATEGORIES (BROWSE BY SECTOR)
+         ========================================================================== -->
+    <section class="py-5 bg-white border-bottom">
+      <div class="container">
+        <div class="text-center mb-4">
+          <span class="badge bg-primary-subtle text-primary border border-primary px-3 py-1 rounded-pill mb-2 fw-bold">
+            Sector Directory
+          </span>
+          <h2 class="fw-bold text-dark">Explore Jobs by Industry</h2>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-md-4 col-sm-6">
+            <a href="#jobExplorer" class="category-card" onclick="document.getElementById('filterSkill').value = 'Python'; document.getElementById('filterSkill').dispatchEvent(new Event('change'));">
+              <div class="category-icon-box"><i class="fas fa-code"></i></div>
+              <div>
+                <div class="fw-bold text-dark">IT, AI & Software</div>
+                <div class="text-muted small">1,420+ Openings</div>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-md-4 col-sm-6">
+            <a href="#jobExplorer" class="category-card" onclick="document.getElementById('filterSkill').value = 'Automation'; document.getElementById('filterSkill').dispatchEvent(new Event('change'));">
+              <div class="category-icon-box"><i class="fas fa-cogs"></i></div>
+              <div>
+                <div class="fw-bold text-dark">Engineering & Infrastructure</div>
+                <div class="text-muted small">980+ Openings</div>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-md-4 col-sm-6">
+            <a href="#jobExplorer" class="category-card" onclick="document.getElementById('filterSkill').value = 'Electrical'; document.getElementById('filterSkill').dispatchEvent(new Event('change'));">
+              <div class="category-icon-box"><i class="fas fa-solar-panel"></i></div>
+              <div>
+                <div class="fw-bold text-dark">Renewable Energy & Solar</div>
+                <div class="text-muted small">520+ Openings</div>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-md-4 col-sm-6">
+            <a href="#jobExplorer" class="category-card" onclick="document.getElementById('filterSkill').value = 'Gujarati Typing'; document.getElementById('filterSkill').dispatchEvent(new Event('change'));">
+              <div class="category-icon-box"><i class="fas fa-file-invoice"></i></div>
+              <div>
+                <div class="fw-bold text-dark">Administration & Accounts</div>
+                <div class="text-muted small">890+ Openings</div>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-md-4 col-sm-6">
+            <a href="#jobExplorer" class="category-card" onclick="document.getElementById('filterType').value = 'Apprenticeship'; document.getElementById('filterType').dispatchEvent(new Event('change'));">
+              <div class="category-icon-box"><i class="fas fa-user-graduate"></i></div>
+              <div>
+                <div class="fw-bold text-dark">Apprenticeship Schemes</div>
+                <div class="text-muted small">3,200+ Openings</div>
+              </div>
+            </a>
+          </div>
+
+          <div class="col-md-4 col-sm-6">
+            <a href="#jobExplorer" class="category-card" onclick="document.getElementById('filterDistrict').value = 'Ahmedabad'; document.getElementById('filterDistrict').dispatchEvent(new Event('change'));">
+              <div class="category-icon-box"><i class="fas fa-heartbeat"></i></div>
+              <div>
+                <div class="fw-bold text-dark">Healthcare & Nursing</div>
+                <div class="text-muted small">650+ Openings</div>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         FAQS (FREQUENTLY ASKED QUESTIONS) - USER-FRIENDLY HELP
+         ========================================================================== -->
+    <section class="py-5 bg-light border-bottom">
+      <div class="container" style="max-width: 860px;">
+        <div class="text-center mb-4">
+          <span class="badge bg-secondary-subtle text-secondary border px-3 py-1 rounded-pill mb-2 fw-bold">Candidate Helpdesk</span>
+          <h2 class="fw-bold text-dark">Frequently Asked Questions</h2>
+        </div>
+
+        <div class="accordion shadow-sm rounded-4 overflow-hidden" id="faqAccordion">
+          <div class="accordion-item border-0 border-bottom">
+            <h2 class="accordion-header">
+              <button class="accordion-button fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                How do I apply for official state vacancies through GYRS?
+              </button>
+            </h2>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+              <div class="accordion-body text-muted small">
+                Every job card includes direct access to the official state recruitment portal URL. For fast-track positions, candidates can use the <strong>1-Click Fast Track</strong> button to record their application directly into their candidate dossier and track it live.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item border-0 border-bottom">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                How can I track the live status of my application?
+              </button>
+            </h2>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body text-muted small">
+                Log into your Candidate Dashboard (Student Panel). The <strong>Live Application Lifecycle Tracker</strong> shows your exact status at every stage: Applied, Under Review, Interview Scheduled, or Offer Letter Issued.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item border-0 border-bottom">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                Are there any fees for registration or job applications?
+              </button>
+            </h2>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body text-muted small">
+                No. GYRS is an official initiative by the Directorate of Employment & Training, Government of Gujarat. Candidate registration, job filtering, and application tracking are completely free of charge.
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item border-0">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                What is the Mukhyamantri Apprentice Yojana stipend?
+              </button>
+            </h2>
+            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+              <div class="accordion-body text-muted small">
+                Under the scheme, technical diploma holders and degree graduates receive direct monthly stipends ranging up to ₹9,000 per month during on-the-job industrial apprenticeship programs across Gujarat.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </div> <!-- /#viewPublic -->
+
+  <!-- ==========================================================================
+       MODAL DIALOGUES (ENGLISH & USER-FRIENDLY)
+       ========================================================================== -->
+
+  <!-- Job Opportunity Details Modal -->
+  <div class="modal fade" id="jobDetailsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content border-0 shadow-lg rounded-4 overflow-hidden">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title fw-bold" id="jobDetailsModalTitle">
+            <i class="fas fa-briefcase text-warning me-2"></i>Job Opportunity Details
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body p-4" id="jobDetailsModalBody">
+          <!-- Filled dynamically by JS -->
+        </div>
+        <div class="modal-footer bg-light" id="jobDetailsModalFooter">
+          <!-- Buttons dynamically injected by JS with state apply link -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="gyrs-toast-container" id="toastContainer"></div>
+
+  <!-- ==========================================================================
+       FOOTER (WITH DIRECTORATE ADMIN LOGIN & CLEAN ENGLISH)
+       ========================================================================== -->
+  <footer class="bg-dark text-white pt-5 pb-3">
+    <div class="container">
+      <div class="row g-4 mb-4">
+        <div class="col-lg-4">
+          <h5 class="fw-bold"><i class="fas fa-briefcase text-warning me-1"></i> GYRS GUJARAT</h5>
+          <p class="small opacity-75">
+            Gujarat Youth Rojgar Setu (GYRS) is an official platform by the Directorate of Employment & Training, connecting students, technical graduates, and job seekers across all 33 Gujarat districts with verified public and private employment opportunities.
+          </p>
+        </div>
+        <div class="col-lg-2">
+          <h6 class="fw-bold text-white mb-3">Quick Navigation</h6>
+          <ul class="list-unstyled small opacity-75">
+            <li class="mb-2"><a href="index.html" class="text-white text-decoration-none">Home</a></li>
+            <li class="mb-2"><a href="#jobExplorer" class="text-white text-decoration-none">Explore Jobs</a></li>
+            <li class="mb-2"><a href="#howItWorks" class="text-white text-decoration-none">How It Works</a></li>
+            <li class="mb-2"><a href="#topEmployers" class="text-white text-decoration-none">Top Employers</a></li>
+            <li class="mb-2"><a href="student-dashboard.html" class="text-white text-decoration-none">Candidate Workspace</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-3">
+          <h6 class="fw-bold text-white mb-3">Administrative Access</h6>
+          <ul class="list-unstyled small opacity-75">
+            <li class="mb-2"><a href="student-login.html" class="text-info text-decoration-none fw-semibold"><i class="fas fa-user-graduate me-1"></i> Candidate Login & OTP</a></li>
+            <li class="mb-2"><a href="admin-login.html" class="text-warning text-decoration-none fw-semibold"><i class="fas fa-user-shield me-1 text-danger"></i> GYRS Portal Admin Login</a></li>
+            <li class="mb-2"><a href="https://ojas.gujarat.gov.in/" target="_blank" class="text-white text-decoration-none"><i class="fas fa-external-link-alt me-1"></i> State Recruitment Exchange</a></li>
+            <li class="mb-2"><a href="https://digitalgujarat.gov.in/" target="_blank" class="text-white text-decoration-none"><i class="fas fa-external-link-alt me-1"></i> Digital Gujarat Services</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-3">
+          <h6 class="fw-bold text-white mb-3">Directorate Contact</h6>
+          <p class="small opacity-75 mb-1"><i class="fas fa-map-marker-alt me-2 text-danger"></i> Block No. 14, Dr. Jivraj Mehta Bhavan, Gandhinagar, Gujarat 382010</p>
+          <p class="small opacity-75 mb-1"><i class="fas fa-phone-alt me-2 text-warning"></i> Toll-Free Helpline: 1800-233-5500</p>
+          <p class="small opacity-75"><i class="fas fa-envelope me-2 text-info"></i> support.gyrs@gujarat.gov.in</p>
+        </div>
+      </div>
+      <div class="border-top border-secondary pt-3 text-center small opacity-75">
+        &copy; 2026 Directorate of Employment and Training (DET), Labour, Skill Development & Employment Department, Government of Gujarat. All Rights Reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap 5 JS Bundle CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom Application Script -->
+  <script src="js/app.js?v=4"></script>
+  
+</body>
+</html>

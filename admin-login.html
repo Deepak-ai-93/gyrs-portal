@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GYRS Portal | Admin Login</title>
+  <meta name="description" content="GYRS Portal Admin Login. Official administrative access for managing job vacancies, candidate verification, and placement records.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+  
+  <!-- Google Fonts (Plus Jakarta Sans & Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome 6.4 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Bootstrap 5.3.2 CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom Modern Styling -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-dark">
+
+  <!-- Top State Government Header Bar -->
+  <div class="top-gov-bar py-1 bg-black text-white border-bottom border-secondary">
+    <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div class="d-flex align-items-center gap-3">
+        <span class="fw-bold text-danger"><i class="fas fa-shield-alt me-1"></i> GYRS Portal</span>
+        <span class="d-none d-md-inline opacity-75">Gujarat Youth Rojgar Setu • Admin Login</span>
+      </div>
+      <div>
+        <a href="index.html" class="text-white-50 text-decoration-none small">
+          <i class="fas fa-arrow-left me-1"></i> Return to Public Job Explorer
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Standalone Admin Auth Container -->
+  <div class="auth-page-wrapper admin-auth-theme">
+    <div class="auth-card-modern admin-card-theme">
+      <!-- Card Header -->
+      <div class="auth-card-header text-center border-bottom border-secondary pb-3">
+        <div class="d-inline-flex p-3 rounded-circle bg-danger text-white mb-2 shadow">
+          <i class="fas fa-user-shield fa-2x"></i>
+        </div>
+        <div class="d-flex justify-content-center gap-2 mb-2">
+          <span class="badge bg-danger text-white fw-bold px-3 py-1 rounded-pill">GYRS Portal</span>
+          <span class="badge bg-light text-dark fw-bold px-3 py-1 rounded-pill">Admin Login</span>
+        </div>
+        <h4 class="fw-extrabold text-white mb-1">GYRS Portal Admin Login</h4>
+        <p class="text-light opacity-75 small mb-0">
+          Gujarat Youth Rojgar Setu (GYRS) • Administrative Portal
+        </p>
+      </div>
+
+      <!-- Card Body -->
+      <div class="auth-card-body p-4">
+        <form id="adminLoginForm">
+          <div class="mb-3">
+            <label class="form-label small fw-semibold text-light">GYRS Portal Admin Username *</label>
+            <div class="input-group">
+              <span class="input-group-text bg-dark text-secondary border-secondary"><i class="fas fa-user-shield"></i></span>
+              <input type="text" id="adminUsernameInput" class="form-control bg-dark text-white border-secondary" placeholder="Admin username" value="admin" required>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label small fw-semibold text-light">Administrative Password *</label>
+            <div class="input-group">
+              <span class="input-group-text bg-dark text-secondary border-secondary"><i class="fas fa-lock"></i></span>
+              <input type="password" id="adminPasswordInput" class="form-control bg-dark text-white border-secondary" placeholder="Admin password" value="admin123" required>
+            </div>
+          </div>
+
+          <!-- Official Testing Helper Button -->
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <span class="small text-light opacity-75">Official test login:</span>
+            <button type="button" class="btn btn-sm btn-outline-danger text-light py-0 px-2 fw-semibold" id="btnFillAdminDemo">
+              <i class="fas fa-key me-1"></i> Auto-Fill (admin / admin123)
+            </button>
+          </div>
+
+          <button type="submit" class="btn btn-danger w-100 fw-bold py-2 shadow">
+            <i class="fas fa-lock me-1"></i> Secure Admin Sign In
+          </button>
+        </form>
+
+        <div class="alert alert-dark border border-secondary mt-4 py-2 px-3 small text-light opacity-75 mb-0 text-center">
+          <i class="fas fa-info-circle text-warning me-1"></i> Restricted access for authorized GYRS Portal administrators.
+        </div>
+
+        <div class="mt-4 pt-3 border-top border-secondary text-center">
+          <a href="index.html" class="text-decoration-none text-light opacity-75 small fw-semibold">
+            <i class="fas fa-globe me-1"></i> View Public Job Board
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Official Directorate Notice -->
+    <div class="text-center mt-3 text-light opacity-75 small">
+      <div>&copy; 2026 GYRS Portal • Government of Gujarat. All Rights Reserved.</div>
+      <div>Gujarat Youth Rojgar Setu (GYRS) Administrative Gateway</div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="gyrs-toast-container" id="toastContainer"></div>
+
+  <!-- Bootstrap 5 JS Bundle CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom Application Script -->
+  <script src="js/app.js?v=4"></script>
+</body>
+</html>
+

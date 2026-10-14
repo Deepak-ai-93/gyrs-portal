@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Candidate Login & Mobile OTP Portal | Gujarat Youth Rojgar Setu (GYRS)</title>
+  <meta name="description" content="Candidate and student authentication gateway for Gujarat Youth Rojgar Setu. Login securely using Mobile OTP or enrollment credentials.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🏛️</text></svg>">
+  
+  <!-- Google Fonts (Plus Jakarta Sans & Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Font Awesome 6.4 CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Bootstrap 5.3.2 CSS CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom Modern Styling -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-light">
+
+  <!-- Top State Government Header Bar -->
+  <div class="top-gov-bar py-1 bg-dark text-white border-bottom">
+    <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div class="d-flex align-items-center gap-3">
+        <span class="fw-bold text-warning"><i class="fas fa-landmark me-1"></i> Government of Gujarat</span>
+        <span class="d-none d-md-inline opacity-75">Directorate of Employment & Training (DET)</span>
+      </div>
+      <div>
+        <a href="index.html" class="text-white text-decoration-none small">
+          <i class="fas fa-arrow-left me-1"></i> Back to Public Job Board
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Standalone Auth Container -->
+  <div class="auth-page-wrapper">
+    <div class="auth-card-modern">
+      <!-- Card Header -->
+      <div class="auth-card-header bg-white border-bottom">
+        <div class="d-inline-flex p-3 rounded-circle bg-primary-subtle text-primary mb-2">
+          <i class="fas fa-user-graduate fa-2x"></i>
+        </div>
+        <h4 class="fw-extrabold text-dark mb-1">Candidate Sign In</h4>
+        <p class="text-muted small mb-2">Gujarat Youth Rojgar Setu (GYRS) • Candidate Gateway</p>
+        
+        <!-- Segmented Tab Pills -->
+        <ul class="nav nav-pills nav-fill bg-light p-1 rounded-3 mt-3" id="studentAuthTabs" role="tablist">
+          <li class="nav-item">
+            <button class="nav-link active fw-bold btn-sm py-2" id="tabOtpLogin" data-bs-toggle="pill" data-bs-target="#tabOtpLoginPane" type="button">
+              <i class="fas fa-mobile-alt me-1"></i> Mobile OTP
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link fw-bold btn-sm py-2" id="tabPasswordLogin" data-bs-toggle="pill" data-bs-target="#tabPasswordLoginPane" type="button">
+              <i class="fas fa-key me-1"></i> Password
+            </button>
+          </li>
+          <li class="nav-item">
+            <button class="nav-link fw-bold btn-sm py-2" id="tabRegister" data-bs-toggle="pill" data-bs-target="#tabRegisterPane" type="button">
+              <i class="fas fa-user-plus me-1"></i> Register
+            </button>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Card Body -->
+      <div class="auth-card-body">
+        <div class="tab-content" id="studentAuthTabContent">
+
+          <!-- TAB 1: MOBILE OTP LOGIN (RECOMMENDED) -->
+          <div class="tab-pane fade show active" id="tabOtpLoginPane" role="tabpanel">
+            <form id="otpLoginForm">
+              <!-- Mobile Input Step -->
+              <div class="mb-3" id="otpPhoneStep">
+                <label class="form-label small fw-bold text-dark">Registered Mobile Number *</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light fw-bold text-muted">+91</span>
+                  <input type="tel" id="otpMobileInput" class="form-control" maxlength="10" placeholder="10-digit mobile number" value="9876543210" required>
+                </div>
+                <div class="d-flex justify-content-between align-items-center mt-2 flex-wrap gap-1">
+                  <span class="badge bg-warning-subtle text-dark border border-warning" style="cursor: pointer;" onclick="document.getElementById('otpMobileInput').value='9876543210'">
+                    <i class="fas fa-bolt text-warning me-1"></i> Demo: 9876543210 (Jagan Trivedi)
+                  </span>
+                  <span class="badge bg-light text-muted border" style="cursor: pointer;" onclick="document.getElementById('otpMobileInput').value='9825012345'">
+                    Demo: 9825012345 (Priya)
+                  </span>
+                </div>
+
+                <button type="button" id="btnSendOtp" class="btn btn-primary w-100 fw-bold py-2 mt-3 shadow-sm">
+                  <i class="fas fa-paper-plane me-1"></i> Send One-Time Password (OTP)
+                </button>
+              </div>
+
+              <!-- OTP Verification Step (Unhidden after click) -->
+              <div id="otpVerificationSection" class="d-none">
+                <div class="otp-box-display mb-3">
+                  <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="fw-bold small text-success"><i class="fas fa-check-circle me-1"></i> OTP Generated</span>
+                    <span class="otp-demo-pill" id="demoOtpPill">Code: 4826</span>
+                  </div>
+                  <div class="small text-muted" id="otpNoticeText">
+                    Verification code sent to <strong>+91 <span id="displayOtpPhone">9876543210</span></strong>. Use the code above for instant testing.
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label small fw-bold text-dark">Enter 4-Digit Verification OTP *</label>
+                  <input type="text" id="otpCodeInput" maxlength="4" class="form-control text-center fs-3 fw-bold font-monospace letter-spacing-2" placeholder="4826" required>
+                  <div class="d-flex justify-content-between align-items-center mt-2">
+                    <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2 fw-semibold" id="btnFillDemoOtp">
+                      <i class="fas fa-magic me-1"></i> Auto-Fill (4826)
+                    </button>
+                    <span class="small text-muted" id="otpTimerText">Resend code in <strong class="text-dark">28s</strong></span>
+                  </div>
+                </div>
+
+                <button type="submit" id="btnVerifyOtp" class="btn btn-success w-100 fw-bold py-2 shadow-sm">
+                  <i class="fas fa-check-double me-1"></i> Verify OTP & Access Dashboard
+                </button>
+
+                <div class="text-center mt-3">
+                  <button type="button" class="btn btn-link btn-sm text-muted text-decoration-none" id="btnChangeMobile">
+                    <i class="fas fa-edit me-1"></i> Change Mobile Number
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <!-- TAB 2: USERNAME / PASSWORD LOGIN -->
+          <div class="tab-pane fade" id="tabPasswordLoginPane" role="tabpanel">
+            <form id="studentLoginForm">
+              <div class="mb-3">
+                <label class="form-label small fw-semibold text-dark">Enrollment ID / Username / Email *</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light"><i class="fas fa-user text-muted"></i></span>
+                  <input type="text" id="studentUsernameInput" class="form-control" placeholder="e.g. student or GYRS-2026-001" value="student" required>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label small fw-semibold text-dark">Security Password *</label>
+                <div class="input-group">
+                  <span class="input-group-text bg-light"><i class="fas fa-lock text-muted"></i></span>
+                  <input type="password" id="studentPasswordInput" class="form-control" placeholder="Enter password" value="student123" required>
+                </div>
+              </div>
+
+              <!-- Testing Helper Button -->
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <span class="small text-muted">Test credentials:</span>
+                <button type="button" class="btn btn-sm btn-outline-primary py-0 px-2 fw-semibold" id="btnFillStudentDemo">
+                  <i class="fas fa-bolt me-1"></i> Auto-Fill (student / student123)
+                </button>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100 fw-bold py-2 shadow-sm">
+                <i class="fas fa-sign-in-alt me-1"></i> Sign In to Candidate Dashboard
+              </button>
+            </form>
+          </div>
+
+          <!-- TAB 3: REGISTER NEW CANDIDATE -->
+          <div class="tab-pane fade" id="tabRegisterPane" role="tabpanel">
+            <form id="studentRegisterForm">
+              <div class="mb-3">
+                <label class="form-label small fw-semibold text-dark">Full Name (As per Aadhaar) *</label>
+                <input type="text" id="regFullName" class="form-control" placeholder="e.g. Hardik Patel" required>
+              </div>
+
+              <div class="row g-2 mb-3">
+                <div class="col-6">
+                  <label class="form-label small fw-semibold text-dark">Username *</label>
+                  <input type="text" id="regUsername" class="form-control" placeholder="e.g. hardik26" required>
+                </div>
+                <div class="col-6">
+                  <label class="form-label small fw-semibold text-dark">Password *</label>
+                  <input type="password" id="regPassword" class="form-control" placeholder="Min 6 chars" required>
+                </div>
+              </div>
+
+              <div class="row g-2 mb-3">
+                <div class="col-6">
+                  <label class="form-label small fw-semibold text-dark">Mobile Number *</label>
+                  <input type="tel" id="regMobile" class="form-control" maxlength="10" placeholder="10 digits" required>
+                </div>
+                <div class="col-6">
+                  <label class="form-label small fw-semibold text-dark">District *</label>
+                  <select id="regDistrict" class="form-select" required>
+                    <option value="Ahmedabad">Ahmedabad</option>
+                    <option value="Gandhinagar">Gandhinagar</option>
+                    <option value="Surat">Surat</option>
+                    <option value="Vadodara">Vadodara</option>
+                    <option value="Rajkot">Rajkot</option>
+                    <option value="Kutch">Kutch</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label small fw-semibold text-dark">Highest Qualification *</label>
+                <select id="regQual" class="form-select" required>
+                  <option value="B.Tech / B.E. (Computer / IT)">B.Tech / B.E. (Computer / IT)</option>
+                  <option value="MCA / Software Engineering">MCA / Software Engineering</option>
+                  <option value="ITI / Diploma (Mechanical/Electrical)">ITI / Diploma (Mechanical/Electrical)</option>
+                  <option value="12th Pass / Graduate">12th Pass / Graduate</option>
+                  <option value="B.Com / Accounting">B.Com / Accounting</option>
+                </select>
+              </div>
+
+              <div class="mb-3">
+                <label class="form-label small fw-semibold text-dark">Key Skills (comma-separated) *</label>
+                <input type="text" id="regSkills" class="form-control" placeholder="e.g. Python, SQL, AutoCAD" required>
+              </div>
+
+              <button type="submit" class="btn btn-success w-100 fw-bold py-2 shadow-sm">
+                <i class="fas fa-user-check me-1"></i> Register Free Candidate Account
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Back to Public Job Board -->
+        <div class="mt-4 pt-3 border-top text-center">
+          <a href="index.html" class="text-decoration-none text-muted small fw-semibold">
+            <i class="fas fa-arrow-left me-1"></i> Return to Public Job Explorer
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Official Directorate Notice -->
+    <div class="text-center mt-3 text-muted small">
+      <div>&copy; 2026 Directorate of Employment and Training, Government of Gujarat.</div>
+      <div class="opacity-75">Toll-Free Candidate Helpline: 1800-233-5500</div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="gyrs-toast-container" id="toastContainer"></div>
+
+  <!-- Bootstrap 5 JS Bundle CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Custom Application Script -->
+  <script src="js/app.js?v=4"></script>
+</body>
+</html>
+
