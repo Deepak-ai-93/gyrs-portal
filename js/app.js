@@ -883,6 +883,12 @@ document.addEventListener("DOMContentLoaded", () => {
         </td>
         <td class="text-center">
           <div class="d-flex justify-content-center gap-1">
+            <button class="btn btn-sm btn-outline-success" onclick="window.shareJobWhatsApp(${job.id})" title="Send WhatsApp job alert (template)">
+              <i class="fab fa-whatsapp"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-info" onclick="window.shareJobEmail(${job.id})" title="Send Email job alert (template)">
+              <i class="fas fa-envelope"></i>
+            </button>
             <button class="btn btn-sm btn-outline-primary" onclick="window.editJobPosting(${job.id})" title="Edit Job Posting">
               <i class="fas fa-edit"></i>
             </button>
@@ -1665,8 +1671,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const almostBox = document.getElementById("almostUnlockedJobs");
     if (!resultBox || !unlockBox || !almostBox) return;
 
+    try {
     const student = getCurrentStudent();
-    if (!student) return;
+    if (!student) {
+      resultBox.innerHTML = `<div class="text-center py-4 text-muted small">Please sign in to see your skill report.</div>`;
+      return;
+    }
 
     const resumeText = document.getElementById("resumeTextInput")?.value || "";
     const resumeSkills = detectSkillsFromText(resumeText);
@@ -1732,6 +1742,12 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       </div>`).join("") :
       `<div class="col-12 text-center text-muted small py-3">No near-miss jobs — every remaining job needs 3+ new skills. Start with the top unlock skill above.</div>`;
+    } catch (err) {
+      console.error("Skill analysis failed:", err);
+      resultBox.innerHTML = `<div class="alert alert-warning small mb-0"><i class="fas fa-exclamation-triangle me-1"></i> Could not analyze right now. Please refresh the page and try again.</div>`;
+      unlockBox.innerHTML = "";
+      almostBox.innerHTML = "";
+    }
   }
 
   window.addSkillToProfile = function(skill) {
@@ -1760,6 +1776,72 @@ document.addEventListener("DOMContentLoaded", () => {
     if (box) box.value = text.slice(0, 20000);
     showToast("Resume file loaded — click Analyze My Skills.", "info", "file-alt");
   });
+  // Re-run analysis every time the Skill tab is opened (fixes blank/stale view)
+  document.getElementById("tabStudentSkills-tab")?.addEventListener("shown.bs.tab", () => analyzeStudentSkills(false));
+
+  // ==========================================================================
+  // 9C. CANDIDATE NOTIFICATION TEMPLATES (WhatsApp + Email share)
+  // ==========================================================================
+  function siteBaseUrl() {
+    return window.location.origin + window.location.pathname.replace(/[^/]*$/, "");
+  }
+
+  function buildJobShareMessages(job) {
+    const jd = withJobDefaults(job);
+    const detailsUrl = siteBaseUrl() + `job-details.html?id=${job.id}`;
+    const whatsapp =
+`New Govt Job Alert — GYRS Gujarat
+${jd.title}
+${jd.department}, ${jd.district}
+Posts: ${jd.totalPosts} | Salary: ${jd.salary}
+Last Date: ${jd.lastDate}
+Notification: ${jd.notificationPdf}
+Details & Apply: ${detailsUrl}`;
+    const emailSubject = `New Vacancy: ${jd.title} (${jd.department}) — Apply by ${jd.lastDate}`;
+    const emailBody =
+`Dear Candidate,
+
+A new verified vacancy is live on GYRS Gujarat Youth Rojgar Setu:
+
+Job: ${jd.title}
+Department: ${jd.department}
+Location: ${jd.district}, Gujarat
+Advt No: ${jd.advtNo} | Posts: ${jd.totalPosts}
+Salary: ${jd.salary}
+Qualification: ${jd.qualification}
+Last Date: ${jd.lastDate}
+
+Notification PDF: ${jd.notificationPdf}
+View full details & Apply Now: ${detailsUrl}
+
+— GYRS Portal`;
+    return { whatsapp, emailSubject, emailBody, detailsUrl };
+  }
+
+  window.shareJobWhatsApp = function(jobId) {
+    const job = getJobs().find(j => j.id === Number(jobId));
+    if (!job) return;
+    const { whatsapp } = buildJobShareMessages(job);
+    window.open("https://wa.me/?text=" + encodeURIComponent(whatsapp), "_blank");
+  };
+
+  window.shareJobEmail = function(jobId) {
+    const job = getJobs().find(j => j.id === Number(jobId));
+    if (!job) return;
+    const { emailSubject, emailBody } = buildJobShareMessages(job);
+    window.location.href = "mailto:?subject=" + encodeURIComponent(emailSubject) + "&body=" + encodeURIComponent(emailBody);
+  };
+
+  window.copyJobAlert = async function(jobId) {
+    const job = getJobs().find(j => j.id === Number(jobId));
+    if (!job) return;
+    try {
+      await navigator.clipboard.writeText(buildJobShareMessages(job).whatsapp);
+      showToast("Job alert message copied — paste it in WhatsApp / Email.", "success", "copy");
+    } catch {
+      showToast("Copy blocked by browser — use WhatsApp / Email buttons.", "info", "info-circle");
+    }
+  };
 
   function renderStudentApplicationsList(student) {
     const container = document.getElementById("studentApplicationsTrackerList");
@@ -2178,6 +2260,10 @@ document.addEventListener("DOMContentLoaded", () => {
           `<a href="${job.applyUrl}" target="_blank" class="btn btn-success btn-sm fw-bold"><i class="fas fa-check-circle me-1"></i> Open Apply Portal</a>` :
           `<a href="${job.applyUrl}" target="_blank" onclick="window.applyStudentJob(${job.id})" class="btn btn-primary btn-sm fw-bold"><i class="fas fa-paper-plane me-1"></i> Apply Now</a>`
         }
+        <div class="small fw-bold text-muted mt-1"><i class="fas fa-share-alt me-1"></i>Share this job alert</div>
+        <button class="btn btn-success btn-sm fw-bold" onclick="window.shareJobWhatsApp(${job.id})"><i class="fab fa-whatsapp me-1"></i> WhatsApp Alert</button>
+        <button class="btn btn-outline-info btn-sm fw-semibold" onclick="window.shareJobEmail(${job.id})"><i class="fas fa-envelope me-1"></i> Email Alert</button>
+        <button class="btn btn-outline-secondary btn-sm" onclick="window.copyJobAlert(${job.id})"><i class="fas fa-copy me-1"></i> Copy Message</button>
         <a href="index.html#jobExplorer" class="btn btn-outline-primary btn-sm fw-semibold"><i class="fas fa-arrow-left me-1"></i> All Jobs</a>
       `;
     }
