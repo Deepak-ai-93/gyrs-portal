@@ -1843,6 +1843,38 @@ View full details & Apply Now: ${detailsUrl}
     }
   };
 
+  // Live client preview of notification templates (notification-preview.html)
+  function renderNotificationPreview() {
+    const select = document.getElementById("previewJobSelect");
+    if (!select) return;
+    const jobs = getJobs();
+    const params = new URLSearchParams(window.location.search);
+    let currentId = Number(params.get("id")) || (jobs[0] && jobs[0].id);
+
+    select.innerHTML = jobs.map(j => `<option value="${j.id}">${j.title} — ${j.department} (${j.district})</option>`).join("");
+    select.value = currentId;
+
+    function paint() {
+      const job = jobs.find(j => j.id === Number(select.value)) || jobs[0];
+      if (!job) return;
+      const { whatsapp, emailSubject, emailBody } = buildJobShareMessages(job);
+      const bubble = document.getElementById("waPreviewBubble");
+      if (bubble) bubble.textContent = whatsapp;
+      const time = document.getElementById("waPreviewTime");
+      if (time) time.textContent = new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" });
+      const subj = document.getElementById("mailPreviewSubject");
+      if (subj) subj.textContent = emailSubject;
+      const body = document.getElementById("mailPreviewBody");
+      if (body) body.textContent = emailBody;
+      document.getElementById("waPreviewSendBtn")?.setAttribute("onclick", `window.shareJobWhatsApp(${job.id})`);
+      document.getElementById("mailPreviewSendBtn")?.setAttribute("onclick", `window.shareJobEmail(${job.id})`);
+      document.getElementById("copyPreviewBtn")?.setAttribute("onclick", `window.copyJobAlert(${job.id})`);
+    }
+
+    select.addEventListener("change", paint);
+    paint();
+  }
+
   function renderStudentApplicationsList(student) {
     const container = document.getElementById("studentApplicationsTrackerList");
     if (!container) return;
@@ -2529,6 +2561,9 @@ View full details & Apply Now: ${detailsUrl}
   } else if (currentPath.includes("job-details")) {
     updateSessionUI();
     renderJobDetailsPage();
+  } else if (currentPath.includes("notification-preview")) {
+    updateSessionUI();
+    renderNotificationPreview();
   } else {
     // index.html / Public Portal
     updateSessionUI();

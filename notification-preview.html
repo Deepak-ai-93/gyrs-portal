@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notification Templates Preview | GYRS Portal</title>
+  <meta name="description" content="Live preview of GYRS candidate notification templates — WhatsApp job alert and Email job alert as the client/candidate sees them.">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+  <style>
+    .wa-phone {
+      max-width: 380px;
+      margin: 0 auto;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 8px solid #0b141a;
+      background: #efeae2;
+      box-shadow: 0 12px 30px rgba(0,0,0,.18);
+    }
+    .wa-header { background: #075e54; color: #fff; padding: .6rem .9rem; }
+    .wa-chat { padding: 1rem .8rem 1.4rem; background-image: radial-gradient(#d5cec2 1px, transparent 1px); background-size: 18px 18px; }
+    .wa-bubble {
+      background: #dcf8c6;
+      border-radius: 10px;
+      border-top-right-radius: 0;
+      padding: .6rem .7rem;
+      font-size: .83rem;
+      line-height: 1.5;
+      color: #111b21;
+      box-shadow: 0 1px 1px rgba(0,0,0,.15);
+      white-space: pre-line;
+      word-break: break-word;
+    }
+    .wa-time { text-align: right; font-size: .68rem; color: #667781; margin-top: 2px; }
+    .mail-mock { border: 1px solid var(--naukri-border); border-radius: 16px; overflow: hidden; background: #fff; box-shadow: var(--card-shadow); }
+    .mail-head { background: #f8fafc; border-bottom: 1px solid var(--naukri-border); padding: .9rem 1.1rem; }
+    .mail-body { padding: 1.1rem; font-size: .88rem; white-space: pre-line; color: #334155; line-height: 1.7; }
+  </style>
+</head>
+<body>
+
+  <!-- TOP GOVERNMENT BAR -->
+  <div class="top-gov-bar py-1">
+    <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <div class="d-flex align-items-center gap-2 small">
+        <span class="fw-bold"><i class="fas fa-landmark text-warning me-1"></i> Government of Gujarat</span>
+        <span class="d-none d-md-inline text-secondary">|</span>
+        <span class="d-none d-lg-inline text-light-50">Directorate of Employment and Training (DET)</span>
+      </div>
+      <div class="d-flex align-items-center gap-3 small">
+        <span class="text-light-50 d-none d-md-inline">
+          <i class="fas fa-phone-alt me-1 text-warning"></i> Toll-Free: 1800-233-5500
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-gyrs sticky-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <div class="d-flex flex-column">
+          <span class="brand-title"><i class="fas fa-briefcase text-primary me-1"></i> GYRS GUJARAT</span>
+          <span class="brand-subtext">Gujarat Youth Rojgar Setu</span>
+        </div>
+      </a>
+      <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#gyrsNavbar">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="gyrsNavbar">
+        <ul class="navbar-nav mx-auto mb-2 mb-lg-0 fw-semibold">
+          <li class="nav-item"><a class="nav-link" href="index.html"><i class="fas fa-home me-1"></i> Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="index.html#jobExplorer"><i class="fas fa-search me-1"></i> Explore Jobs</a></li>
+          <li class="nav-item"><a class="nav-link text-primary fw-bold" href="student-dashboard.html"><i class="fas fa-user-graduate me-1"></i> Candidate Portal</a></li>
+        </ul>
+        <div class="d-flex align-items-center gap-2">
+          <div id="userProfileBadge" class="d-none me-1">
+            <span class="badge bg-primary-subtle text-primary border border-primary px-3 py-2 rounded-pill small">
+              <i class="fas fa-user-circle me-1"></i> <span id="userFullNameDisplay">Candidate</span>
+            </span>
+          </div>
+          <a href="student-login.html" id="loginBtn" class="btn btn-outline-primary fw-bold px-3 btn-sm-block text-decoration-none">
+            <i class="fas fa-sign-in-alt me-1"></i> Candidate Sign In / OTP
+          </a>
+          <button id="logoutBtn" class="btn btn-outline-danger fw-bold px-3 btn-sm-block d-none">
+            <i class="fas fa-sign-out-alt me-1"></i> Logout
+          </button>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- PREVIEW CONTENT -->
+  <main class="py-4">
+    <div class="container">
+      <nav aria-label="breadcrumb" class="mb-3">
+        <ol class="breadcrumb small mb-0">
+          <li class="breadcrumb-item"><a href="index.html" class="text-decoration-none">Home</a></li>
+          <li class="breadcrumb-item active" aria-current="page">Notification Templates Preview</li>
+        </ol>
+      </nav>
+
+      <div class="text-center mb-4">
+        <span class="badge bg-primary-subtle text-primary border border-primary px-3 py-1 rounded-pill mb-2 fw-bold">Client Demo</span>
+        <h2 class="fw-bold text-dark">Candidate Notification Templates — Live Preview</h2>
+        <p class="text-muted mx-auto" style="max-width:680px;">Exactly what a candidate receives on <strong>WhatsApp</strong> and <strong>Email</strong> when a job alert is sent. Pick any job below — templates auto-fill.</p>
+      </div>
+
+      <div class="row justify-content-center mb-4">
+        <div class="col-md-6">
+          <label class="form-label fw-bold small"><i class="fas fa-briefcase text-primary me-1"></i> Preview templates for job:</label>
+          <select id="previewJobSelect" class="form-select"></select>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <!-- WhatsApp mockup -->
+        <div class="col-lg-5">
+          <h6 class="fw-bold text-dark text-center mb-2"><i class="fab fa-whatsapp text-success me-1"></i> WhatsApp — as candidate sees it</h6>
+          <div class="wa-phone">
+            <div class="wa-header d-flex align-items-center gap-2">
+              <i class="fas fa-arrow-left"></i>
+              <div class="rounded-circle bg-light text-dark d-flex align-items-center justify-content-center fw-bold" style="width:36px;height:36px;">G</div>
+              <div>
+                <div class="fw-bold small">GYRS Job Alerts</div>
+                <div style="font-size:.7rem;opacity:.85;">online</div>
+              </div>
+            </div>
+            <div class="wa-chat">
+              <div class="wa-bubble" id="waPreviewBubble">Loading...</div>
+              <div class="wa-time"><span id="waPreviewTime"></span> <i class="fas fa-check-double text-info"></i></div>
+            </div>
+          </div>
+          <div class="d-grid mt-3" style="max-width:380px;margin:0 auto;">
+            <button class="btn btn-success fw-bold" id="waPreviewSendBtn"><i class="fab fa-whatsapp me-1"></i> Send this on WhatsApp</button>
+          </div>
+        </div>
+
+        <!-- Email mockup -->
+        <div class="col-lg-7">
+          <h6 class="fw-bold text-dark text-center mb-2"><i class="fas fa-envelope text-primary me-1"></i> Email — as candidate sees it</h6>
+          <div class="mail-mock">
+            <div class="mail-head">
+              <div class="small text-muted">From: <strong class="text-dark">GYRS Portal &lt;noreply@gyrs.gujarat.gov.in&gt;</strong></div>
+              <div class="small text-muted">To: <strong class="text-dark">candidate@example.com</strong></div>
+              <div class="fw-bold text-dark mt-1"><span class="text-muted fw-normal small">Subject: </span><span id="mailPreviewSubject">Loading...</span></div>
+            </div>
+            <div class="mail-body" id="mailPreviewBody">Loading...</div>
+          </div>
+          <div class="d-flex gap-2 mt-3 flex-wrap">
+            <button class="btn btn-primary fw-bold" id="mailPreviewSendBtn"><i class="fas fa-paper-plane me-1"></i> Send this Email</button>
+            <button class="btn btn-outline-secondary fw-semibold" id="copyPreviewBtn"><i class="fas fa-copy me-1"></i> Copy Message</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-dark text-white pt-5 pb-3 mt-4">
+    <div class="container">
+      <div class="border-top border-secondary pt-3 text-center small opacity-75">
+        &copy; 2026 GYRS Portal.
+      </div>
+    </div>
+  </footer>
+
+  <div class="gyrs-toast-container" id="toastContainer"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="js/app.js?v=11"></script>
+</body>
+</html>

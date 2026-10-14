@@ -13,8 +13,7 @@ What's new since last check — please verify all:
 https://gyrs-portal.vercel.app/
 - Explore Open Jobs section now comes FIRST (above How It Works)
 - Click any job → full details page → Notification PDF → Apply Now at the end
-- No OJAS/govt links anywhere on frontend — official portal opens ONLY via final Apply Now button
-- Simplified footer
+
 
 *2. Job Details (sample)*
 https://gyrs-portal.vercel.app/job-details.html?id=1
