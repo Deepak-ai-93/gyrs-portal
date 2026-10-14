@@ -3,7 +3,7 @@
 > Copy everything inside the box below and paste it into the client WhatsApp group.
 
 ```whatsapp
-*GYRS Portal — Ready for Review* 🙏
+*GYRS Portal — Ready for Review* 
 
 Live URL: https://gyrs-portal.vercel.app/
 

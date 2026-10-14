@@ -106,10 +106,61 @@
                   </div>
                   <div class="progress" style="height: 6px; border-radius: 10px;">
                     <div class="progress-bar bg-success" role="progressbar" style="width: 96%" aria-valuenow="96" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TAB 5: AI SKILL UPGRADE & RESUME ANALYZER -->
+        <div class="tab-pane fade" id="tabStudentSkills" role="tabpanel">
+          <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+            <div>
+              <h5 class="fw-bold mb-1 text-dark">
+                <i class="fas fa-robot text-purple me-2"></i>AI Skill Upgrade — Resume Analyzer & Job Unlocker
+              </h5>
+              <p class="text-muted small mb-0">AI reads your resume + profile, finds skill gaps, and shows which skills unlock more jobs.</p>
+            </div>
+            <span class="badge bg-purple-subtle text-purple border border-purple px-3 py-1" style="background-color:#f3e8ff;color:#7e22ce;">AI Powered</span>
+          </div>
+
+          <div class="row g-3 mb-3">
+            <div class="col-lg-5">
+              <div class="admin-management-card h-100">
+                <h6 class="fw-bold text-dark mb-2"><i class="fas fa-file-alt text-primary me-2"></i>Step 1 — Paste Resume / Upload</h6>
+                <textarea id="resumeTextInput" class="form-control mb-2" rows="7" placeholder="Paste your resume text here (skills, projects, experience)... e.g. Python, SQL, AutoCAD, Solar installation..."></textarea>
+                <div class="d-flex gap-2 flex-wrap align-items-center mb-2">
+                  <input type="file" id="resumeFileInput" class="form-control form-control-sm" accept=".txt,.md" style="max-width:220px;">
+                  <button class="btn btn-primary btn-sm fw-bold px-3" id="analyzeResumeBtn">
+                    <i class="fas fa-sparkles me-1"></i> Analyze My Skills
+                  </button>
+                </div>
+                <div class="form-text small">TXT/MD resume file supported. PDF resumes: copy-paste the text. Nothing leaves your browser.</div>
+              </div>
+            </div>
+            <div class="col-lg-7">
+              <div class="admin-management-card h-100">
+                <h6 class="fw-bold text-dark mb-2"><i class="fas fa-chart-line text-success me-2"></i>Step 2 — Your Skill Report</h6>
+                <div id="skillAnalysisResult">
+                  <div class="text-center py-4 text-muted small">
+                    <i class="fas fa-robot fa-2x mb-2 d-block text-secondary"></i>
+                    Paste your resume and click <strong>Analyze My Skills</strong> — or analyze instantly from your profile skills.
                   </div>
                 </div>
               </div>
             </div>
+          </div>
+
+          <div class="admin-management-card mb-3">
+            <h6 class="fw-bold text-dark mb-1"><i class="fas fa-key text-warning me-2"></i>Skills That Unlock More Jobs</h6>
+            <p class="text-muted small mb-3">Learn these to unlock locked jobs. Click <strong>+ Add</strong> after completing a course to add it to your profile.</p>
+            <div id="skillUnlockList" class="row g-2"></div>
+          </div>
+
+          <div class="admin-management-card">
+            <h6 class="fw-bold text-dark mb-1"><i class="fas fa-lock-open text-success me-2"></i>Almost Unlocked Jobs <span class="small text-muted fw-normal">(missing 1–2 skills only)</span></h6>
+            <div id="almostUnlockedJobs" class="row g-3 mt-1"></div>
+          </div>
+        </div>
+      </div>
           </div>
           <div class="d-flex gap-2 flex-wrap">
             <button class="btn btn-primary btn-sm fw-bold px-3 shadow-sm" id="studentEditProfileBtn">
@@ -209,6 +260,12 @@
         <li class="nav-item flex-fill" role="presentation">
           <button class="nav-link w-100" id="tabStudentMelas-tab" data-bs-toggle="pill" data-bs-target="#tabStudentMelas" type="button" role="tab">
             <i class="fas fa-calendar-alt me-2 text-info"></i>Rozgar Melas & Drives
+          </button>
+        </li>
+        <li class="nav-item flex-fill" role="presentation">
+          <button class="nav-link w-100" id="tabStudentSkills-tab" data-bs-toggle="pill" data-bs-target="#tabStudentSkills" type="button" role="tab">
+            <i class="fas fa-robot me-2 text-purple"></i>AI Skill Upgrade
+            <span class="badge bg-warning text-dark ms-1" id="studentTabSkillsCount"></span>
           </button>
         </li>
       </ul>
@@ -498,7 +555,7 @@
   <!-- Bootstrap 5 JS Bundle CDN -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   <!-- Custom Application Script -->
-  <script src="js/app.js?v=6"></script>
+  <script src="js/app.js?v=7"></script>
 </body>
 </html>
 

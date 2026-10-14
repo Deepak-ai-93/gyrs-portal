@@ -1602,7 +1602,164 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Render Recommended Jobs
     renderStudentRecommendedJobs(student);
+
+    // Render AI Skill Upgrade analyzer (only on dashboard page)
+    if (document.getElementById("skillAnalysisResult")) analyzeStudentSkills(false);
   }
+
+  // ==========================================================================
+  // 9B. AI SKILL UPGRADE: resume analyzer + job unlocker (100% client-side)
+  // ==========================================================================
+  const SKILL_COURSES = {
+    "Python": "Python for Everybody (NPTEL / Swayam) + Kaushalya Skill University IT module",
+    "Web Development": "Full-Stack Web Dev (HTML/CSS/JS) — GKS certified course",
+    "Database": "SQL & Database Management — Swayam NPTEL",
+    "SQL": "SQL & Database Management — Swayam NPTEL",
+    "Cyber Security": "Cyber Security Fundamentals — Gujarat Police Cyber Cell MoU course",
+    "Networking": "Computer Networks (NPTEL) + CCNA basics",
+    "Cloud": "Cloud Foundations (AWS Educate / NPTEL)",
+    "Data Analysis": "Data Analysis with Python & Excel — GKS course",
+    "Data Entry": "CCC + Gujarati/English typing practice (DET centres)",
+    "Gujarati Typing": "CCC + Gujarati typing speed course (DET centres)",
+    "MS Office": "CCC / MS Office certification",
+    "Tally": "Tally + GST Compliance (ITI computer module)",
+    "GST Compliance": "GST Compliance short course",
+    "Electrical": "Electrician trade top-up (ITI advanced module)",
+    "Solar Tech": "GEDA Solar PV installer training",
+    "Maintenance": "Industrial maintenance & safety (ITI module)",
+    "Machinery": "Machine operations practice (ITI workshop)",
+    "AutoCAD": "AutoCAD 2D/3D drafting (Kaushalya Skill University)",
+    "Automation": "PLC & Industrial Automation basics",
+    "Textile Tech": "Textile processing module (Surat ITI cluster)",
+    "Typing": "Typing speed + CCC course",
+    "Computer Fundamentals": "CCC — Course on Computer Concepts",
+    "Data Management": "Data management & MIS (Swayam)"
+  };
+
+  function getSkillVocabulary() {
+    const set = new Set(Object.keys(SKILL_COURSES));
+    getJobs().forEach(j => (j.skills || []).forEach(s => set.add(s)));
+    getStudents().forEach(s => (s.skills || []).forEach(sk => set.add(sk)));
+    return Array.from(set);
+  }
+
+  function detectSkillsFromText(text) {
+    const lower = " " + (text || "").toLowerCase().replace(/[^a-z0-9+#. ]/g, " ") + " ";
+    return getSkillVocabulary().filter(skill => {
+      const k = skill.toLowerCase();
+      return lower.includes(" " + k + " ") || lower.includes(" " + k + ",") || lower.includes("(" + k);
+    });
+  }
+
+  function jobCoverage(job, skillSet) {
+    const req = job.skills || [];
+    if (!req.length) return { pct: 100, missing: [] };
+    const have = req.filter(s => skillSet.has(s.toLowerCase()));
+    const missing = req.filter(s => !skillSet.has(s.toLowerCase()));
+    return { pct: Math.round((have.length / req.length) * 100), missing };
+  }
+
+  function analyzeStudentSkills(fromResume) {
+    const resultBox = document.getElementById("skillAnalysisResult");
+    const unlockBox = document.getElementById("skillUnlockList");
+    const almostBox = document.getElementById("almostUnlockedJobs");
+    if (!resultBox || !unlockBox || !almostBox) return;
+
+    const student = getCurrentStudent();
+    if (!student) return;
+
+    const resumeText = document.getElementById("resumeTextInput")?.value || "";
+    const resumeSkills = detectSkillsFromText(resumeText);
+    const profileSkills = student.skills || [];
+    const combined = new Set([...profileSkills.map(s => s.toLowerCase()), ...resumeSkills.map(s => s.toLowerCase())]);
+    const displayName = (arr) => arr.length ? arr.join(", ") : "—";
+
+    const jobs = getJobs();
+    const rows = jobs.map(job => {
+      const cov = jobCoverage(job, combined);
+      return { job, ...cov };
+    }).sort((a, b) => b.pct - a.pct);
+
+    const avg = rows.length ? Math.round(rows.reduce((s, r) => s + r.pct, 0) / rows.length) : 0;
+    const ready = rows.filter(r => r.pct === 100).length;
+
+    resultBox.innerHTML = `
+      <div class="row g-2 mb-3 text-center">
+        <div class="col-4"><div class="border rounded-3 p-2 bg-light"><div class="fw-bold text-primary fs-5">${avg}%</div><div class="small text-muted fw-semibold">Avg Match</div></div></div>
+        <div class="col-4"><div class="border rounded-3 p-2 bg-light"><div class="fw-bold text-success fs-5">${ready}/${jobs.length}</div><div class="small text-muted fw-semibold">Jobs Ready</div></div></div>
+        <div class="col-4"><div class="border rounded-3 p-2 bg-light"><div class="fw-bold text-dark fs-5">${combined.size}</div><div class="small text-muted fw-semibold">Skills Found</div></div></div>
+      </div>
+      <div class="small mb-1"><strong>Profile skills (${profileSkills.length}):</strong> <span class="text-muted">${displayName(profileSkills)}</span></div>
+      <div class="small mb-2"><strong>Resume-detected${fromResume ? "" : " (paste resume for deeper scan)"} (${resumeSkills.length}):</strong> <span class="text-muted">${displayName(resumeSkills)}</span></div>
+      <div class="small fw-bold mb-1">Your match per job:</div>
+      ${rows.map(r => `
+        <div class="d-flex align-items-center gap-2 mb-1">
+          <div class="small flex-grow-1 text-truncate"><strong>${r.job.title}</strong> <span class="text-muted">• ${r.job.district}</span></div>
+          <div class="progress flex-shrink-0" style="width:110px;height:8px;"><div class="progress-bar ${r.pct === 100 ? 'bg-success' : r.pct >= 60 ? 'bg-primary' : 'bg-warning'}" style="width:${r.pct}%"></div></div>
+          <span class="badge ${r.pct === 100 ? 'bg-success' : 'bg-light text-dark border'} small" style="min-width:46px;">${r.pct}%</span>
+        </div>`).join("")}
+      ${fromResume ? `<div class="alert alert-success small py-2 mt-2 mb-0"><i class="fas fa-check-circle me-1"></i> Resume analyzed. Missing skills below unlock locked jobs.</div>` : ""}
+    `;
+
+    // Which single new skill unlocks the most additional jobs?
+    const missingCount = {};
+    rows.forEach(r => r.missing.forEach(m => { missingCount[m] = (missingCount[m] || 0) + 1; }));
+    const ranked = Object.entries(missingCount).sort((a, b) => b[1] - a[1]).slice(0, 6);
+
+    const badge = document.getElementById("studentTabSkillsCount");
+    if (badge) badge.textContent = ranked.length ? `${ranked.length} skills` : "";
+
+    unlockBox.innerHTML = ranked.length ? ranked.map(([skill, n]) => `
+      <div class="col-md-6">
+        <div class="border rounded-3 p-2 bg-white h-100 d-flex justify-content-between align-items-center gap-2">
+          <div>
+            <div class="fw-bold small text-dark"><i class="fas fa-arrow-up text-success me-1"></i>${skill} <span class="badge bg-warning-subtle text-dark border ms-1">unlocks ${n} job${n > 1 ? "s" : ""}</span></div>
+            <div class="text-muted" style="font-size:0.75rem;"><i class="fas fa-graduation-cap me-1"></i>${SKILL_COURSES[skill] || "Relevant state skill course (DET / ITI / Swayam)"}</div>
+          </div>
+          <button class="btn btn-sm btn-outline-success fw-bold flex-shrink-0" onclick="window.addSkillToProfile('${skill.replace(/'/g, "\\'")}')">+ Add</button>
+        </div>
+      </div>`).join("") :
+      `<div class="col-12 text-center text-success small py-3"><i class="fas fa-trophy fa-2x mb-2 d-block text-warning"></i><strong>All jobs unlocked!</strong> Your skills cover every live vacancy.</div>`;
+
+    const almost = rows.filter(r => r.pct < 100 && r.missing.length <= 2).slice(0, 4);
+    almostBox.innerHTML = almost.length ? almost.map(r => `
+      <div class="col-md-6">
+        <div class="naukri-job-card h-100">
+          <span class="badge bg-warning-subtle text-dark border mb-2">Missing: ${r.missing.join(", ")}</span>
+          <h6 class="naukri-job-title mb-1">${r.job.title}</h6>
+          <div class="small text-muted mb-2"><i class="fas fa-building me-1"></i> ${r.job.department} • ${r.job.district}</div>
+          <button class="btn btn-sm btn-primary fw-bold w-100" onclick="window.openJobDetails(${r.job.id})"><i class="fas fa-eye me-1"></i> View & Apply</button>
+        </div>
+      </div>`).join("") :
+      `<div class="col-12 text-center text-muted small py-3">No near-miss jobs — every remaining job needs 3+ new skills. Start with the top unlock skill above.</div>`;
+  }
+
+  window.addSkillToProfile = function(skill) {
+    const student = getCurrentStudent();
+    if (!student) return;
+    if (!student.skills.includes(skill)) {
+      student.skills.push(skill);
+      saveStudents(appState.students);
+      if (appState.session && appState.session.role === "student") {
+        appState.session.user = student;
+        setSession(appState.session);
+      }
+      renderStudentDashboard();
+      showToast(`"${skill}" added to your profile! Re-analyzed matches.`, "success", "plus-circle");
+    } else {
+      showToast(`"${skill}" is already in your profile.`, "info", "info-circle");
+    }
+  };
+
+  document.getElementById("analyzeResumeBtn")?.addEventListener("click", () => analyzeStudentSkills(true));
+  document.getElementById("resumeFileInput")?.addEventListener("change", async (e) => {
+    const f = e.target.files[0];
+    if (!f) return;
+    const text = await f.text();
+    const box = document.getElementById("resumeTextInput");
+    if (box) box.value = text.slice(0, 20000);
+    showToast("Resume file loaded — click Analyze My Skills.", "info", "file-alt");
+  });
 
   function renderStudentApplicationsList(student) {
     const container = document.getElementById("studentApplicationsTrackerList");
