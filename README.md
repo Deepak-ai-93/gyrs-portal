@@ -8,6 +8,7 @@ Directorate of Employment & Training, Government of Gujarat.
 ```
 .
 ├── index.html               # Public job board (home)
+├── job-details.html         # Responsive full job details + Notification PDF + Apply Now (?id=)
 ├── student-login.html       # Candidate login / OTP
 ├── student-dashboard.html   # Candidate dashboard
 ├── admin-login.html         # Admin login

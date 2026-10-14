@@ -1749,25 +1749,50 @@ document.addEventListener("DOMContentLoaded", () => {
     };
   }
 
+  // Job details now live on a dedicated responsive page (job-details.html?id=...).
+  // Keep the old name so every existing card/button keeps working.
   window.openJobDetailsModal = function(jobId) {
-    const jobs = getJobs();
-    const raw = jobs.find(j => j.id === Number(jobId));
-    if (!raw) return;
-    const job = withJobDefaults(raw);
+    window.location.href = `job-details.html?id=${jobId}`;
+  };
+  window.openJobDetails = window.openJobDetailsModal;
 
-    const body = document.getElementById("jobDetailsModalBody");
-    const footer = document.getElementById("jobDetailsModalFooter");
-    const titleEl = document.getElementById("jobDetailsModalTitle");
-    if (!body || !footer) return;
-    if (titleEl) titleEl.innerHTML = `<i class="fas fa-briefcase text-warning me-2"></i>${job.title}`;
+  // Renders the dedicated job-details page from ?id=
+  function renderJobDetailsPage() {
+    const container = document.getElementById("jobDetailsContent");
+    if (!container) return;
+
+    const params = new URLSearchParams(window.location.search);
+    const jobId = Number(params.get("id"));
+    const jobs = getJobs();
+    const raw = jobs.find(j => j.id === jobId);
+    const linksBox = document.getElementById("jobDetailsLinks");
+    const similarBox = document.getElementById("similarJobsList");
+    const crumb = document.getElementById("breadcrumbJobTitle");
+
+    if (!raw) {
+      container.innerHTML = `
+        <div class="text-center py-5 bg-white rounded-4 border p-4">
+          <i class="fas fa-search-minus fa-3x text-muted mb-3"></i>
+          <h5 class="fw-bold">Job Not Found</h5>
+          <p class="text-muted small">This vacancy may have been removed or the link is invalid.</p>
+          <a href="index.html#jobExplorer" class="btn btn-primary btn-sm fw-bold px-3 mt-2">
+            <i class="fas fa-arrow-left me-1"></i> Back to All Jobs
+          </a>
+        </div>`;
+      if (linksBox) linksBox.innerHTML = "";
+      return;
+    }
+
+    const job = withJobDefaults(raw);
+    if (crumb) crumb.textContent = job.title;
+    document.title = `${job.title} | GYRS Gujarat`;
 
     const student = getCurrentStudent();
     const isApplied = student && student.appliedJobIds && student.appliedJobIds.includes(job.id);
 
-    const skillsHtml = job.skills.map(s => 
+    const skillsHtml = job.skills.map(s =>
       `<span class="badge bg-primary-subtle text-primary border border-primary px-3 py-2 fw-semibold me-1 mb-1">${s}</span>`
     ).join("");
-
     const listHtml = (arr) => (arr || []).map(t => `<li class="small text-muted mb-1">${t}</li>`).join("");
     const stepsHtml = (arr) => (arr || []).map((t, i) => `
       <div class="d-flex gap-2 mb-2">
@@ -1775,40 +1800,33 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="small text-muted">${t}</div>
       </div>`).join("");
 
-    body.innerHTML = `
-      <div class="p-3 bg-light rounded-4 border mb-3">
-        <div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">
-          <div>
-            <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
-              <span class="badge bg-primary-subtle text-primary border border-primary">${job.district}</span>
-              <span class="badge bg-secondary-subtle text-secondary border">${job.type}</span>
-              <span class="company-rating-badge"><i class="fas fa-star text-warning"></i> ${job.matchScore || 90}% Match</span>
-            </div>
-            <h4 class="fw-bold text-dark mb-1">${job.title}</h4>
-            <div class="text-muted small"><i class="fas fa-building text-primary me-1"></i> ${job.department}</div>
-            <div class="small text-muted mt-1"><i class="fas fa-hashtag me-1"></i>Advt No: <strong class="text-dark">${job.advtNo}</strong> &nbsp;|&nbsp; <i class="fas fa-users me-1"></i>Total Posts: <strong class="text-dark">${job.totalPosts}</strong></div>
-          </div>
-          <div class="text-end">
-            <div class="small text-muted fw-semibold">Monthly Salary / Stipend</div>
-            <div class="fs-5 fw-bold text-success"><i class="fas fa-rupee-sign me-1"></i>${job.salary}</div>
-          </div>
+    container.innerHTML = `
+      <div class="naukri-job-card mb-3">
+        <div class="d-flex align-items-center gap-2 mb-2 flex-wrap">
+          <span class="badge bg-primary-subtle text-primary border border-primary">${job.district}</span>
+          <span class="badge bg-secondary-subtle text-secondary border">${job.type}</span>
+          <span class="company-rating-badge"><i class="fas fa-star text-warning"></i> ${job.matchScore || 90}% Match</span>
         </div>
-        <div class="row g-2 mt-2">
-          <div class="col-6 col-md-3"><div class="border rounded-3 p-2 bg-white text-center"><div class="small text-muted fw-semibold">Posted On</div><div class="small fw-bold text-dark">${job.postedDate}</div></div></div>
-          <div class="col-6 col-md-3"><div class="border rounded-3 p-2 bg-white text-center border-danger"><div class="small text-muted fw-semibold">Last Date</div><div class="small fw-bold text-danger">${job.lastDate}</div></div></div>
-          <div class="col-6 col-md-3"><div class="border rounded-3 p-2 bg-white text-center"><div class="small text-muted fw-semibold">Location</div><div class="small fw-bold text-dark">${job.district}, Gujarat</div></div></div>
-          <div class="col-6 col-md-3"><div class="border rounded-3 p-2 bg-white text-center"><div class="small text-muted fw-semibold">Job Type</div><div class="small fw-bold text-dark">${job.type}</div></div></div>
+        <h2 class="fw-bold text-dark mb-1" style="font-size:1.5rem;">${job.title}</h2>
+        <div class="text-muted small mb-1"><i class="fas fa-building text-primary me-1"></i> ${job.department}</div>
+        <div class="small text-muted"><i class="fas fa-hashtag me-1"></i>Advt No: <strong class="text-dark">${job.advtNo}</strong> &nbsp;|&nbsp; <i class="fas fa-users me-1"></i>Total Posts: <strong class="text-dark">${job.totalPosts}</strong></div>
+        <div class="fs-5 fw-bold text-success mt-2"><i class="fas fa-rupee-sign me-1"></i>${job.salary} <span class="small text-muted fw-normal">/ month</span></div>
+        <div class="row g-2 mt-3">
+          <div class="col-6 col-md-3"><div class="border rounded-3 p-2 bg-light text-center"><div class="small text-muted fw-semibold">Posted On</div><div class="small fw-bold text-dark">${job.postedDate}</div></div></div>
+          <div class="col-6 col-md-3"><div class="border rounded-3 p-2 bg-light text-center border-danger"><div class="small text-muted fw-semibold">Last Date</div><div class="small fw-bold text-danger">${job.lastDate}</div></div></div>
+          <div class="col-6 col-md-3"><div class="border rounded-3 p-2 bg-light text-center"><div class="small text-muted fw-semibold">Location</div><div class="small fw-bold text-dark">${job.district}, Gujarat</div></div></div>
+          <div class="col-6 col-md-3"><div class="border rounded-3 p-2 bg-light text-center"><div class="small text-muted fw-semibold">Job Type</div><div class="small fw-bold text-dark">${job.type}</div></div></div>
         </div>
       </div>
 
-      <div class="mb-3">
+      <div class="naukri-job-card mb-3">
         <h6 class="fw-bold text-dark mb-2"><i class="fas fa-align-left text-primary me-2"></i>Job Description</h6>
-        <p class="text-muted small" style="line-height: 1.6;">${job.description}</p>
+        <p class="text-muted small mb-0" style="line-height: 1.7;">${job.description}</p>
       </div>
 
       <div class="row g-3 mb-3">
         <div class="col-md-6">
-          <div class="border rounded-3 p-3 bg-white h-100">
+          <div class="naukri-job-card h-100">
             <h6 class="fw-bold text-dark small mb-2"><i class="fas fa-graduation-cap text-primary me-1"></i> Eligibility & Qualification</h6>
             <ul class="ps-3 mb-2">${listHtml(job.eligibility)}</ul>
             <div class="small"><strong>Qualification:</strong> <span class="text-muted">${job.qualification}</span></div>
@@ -1816,7 +1834,7 @@ document.addEventListener("DOMContentLoaded", () => {
           </div>
         </div>
         <div class="col-md-6">
-          <div class="border rounded-3 p-3 bg-white h-100">
+          <div class="naukri-job-card h-100">
             <h6 class="fw-bold text-dark small mb-2"><i class="fas fa-users text-success me-1"></i> Vacancy & Fee Details</h6>
             <div class="small mb-1"><strong>Total Posts:</strong> ${job.totalPosts}</div>
             <div class="small mb-1"><strong>Breakup:</strong> <span class="text-muted">${job.vacancyBreakup}</span></div>
@@ -1825,49 +1843,62 @@ document.addEventListener("DOMContentLoaded", () => {
         </div>
       </div>
 
-      <div class="mb-3">
+      <div class="naukri-job-card mb-3">
         <h6 class="fw-bold text-dark mb-2"><i class="fas fa-tasks text-warning me-2"></i> Roles & Responsibilities</h6>
-        <ul class="ps-3 mb-0">${listHtml(job.responsibilities)}</ul>
-      </div>
-
-      <div class="mb-3">
+        <ul class="ps-3 mb-3">${listHtml(job.responsibilities)}</ul>
         <h6 class="fw-bold text-dark mb-2"><i class="fas fa-filter text-info me-2"></i> Selection Process</h6>
-        <div class="d-flex flex-wrap gap-1">${job.selectionProcess.map(s => `<span class="badge bg-light text-dark border small">${s}</span>`).join('<span class="text-muted small px-1">→</span>')}</div>
-      </div>
-
-      <div class="mb-3">
-        <h6 class="fw-bold text-dark mb-2"><i class="fas fa-tools text-primary me-2"></i>Required Skills & Competencies</h6>
+        <div class="d-flex flex-wrap gap-1 mb-3">${job.selectionProcess.map(s => `<span class="badge bg-light text-dark border small">${s}</span>`).join('<span class="text-muted small px-1">→</span>')}</div>
+        <h6 class="fw-bold text-dark mb-2"><i class="fas fa-tools text-primary me-2"></i>Required Skills</h6>
         <div class="d-flex flex-wrap">${skillsHtml}</div>
       </div>
 
-      <div class="p-3 rounded-3 border border-danger bg-light mb-3">
+      <div class="naukri-job-card mb-3" style="border-color:#fca5a5;">
         <h6 class="fw-bold text-dark mb-2"><i class="fas fa-file-pdf text-danger me-2"></i> Official Notification & Documents</h6>
-        <p class="small text-muted mb-2">Candidates must read the official advertisement PDF before applying. It contains full vacancy, reservation, syllabus and instructions.</p>
+        <p class="small text-muted mb-2">Read the official advertisement PDF before applying — vacancy, reservation, syllabus and instructions.</p>
         <div class="d-flex gap-2 flex-wrap">
           <a href="${job.notificationPdf}" target="_blank" class="btn btn-sm btn-danger fw-bold px-3"><i class="fas fa-file-pdf me-1"></i> View / Download Notification PDF</a>
           <a href="${job.officialWebsite}" target="_blank" class="btn btn-sm btn-outline-secondary fw-semibold"><i class="fas fa-globe me-1"></i> Official Website</a>
         </div>
       </div>
 
-      <div class="border rounded-3 p-3 bg-white mb-1">
+      <div class="naukri-job-card mb-3">
         <h6 class="fw-bold text-dark mb-2"><i class="fas fa-list-ol text-success me-2"></i> How to Apply (Step-by-Step)</h6>
         ${stepsHtml(job.howToApply)}
+        <div class="d-grid gap-2 mt-3">
+          ${isApplied ?
+            `<a href="${job.applyUrl}" target="_blank" class="btn btn-success fw-bold"><i class="fas fa-check-circle me-1"></i> Already Tracked — Open Apply Portal</a>` :
+            `<a href="${job.applyUrl}" target="_blank" onclick="window.applyStudentJob(${job.id})" class="btn btn-primary fw-bold btn-lg"><i class="fas fa-paper-plane me-1"></i> Apply Now</a>
+             <div class="small text-muted text-center">You will be redirected to the official application portal. Your application will also be tracked in the Candidate Dashboard.</div>`
+          }
+        </div>
       </div>
     `;
 
-    footer.innerHTML = `
-      <a href="${job.notificationPdf}" target="_blank" class="btn btn-outline-danger btn-sm fw-semibold">
-        <i class="fas fa-file-pdf me-1"></i> Notification
-      </a>
-      <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-      ${isApplied ? 
-        `<a href="${job.applyUrl}" target="_blank" class="btn btn-success btn-sm fw-bold px-3"><i class="fas fa-check-circle me-1"></i> Already Tracked — Open Apply Portal</a>` :
-        `<a href="${job.applyUrl}" target="_blank" onclick="window.applyStudentJob(${job.id})" class="btn btn-primary btn-sm fw-bold px-4"><i class="fas fa-paper-plane me-1"></i> Apply Now</a>`
-      }
-    `;
+    if (linksBox) {
+      linksBox.innerHTML = `
+        <a href="${job.notificationPdf}" target="_blank" class="btn btn-danger btn-sm fw-bold"><i class="fas fa-file-pdf me-1"></i> Notification PDF</a>
+        <a href="${job.officialWebsite}" target="_blank" class="btn btn-outline-secondary btn-sm fw-semibold"><i class="fas fa-globe me-1"></i> Official Website</a>
+        ${isApplied ?
+          `<a href="${job.applyUrl}" target="_blank" class="btn btn-success btn-sm fw-bold"><i class="fas fa-check-circle me-1"></i> Open Apply Portal</a>` :
+          `<a href="${job.applyUrl}" target="_blank" onclick="window.applyStudentJob(${job.id})" class="btn btn-primary btn-sm fw-bold"><i class="fas fa-paper-plane me-1"></i> Apply Now</a>`
+        }
+        <a href="index.html#jobExplorer" class="btn btn-outline-primary btn-sm fw-semibold"><i class="fas fa-arrow-left me-1"></i> All Jobs</a>
+      `;
+    }
 
-    jobDetailsModal?.show();
-  };
+    if (similarBox) {
+      const similar = jobs.filter(j => j.id !== job.id && (j.district === job.district || j.type === job.type)).slice(0, 4);
+      const list = (similar.length ? similar : jobs.filter(j => j.id !== job.id).slice(0, 4));
+      similarBox.innerHTML = list.map(j => `
+        <a href="job-details.html?id=${j.id}" class="category-card" style="padding:0.85rem;">
+          <div class="category-icon-box" style="width:38px;height:38px;font-size:1rem;"><i class="fas fa-briefcase"></i></div>
+          <div>
+            <div class="fw-bold text-dark small">${j.title}</div>
+            <div class="text-muted" style="font-size:0.75rem;">${j.department} • ${j.district}</div>
+          </div>
+        </a>`).join("");
+    }
+  }
 
   // Student Edit Profile Modal Handlers
   function openEditProfileModal() {
@@ -2115,6 +2146,9 @@ document.addEventListener("DOMContentLoaded", () => {
     renderAdminDashboard();
   } else if (currentPath.includes("student-login") || currentPath.includes("admin-login")) {
     updateSessionUI();
+  } else if (currentPath.includes("job-details")) {
+    updateSessionUI();
+    renderJobDetailsPage();
   } else {
     // index.html / Public Portal
     updateSessionUI();
