@@ -130,10 +130,6 @@
                     <p class="text-sm" style="margin-top:12px;"><a href="{{ route('admin.login') }}"><x-icon name="lock" :size="14" /> GYRS Portal admin login</a></p>
                 </div>
             </div>
-
-            <div class="footer-bottom">
-                &copy; {{ date('Y') }} GYRS Portal. An initiative of the Directorate of Employment &amp; Training, Government of Gujarat.
-            </div>
         </div>
     </footer>
 
