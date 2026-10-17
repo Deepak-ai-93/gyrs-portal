@@ -17,15 +17,17 @@
     <div class="ticker" aria-label="State recruitment alerts">
         <div class="container">
             <span class="ticker-label"><x-icon name="sparkles" :size="15" /> State live alerts</span>
-            <div class="ticker-track" aria-hidden="true">
-                <span>GPSC Class 1 &amp; 2 recruitment open — 320+ executive and administrative posts.</span>
-                <span>Gujarat mega Rozgar Mela in Ahmedabad — 5,000+ on-the-spot offer letters.</span>
-                <span>Mukhyamantri Apprentice Yojana — monthly stipend up to ₹9,000 for technical graduates.</span>
-                <span>Open any job, read the full notification, then click Apply now at the end.</span>
-                <span>GPSC Class 1 &amp; 2 recruitment open — 320+ executive and administrative posts.</span>
-                <span>Gujarat mega Rozgar Mela in Ahmedabad — 5,000+ on-the-spot offer letters.</span>
-                <span>Mukhyamantri Apprentice Yojana — monthly stipend up to ₹9,000 for technical graduates.</span>
-                <span>Open any job, read the full notification, then click Apply now at the end.</span>
+            <div class="ticker-viewport">
+                <div class="ticker-track">
+                    <span>GPSC Class 1 &amp; 2 recruitment open — 320+ executive and administrative posts.</span>
+                    <span>Gujarat mega Rozgar Mela in Ahmedabad — 5,000+ on-the-spot offer letters.</span>
+                    <span>Mukhyamantri Apprentice Yojana — monthly stipend up to ₹9,000 for technical graduates.</span>
+                    <span>Open any job, read the full notification, then click Apply now at the end.</span>
+                    <span aria-hidden="true">GPSC Class 1 &amp; 2 recruitment open — 320+ executive and administrative posts.</span>
+                    <span aria-hidden="true">Gujarat mega Rozgar Mela in Ahmedabad — 5,000+ on-the-spot offer letters.</span>
+                    <span aria-hidden="true">Mukhyamantri Apprentice Yojana — monthly stipend up to ₹9,000 for technical graduates.</span>
+                    <span aria-hidden="true">Open any job, read the full notification, then click Apply now at the end.</span>
+                </div>
             </div>
         </div>
     </div>
