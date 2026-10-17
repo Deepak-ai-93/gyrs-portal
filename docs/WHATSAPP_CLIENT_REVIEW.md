@@ -16,8 +16,7 @@ Link: https://gyrs-portal.vercel.app/
 - Explore Open Jobs section (Live Vacancy Directory with filters) now comes FIRST, above How It Works
 - Click any job card or View Full Details → dedicated job details page opens
 - Full flow per job: details → Notification PDF → How to Apply steps → Apply Now button at the very end
-- No OJAS or govt website links anywhere on the frontend — the official portal opens ONLY through the final Apply Now button
-- Sections in order: Hero Search → Metrics → Explore Jobs → How It Works (4 steps) → Top Employers → Job Categories → FAQs → Footer (simplified GYRS Portal footer)
+
 
 *2. Job Details Page (sample)*
 Link: https://gyrs-portal.vercel.app/job-details.html?id=1

@@ -1,13 +1,19 @@
 {
-  "name": "gyrs-portal",
-  "version": "1.0.0",
-  "private": true,
-  "description": "Gujarat Youth Rojgar Setu (GYRS) — static employment portal (HTML/CSS/JS). Deploys as a static site on Vercel.",
-  "scripts": {
-    "dev": "npx serve . -l 8000",
-    "preview": "npx serve . -l 8000"
-  },
-  "devDependencies": {
-    "serve": "^14.2.1"
-  }
+    "$schema": "https://www.schemastore.org/package.json",
+    "private": true,
+    "type": "module",
+    "scripts": {
+        "build": "vite build",
+        "dev": "vite"
+    },
+    "devDependencies": {
+        "@tailwindcss/vite": "^4.0.0",
+        "concurrently": "^10.0.3",
+        "laravel-vite-plugin": "^3.1",
+        "tailwindcss": "^4.0.0",
+        "vite": "^8.0.0"
+    },
+    "optionalDependencies": {
+        "@laravel/multiplex": "^0.4.1"
+    }
 }

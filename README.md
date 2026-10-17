@@ -1,44 +1,76 @@
 # GYRS Portal — Gujarat Youth Rojgar Setu
 
-Official AI-powered career portal UI (static site: HTML + CSS + JS, no build step).
-Directorate of Employment & Training, Government of Gujarat.
+Official employment portal for the Directorate of Employment & Training,
+Government of Gujarat. Laravel 13 + Supabase Postgres.
+
+## Stack
+
+- **Laravel 13** (PHP 8.4) — routing, validation, authorization, Blade views, services.
+- **Vite** — CSS/JS build (`resources/css/app.css`, `resources/js/app.js`).
+- **Supabase Postgres** in production; **SQLite** for local development.
+- **Vercel** serverless deployment via `vercel-php`.
+
+The original static HTML/CSS/JS prototype is preserved under `prototype/` for
+feature/design reference only and is not part of the running application.
 
 ## Project structure
 
 ```
-.
-├── index.html               # Public job board (home)
-├── job-details.html         # Responsive full job details + Notification PDF + Apply Now (?id=)
-├── student-login.html       # Candidate login / OTP
-├── student-dashboard.html   # Candidate dashboard
-├── admin-login.html         # Admin login
-├── admin-dashboard.html     # Admin panel
-├── css/styles.css           # All styling
-├── js/app.js                # App logic (jobs, auth, dashboards)
-├── vercel.json              # Vercel static config
-├── package.json             # Dev server (serve)
-├── docs/                    # Project documentation (not deployed as pages)
-└── tools/                   # Doc-generation scripts (not deployed as pages)
+app/            Controllers (Public/Auth/Candidate/Admin), Models, Requests,
+                Policies, Services, Middleware
+database/       Migrations, seeders, factories
+resources/      Blade views + design-system CSS/JS
+routes/web.php  Public, candidate, and admin route groups
+api/index.php   Vercel serverless entry point (auto-provisions /tmp SQLite demo DB)
+prototype/      Legacy static prototype (reference only)
+.agent/         Design system, migration plan, TODO, build contract
+docs/           Product documentation
 ```
 
-## Run locally
+## Local development
 
 ```bash
-# any static server works:
-npx serve . -l 8000
-# or
-python -m http.server 8000
+composer install
+cp .env.example .env
+php artisan key:generate
+php artisan migrate:fresh --seed
+npm install && npm run build
+php artisan serve
 ```
 
-Open http://localhost:8000/index.html
+Dev credentials come from `GYRS_DEV_PASSWORD` (see `config/gyrs.php`); there are
+no hardcoded demo credentials or OTP backdoors in the application code.
+
+## Production (Supabase Postgres)
+
+Set the following environment variables (never commit them):
+
+```
+DB_CONNECTION=pgsql
+DB_HOST=db.<project-ref>.supabase.co
+DB_PORT=5432
+DB_DATABASE=postgres
+DB_USERNAME=postgres
+DB_PASSWORD=...
+DB_SSLMODE=require
+SUPABASE_URL=...
+SUPABASE_ANON_KEY=...
+SUPABASE_SERVICE_ROLE_KEY=...
+APP_KEY=base64:...
+```
+
+`SUPABASE_SERVICE_ROLE_KEY` is server-side only and must never reach the browser.
 
 ## Deploy on Vercel
 
-1. Push this folder to a **new empty GitHub repo**.
-2. Go to https://vercel.com/new → Import that repo.
-3. Framework Preset: **Other**. Build Command: _(empty)_. Output Directory: _(empty / `.`)_.
-4. Deploy. Every push to `main` redeploys automatically.
+```bash
+vercel env add APP_KEY production
+vercel deploy --prod
+```
 
-Demo credentials (frontend-only, localStorage):
-- Candidate → `student` / `student123` (or mobile OTP `4826`)
-- Admin → `admin` / `admin123`
+`vercel.json` + `api/index.php` run Laravel as a serverless function. Without a
+configured database the entry point provisions a demo SQLite database in `/tmp`
+and seeds it on cold start; configure Supabase Postgres above for durable data.
+
+> Deployment Protection: disable **Vercel Authentication** in
+> Project → Settings → Deployment Protection to make the site publicly reachable.

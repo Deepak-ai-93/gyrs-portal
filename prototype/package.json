@@ -1,0 +1,13 @@
+{
+  "name": "gyrs-portal",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Gujarat Youth Rojgar Setu (GYRS) — static employment portal (HTML/CSS/JS). Deploys as a static site on Vercel.",
+  "scripts": {
+    "dev": "npx serve . -l 8000",
+    "preview": "npx serve . -l 8000"
+  },
+  "devDependencies": {
+    "serve": "^14.2.1"
+  }
+}

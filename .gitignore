@@ -2,6 +2,32 @@
 .DS_Store
 Thumbs.db
 
+# Laravel
+*.log
+.env
+.env.backup
+.env.production
+.phpactor.json
+.phpunit.result.cache
+/.codex
+/.cursor/
+/.idea
+/.nova
+/.phpunit.cache
+/.vscode
+/.zed
+/auth.json
+/node_modules
+/public/fonts-manifest.dev.json
+/public/hot
+/public/storage
+/storage/*.key
+/storage/pail
+/vendor
+_ide_helper.php
+Homestead.json
+Homestead.yaml
+
 # Dependencies
 node_modules/
 
@@ -14,7 +40,7 @@ __pycache__/
 .venv/
 
 # Editors / logs
-.vscode/
-*.log
 *.bak
 *.tmp
+
+.vercel

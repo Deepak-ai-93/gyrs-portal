@@ -1,0 +1,16 @@
+/vendor
+/node_modules
+/prototype
+/docs
+/tools
+/tests
+/.agent
+/.github
+/.git
+/storage/logs/*
+/storage/framework/cache/data/*
+/storage/framework/sessions/*
+/storage/framework/views/*
+/database/database.sqlite
+/.env
+/.env.*
