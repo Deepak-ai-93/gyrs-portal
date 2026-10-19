@@ -48,6 +48,26 @@ class UserFactory extends Factory
     {
         return $this->state(fn (array $attributes) => [
             'role' => User::ROLE_ADMIN,
+            'is_super_admin' => true,
+            'permissions' => null,
+            'district_id' => null,
+            'enrollment_id' => null,
+            'status' => User::STATUS_VERIFIED,
+            'approved_at' => now(),
+        ]);
+    }
+
+    /**
+     * A scoped administrator with only the given permissions.
+     *
+     * @param  array<int, string>  $permissions
+     */
+    public function subAdmin(array $permissions = []): static
+    {
+        return $this->state(fn (array $attributes) => [
+            'role' => User::ROLE_ADMIN,
+            'is_super_admin' => false,
+            'permissions' => array_values($permissions),
             'district_id' => null,
             'enrollment_id' => null,
             'status' => User::STATUS_VERIFIED,

@@ -28,6 +28,9 @@
             'rejected' => 'Rejected',
         ];
     }
+
+    $canManageApplications = (bool) auth()->user()?->hasAdminPermission(\App\Support\AdminPermissions::APPLICATIONS_MANAGE);
+    $canExportCandidates = (bool) auth()->user()?->hasAdminPermission(\App\Support\AdminPermissions::EXPORT_CANDIDATES);
 @endphp
 
 @section('content')
@@ -38,9 +41,11 @@
                     <h1 style="font-size:clamp(1.75rem,3vw,2.25rem);">Applications audit</h1>
                     <p class="lead">Statewide audit trail of candidate submissions and current recruitment stage.</p>
                 </div>
-                <x-button variant="outline" :href="route('admin.exports.candidates')">
-                    <x-icon name="download" :size="16" /> Export CSV
-                </x-button>
+                @if ($canExportCandidates)
+                    <x-button variant="outline" :href="route('admin.exports.candidates')">
+                        <x-icon name="download" :size="16" /> Export CSV
+                    </x-button>
+                @endif
             </div>
 
             <form class="toolbar" method="GET" action="{{ route('admin.applications.index') }}" data-loading-form>
@@ -103,17 +108,21 @@
                                     <td>{{ $application->applied_at ? \Illuminate\Support\Carbon::parse($application->applied_at)->format('d M Y') : '—' }}</td>
                                     <td><x-status-badge :status="$application->status" /></td>
                                     <td>
-                                        <form class="inline-status" method="POST" action="{{ route('admin.applications.status', $application) }}">
-                                            @csrf
-                                            @method('PATCH')
-                                            <label class="sr-only" for="application-status-{{ $application->id }}">Status</label>
-                                            <select class="form-select" id="application-status-{{ $application->id }}" name="status">
-                                                @foreach ($statusOptions as $value => $label)
-                                                    <option value="{{ $value }}" @selected($application->status === $value)>{{ $label }}</option>
-                                                @endforeach
-                                            </select>
-                                            <x-button variant="ghost" size="sm" type="submit" title="Update status">Save</x-button>
-                                        </form>
+                                        @if ($canManageApplications)
+                                            <form class="inline-status" method="POST" action="{{ route('admin.applications.status', $application) }}">
+                                                @csrf
+                                                @method('PATCH')
+                                                <label class="sr-only" for="application-status-{{ $application->id }}">Status</label>
+                                                <select class="form-select" id="application-status-{{ $application->id }}" name="status">
+                                                    @foreach ($statusOptions as $value => $label)
+                                                        <option value="{{ $value }}" @selected($application->status === $value)>{{ $label }}</option>
+                                                    @endforeach
+                                                </select>
+                                                <x-button variant="ghost" size="sm" type="submit" title="Update status">Save</x-button>
+                                            </form>
+                                        @else
+                                            <span class="text-sm muted">View only</span>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

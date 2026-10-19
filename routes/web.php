@@ -12,16 +12,7 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', function () {
-    // During the evaluation period the site entry point opens the admin
-    // sign-in page (with demo credentials shown) so reviewers land in the
-    // dashboard straight away. Disable GYRS_DEMO to restore the public board.
-    if (config('gyrs.demo.enabled')) {
-        return redirect()->route('admin.login');
-    }
-
-    return app(PublicJobController::class)->index(request());
-})->name('home');
+Route::get('/', [PublicJobController::class, 'index'])->name('home');
 Route::get('/jobs/{job:slug}', [PublicJobController::class, 'show'])->name('jobs.show');
 
 Route::get('/health', function () {
@@ -30,7 +21,10 @@ Route::get('/health', function () {
 
 if (app()->environment('local')) {
     Route::get('/dev/login-admin', function () {
-        $admin = \App\Models\User::query()->where('role', \App\Models\User::ROLE_ADMIN)->firstOrFail();
+        $admin = \App\Models\User::query()
+            ->where('role', \App\Models\User::ROLE_ADMIN)
+            ->orderByDesc('is_super_admin')
+            ->firstOrFail();
         auth()->login($admin);
 
         return redirect()->route('admin.dashboard');
@@ -113,14 +107,44 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::post('/logout', [Auth\AdminLoginController::class, 'destroy'])->name('logout');
     Route::get('/dashboard', [Admin\DashboardController::class, 'index'])->name('dashboard');
 
-    Route::resource('jobs', Admin\JobController::class);
+    // Job postings. Write routes are registered first so /jobs/create is not
+    // swallowed by the /jobs/{job} show route.
+    Route::middleware('permission:jobs.manage')->group(function () {
+        Route::get('/jobs/create', [Admin\JobController::class, 'create'])->name('jobs.create');
+        Route::post('/jobs', [Admin\JobController::class, 'store'])->name('jobs.store');
+        Route::get('/jobs/{job}/edit', [Admin\JobController::class, 'edit'])->name('jobs.edit');
+        Route::match(['put', 'patch'], '/jobs/{job}', [Admin\JobController::class, 'update'])->name('jobs.update');
+        Route::delete('/jobs/{job}', [Admin\JobController::class, 'destroy'])->name('jobs.destroy');
+    });
 
-    Route::get('/candidates', [Admin\CandidateController::class, 'index'])->name('candidates.index');
-    Route::get('/candidates/{candidate}', [Admin\CandidateController::class, 'show'])->name('candidates.show');
-    Route::patch('/candidates/{candidate}/status', [Admin\CandidateController::class, 'updateStatus'])->name('candidates.status');
+    Route::middleware('permission:jobs.view')->group(function () {
+        Route::get('/jobs', [Admin\JobController::class, 'index'])->name('jobs.index');
+        Route::get('/jobs/{job}', [Admin\JobController::class, 'show'])->name('jobs.show');
+    });
 
-    Route::get('/applications', [Admin\ApplicationController::class, 'index'])->name('applications.index');
-    Route::patch('/applications/{application}/status', [Admin\ApplicationController::class, 'updateStatus'])->name('applications.status');
+    Route::middleware('permission:candidates.view')->group(function () {
+        Route::get('/candidates', [Admin\CandidateController::class, 'index'])->name('candidates.index');
+        Route::get('/candidates/{candidate}', [Admin\CandidateController::class, 'show'])->name('candidates.show');
+    });
 
-    Route::get('/exports/candidates.csv', [Admin\ExportController::class, 'candidates'])->name('exports.candidates');
+    Route::patch('/candidates/{candidate}/status', [Admin\CandidateController::class, 'updateStatus'])
+        ->middleware('permission:candidates.verify')
+        ->name('candidates.status');
+
+    Route::get('/applications', [Admin\ApplicationController::class, 'index'])
+        ->middleware('permission:applications.view')
+        ->name('applications.index');
+
+    Route::patch('/applications/{application}/status', [Admin\ApplicationController::class, 'updateStatus'])
+        ->middleware('permission:applications.manage')
+        ->name('applications.status');
+
+    Route::get('/exports/candidates.csv', [Admin\ExportController::class, 'candidates'])
+        ->middleware('permission:exports.candidates')
+        ->name('exports.candidates');
+
+    // Access control — reserved for super administrators.
+    Route::middleware('super_admin')->group(function () {
+        Route::resource('administrators', Admin\AdministratorController::class)->except(['show']);
+    });
 });

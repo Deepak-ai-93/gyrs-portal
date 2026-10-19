@@ -9,6 +9,14 @@
     $applicationsCount = (int) ($kpis['applications'] ?? 0);
     $pending = max(0, $students - $verified);
     $awaitingReview = $recentApplications->filter(fn ($application) => in_array($application->status, ['applied', 'under_review'], true))->count();
+
+    $admin = auth()->user();
+    $can = fn (string $permission) => (bool) $admin?->hasAdminPermission($permission);
+    $canManageJobs = $can(\App\Support\AdminPermissions::JOBS_MANAGE);
+    $canViewJobs = $can(\App\Support\AdminPermissions::JOBS_VIEW);
+    $canViewCandidates = $can(\App\Support\AdminPermissions::CANDIDATES_VIEW);
+    $canViewApplications = $can(\App\Support\AdminPermissions::APPLICATIONS_VIEW);
+    $canExportCandidates = $can(\App\Support\AdminPermissions::EXPORT_CANDIDATES);
 @endphp
 
 @section('content')
@@ -20,12 +28,16 @@
                     <p class="lead">Statewide job feed, candidate verification and application audit across all 33 districts.</p>
                 </div>
                 <div class="cluster">
-                    <x-button variant="outline" :href="route('admin.jobs.create')">
-                        <x-icon name="plus" :size="16" /> Post new job
-                    </x-button>
-                    <x-button variant="ghost" :href="route('admin.exports.candidates')">
-                        <x-icon name="download" :size="16" /> Export roster CSV
-                    </x-button>
+                    @if ($canManageJobs)
+                        <x-button variant="outline" :href="route('admin.jobs.create')">
+                            <x-icon name="plus" :size="16" /> Post new job
+                        </x-button>
+                    @endif
+                    @if ($canExportCandidates)
+                        <x-button variant="ghost" :href="route('admin.exports.candidates')">
+                            <x-icon name="download" :size="16" /> Export roster CSV
+                        </x-button>
+                    @endif
                 </div>
             </div>
         </div>
@@ -76,13 +88,13 @@
                             @if ($pending > 0)
                                 <li>
                                     <span class="audit-marker" style="background:var(--color-warning);"></span>
-                                    <span><strong>{{ $pending }}</strong> candidate {{ Str::plural('record', $pending) }} awaiting verification. <a href="{{ route('admin.candidates.index') }}">Review roster</a></span>
+                                    <span><strong>{{ $pending }}</strong> candidate {{ Str::plural('record', $pending) }} awaiting verification. @if ($canViewCandidates)<a href="{{ route('admin.candidates.index') }}">Review roster</a>@endif</span>
                                 </li>
                             @endif
                             @if ($awaitingReview > 0)
                                 <li>
                                     <span class="audit-marker" style="background:var(--color-info);"></span>
-                                    <span><strong>{{ $awaitingReview }}</strong> recent {{ Str::plural('application', $awaitingReview) }} awaiting review. <a href="{{ route('admin.applications.index') }}">Open audit</a></span>
+                                    <span><strong>{{ $awaitingReview }}</strong> recent {{ Str::plural('application', $awaitingReview) }} awaiting review. @if ($canViewApplications)<a href="{{ route('admin.applications.index') }}">Open audit</a>@endif</span>
                                 </li>
                             @endif
                         </ul>
@@ -94,10 +106,21 @@
                 <div class="panel">
                     <h2 style="font-size:1rem;">Quick actions</h2>
                     <div class="cluster">
-                        <x-button variant="outline" size="sm" :href="route('admin.jobs.create')"><x-icon name="plus" :size="15" /> Post job</x-button>
-                        <x-button variant="ghost" size="sm" :href="route('admin.jobs.index')"><x-icon name="briefcase" :size="15" /> Manage jobs</x-button>
-                        <x-button variant="ghost" size="sm" :href="route('admin.candidates.index')"><x-icon name="users" :size="15" /> Candidates</x-button>
-                        <x-button variant="ghost" size="sm" :href="route('admin.applications.index')"><x-icon name="file" :size="15" /> Applications</x-button>
+                        @if ($canManageJobs)
+                            <x-button variant="outline" size="sm" :href="route('admin.jobs.create')"><x-icon name="plus" :size="15" /> Post job</x-button>
+                        @endif
+                        @if ($canViewJobs)
+                            <x-button variant="ghost" size="sm" :href="route('admin.jobs.index')"><x-icon name="briefcase" :size="15" /> Manage jobs</x-button>
+                        @endif
+                        @if ($canViewCandidates)
+                            <x-button variant="ghost" size="sm" :href="route('admin.candidates.index')"><x-icon name="users" :size="15" /> Candidates</x-button>
+                        @endif
+                        @if ($canViewApplications)
+                            <x-button variant="ghost" size="sm" :href="route('admin.applications.index')"><x-icon name="file" :size="15" /> Applications</x-button>
+                        @endif
+                        @if ($admin?->isSuperAdmin())
+                            <x-button variant="ghost" size="sm" :href="route('admin.administrators.index')"><x-icon name="shield" :size="15" /> Administrators</x-button>
+                        @endif
                     </div>
                 </div>
             </div>
@@ -148,7 +171,13 @@
                                 <tbody>
                                     @foreach ($recentJobs as $job)
                                         <tr>
-                                            <td><a href="{{ route('admin.jobs.show', $job) }}">{{ Str::limit($job->title, 36) }}</a></td>
+                                            <td>
+                                                @if ($canViewJobs)
+                                                    <a href="{{ route('admin.jobs.show', $job) }}">{{ Str::limit($job->title, 36) }}</a>
+                                                @else
+                                                    {{ Str::limit($job->title, 36) }}
+                                                @endif
+                                            </td>
                                             <td>{{ $job->district->name ?? '—' }}</td>
                                             <td><x-status-badge :status="$job->status" /></td>
                                         </tr>

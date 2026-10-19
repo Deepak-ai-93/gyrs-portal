@@ -9,6 +9,7 @@
     $applicationSteps = $job->applicationSteps ?? collect();
     $lastDate = $job->last_date ? \Illuminate\Support\Carbon::parse($job->last_date) : null;
     $isExpired = $lastDate && $lastDate->isPast();
+    $canManageJobs = (bool) auth()->user()?->hasAdminPermission(\App\Support\AdminPermissions::JOBS_MANAGE);
 @endphp
 
 @section('content')
@@ -29,13 +30,15 @@
                     @if ($isExpired)
                         <span class="badge badge-danger">Deadline passed</span>
                     @endif
-                    <x-button variant="outline" size="sm" :href="route('admin.jobs.edit', $job)"><x-icon name="edit" :size="15" /> Edit</x-button>
                     <x-button variant="ghost" size="sm" :href="route('jobs.show', $job)" target="_blank" rel="noopener noreferrer"><x-icon name="external" :size="15" /> Public view</x-button>
-                    <form method="POST" action="{{ route('admin.jobs.destroy', $job) }}" data-confirm="Delete this job posting? This cannot be undone.">
-                        @csrf
-                        @method('DELETE')
-                        <x-button variant="danger" size="sm" type="submit"><x-icon name="trash" :size="15" /> Delete</x-button>
-                    </form>
+                    @if ($canManageJobs)
+                        <x-button variant="outline" size="sm" :href="route('admin.jobs.edit', $job)"><x-icon name="edit" :size="15" /> Edit</x-button>
+                        <form method="POST" action="{{ route('admin.jobs.destroy', $job) }}" data-confirm="Delete this job posting? This cannot be undone.">
+                            @csrf
+                            @method('DELETE')
+                            <x-button variant="danger" size="sm" type="submit"><x-icon name="trash" :size="15" /> Delete</x-button>
+                        </form>
+                    @endif
                 </div>
             </div>
 

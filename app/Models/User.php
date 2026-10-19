@@ -39,6 +39,8 @@ class User extends Authenticatable
         'phone',
         'password',
         'role',
+        'is_super_admin',
+        'permissions',
         'district_id',
         'enrollment_id',
         'qualification',
@@ -58,6 +60,8 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'approved_at' => 'datetime',
             'password' => 'hashed',
+            'is_super_admin' => 'boolean',
+            'permissions' => 'array',
         ];
     }
 
@@ -105,6 +109,37 @@ class User extends Authenticatable
     public function isCandidate(): bool
     {
         return $this->role === self::ROLE_CANDIDATE;
+    }
+
+    public function isSuperAdmin(): bool
+    {
+        return $this->isAdmin() && (bool) $this->is_super_admin;
+    }
+
+    /**
+     * Whether this administrator holds the given granular permission.
+     * Super administrators implicitly hold every permission.
+     */
+    public function hasAdminPermission(string $permission): bool
+    {
+        if ($this->isSuperAdmin()) {
+            return true;
+        }
+
+        return in_array($permission, $this->permissions ?? [], true);
+    }
+
+    /**
+     * @return array<int, string>
+     */
+    public function adminPermissions(): array
+    {
+        return array_values($this->permissions ?? []);
+    }
+
+    public function adminRoleLabel(): string
+    {
+        return $this->isSuperAdmin() ? 'Super administrator' : 'Administrator';
     }
 
     public static function statuses(): array

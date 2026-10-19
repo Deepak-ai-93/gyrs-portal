@@ -9,6 +9,7 @@
     $statuses = ['draft' => 'Draft', 'published' => 'Published', 'closed' => 'Closed', 'archived' => 'Archived'];
     $districtLabel = fn ($district) => is_object($district) ? (string) ($district->name ?? '') : (string) $district;
     $districtValue = fn ($district) => is_object($district) ? (string) ($district->id ?? $district->slug ?? '') : (string) $district;
+    $canManageJobs = (bool) auth()->user()?->hasAdminPermission(\App\Support\AdminPermissions::JOBS_MANAGE);
 @endphp
 
 @section('content')
@@ -19,9 +20,11 @@
                     <h1 style="font-size:clamp(1.75rem,3vw,2.25rem);">Job postings</h1>
                     <p class="lead">Create, publish, edit and archive vacancies shown to candidates.</p>
                 </div>
-                <x-button variant="outline" :href="route('admin.jobs.create')">
-                    <x-icon name="plus" :size="16" /> Post new job
-                </x-button>
+                @if ($canManageJobs)
+                    <x-button variant="outline" :href="route('admin.jobs.create')">
+                        <x-icon name="plus" :size="16" /> Post new job
+                    </x-button>
+                @endif
             </div>
 
             <form class="toolbar" method="GET" action="{{ route('admin.jobs.index') }}" data-loading-form>
@@ -60,7 +63,9 @@
                     message="Adjust your filters, or create the first job posting to publish vacancies to candidates."
                 >
                     <x-slot:action>
-                        <x-button variant="outline" :href="route('admin.jobs.create')">Post new job</x-button>
+                        @if ($canManageJobs)
+                            <x-button variant="outline" :href="route('admin.jobs.create')">Post new job</x-button>
+                        @endif
                     </x-slot:action>
                 </x-empty-state>
             @else
@@ -90,12 +95,14 @@
                                     <td>
                                         <div class="actions">
                                             <x-button variant="ghost" size="sm" :href="route('admin.jobs.show', $job)"><x-icon name="eye" :size="15" /> View</x-button>
-                                            <x-button variant="ghost" size="sm" :href="route('admin.jobs.edit', $job)"><x-icon name="edit" :size="15" /> Edit</x-button>
-                                            <form method="POST" action="{{ route('admin.jobs.destroy', $job) }}" data-confirm="Delete the job posting &quot;{{ $job->title }}&quot;? This cannot be undone.">
-                                                @csrf
-                                                @method('DELETE')
-                                                <x-button variant="danger" size="sm" type="submit"><x-icon name="trash" :size="15" /> Delete</x-button>
-                                            </form>
+                                            @if ($canManageJobs)
+                                                <x-button variant="ghost" size="sm" :href="route('admin.jobs.edit', $job)"><x-icon name="edit" :size="15" /> Edit</x-button>
+                                                <form method="POST" action="{{ route('admin.jobs.destroy', $job) }}" data-confirm="Delete the job posting &quot;{{ $job->title }}&quot;? This cannot be undone.">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <x-button variant="danger" size="sm" type="submit"><x-icon name="trash" :size="15" /> Delete</x-button>
+                                                </form>
+                                            @endif
                                         </div>
                                     </td>
                                 </tr>

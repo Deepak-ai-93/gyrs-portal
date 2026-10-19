@@ -143,6 +143,29 @@ class UserSeeder extends Seeder
                 'phone' => null,
                 'password' => $password,
                 'role' => User::ROLE_ADMIN,
+                'is_super_admin' => true,
+                'permissions' => null,
+                'status' => User::STATUS_VERIFIED,
+                'approved_at' => now(),
+                'enrollment_id' => null,
+            ],
+        );
+
+        // A scoped administrator example so the super admin can demonstrate
+        // delegating only the access a role needs.
+        User::updateOrCreate(
+            ['email' => 'verification.officer@gyrs.gov.in'],
+            [
+                'name' => 'Verification Officer',
+                'phone' => null,
+                'password' => $password,
+                'role' => User::ROLE_ADMIN,
+                'is_super_admin' => false,
+                'permissions' => [
+                    \App\Support\AdminPermissions::CANDIDATES_VIEW,
+                    \App\Support\AdminPermissions::CANDIDATES_VERIFY,
+                    \App\Support\AdminPermissions::APPLICATIONS_VIEW,
+                ],
                 'status' => User::STATUS_VERIFIED,
                 'approved_at' => now(),
                 'enrollment_id' => null,

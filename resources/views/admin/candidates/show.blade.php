@@ -63,17 +63,19 @@
                         </ul>
                     </x-card>
 
-                    <x-card title="Update verification status" meta="Changes are recorded in the audit trail" style="margin-top:var(--space-4);">
-                        <form method="POST" action="{{ route('admin.candidates.status', $candidate) }}" data-loading-form>
-                            @csrf
-                            @method('PATCH')
-                            <x-select name="status" label="Status" :options="$statuses" :value="$candidate->status ?? 'pending'" :required="true" />
-                            <x-textarea name="notes" label="Notes" hint="Optional internal note for this status change." :rows="3" />
-                            <div class="form-actions" style="border-top:0;padding-top:0;">
-                                <x-button variant="outline" type="submit">Save status</x-button>
-                            </div>
-                        </form>
-                    </x-card>
+                    @if (auth()->user()?->hasAdminPermission(\App\Support\AdminPermissions::CANDIDATES_VERIFY))
+                        <x-card title="Update verification status" meta="Changes are recorded in the audit trail" style="margin-top:var(--space-4);">
+                            <form method="POST" action="{{ route('admin.candidates.status', $candidate) }}" data-loading-form>
+                                @csrf
+                                @method('PATCH')
+                                <x-select name="status" label="Status" :options="$statuses" :value="$candidate->status ?? 'pending'" :required="true" />
+                                <x-textarea name="notes" label="Notes" hint="Optional internal note for this status change." :rows="3" />
+                                <div class="form-actions" style="border-top:0;padding-top:0;">
+                                    <x-button variant="outline" type="submit">Save status</x-button>
+                                </div>
+                            </form>
+                        </x-card>
+                    @endif
                 </div>
 
                 <div>

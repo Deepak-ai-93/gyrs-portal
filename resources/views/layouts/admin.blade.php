@@ -20,7 +20,14 @@
 <body class="layout-admin">
     <a class="skip-link" href="#main">Skip to main content</a>
 
-    @php($user = auth()->user())
+    @php
+        $user = auth()->user();
+        $can = fn (string $permission) => (bool) $user?->hasAdminPermission($permission);
+        $canViewJobs = $can(\App\Support\AdminPermissions::JOBS_VIEW);
+        $canViewCandidates = $can(\App\Support\AdminPermissions::CANDIDATES_VIEW);
+        $canViewApplications = $can(\App\Support\AdminPermissions::APPLICATIONS_VIEW);
+        $canExportCandidates = $can(\App\Support\AdminPermissions::EXPORT_CANDIDATES);
+    @endphp
 
     <header class="site-header">
         <div class="container">
@@ -38,6 +45,7 @@
                     <span class="identity-chip">
                         <x-icon name="shield" :size="15" />
                         <span class="name">{{ $user->name }}</span>
+                        <span class="chip-role">{{ $user->adminRoleLabel() }}</span>
                     </span>
                 @endif
                 <form method="POST" action="{{ route('admin.logout') }}">
@@ -54,13 +62,28 @@
                 <p class="side-nav-label">Overview</p>
                 <a href="{{ route('admin.dashboard') }}" @if (request()->routeIs('admin.dashboard')) aria-current="page" @endif><x-icon name="home" :size="16" /> Dashboard</a>
 
-                <p class="side-nav-label">Manage</p>
-                <a href="{{ route('admin.jobs.index') }}" @if (request()->routeIs('admin.jobs.*')) aria-current="page" @endif><x-icon name="briefcase" :size="16" /> Job postings</a>
-                <a href="{{ route('admin.candidates.index') }}" @if (request()->routeIs('admin.candidates.*')) aria-current="page" @endif><x-icon name="users" :size="16" /> Candidates</a>
-                <a href="{{ route('admin.applications.index') }}" @if (request()->routeIs('admin.applications.*')) aria-current="page" @endif><x-icon name="file" :size="16" /> Applications</a>
+                @if ($canViewJobs || $canViewCandidates || $canViewApplications)
+                    <p class="side-nav-label">Manage</p>
+                    @if ($canViewJobs)
+                        <a href="{{ route('admin.jobs.index') }}" @if (request()->routeIs('admin.jobs.*')) aria-current="page" @endif><x-icon name="briefcase" :size="16" /> Job postings</a>
+                    @endif
+                    @if ($canViewCandidates)
+                        <a href="{{ route('admin.candidates.index') }}" @if (request()->routeIs('admin.candidates.*')) aria-current="page" @endif><x-icon name="users" :size="16" /> Candidates</a>
+                    @endif
+                    @if ($canViewApplications)
+                        <a href="{{ route('admin.applications.index') }}" @if (request()->routeIs('admin.applications.*')) aria-current="page" @endif><x-icon name="file" :size="16" /> Applications</a>
+                    @endif
+                @endif
 
-                <p class="side-nav-label">Data</p>
-                <a href="{{ route('admin.exports.candidates') }}"><x-icon name="download" :size="16" /> Export candidates</a>
+                @if ($canExportCandidates)
+                    <p class="side-nav-label">Data</p>
+                    <a href="{{ route('admin.exports.candidates') }}"><x-icon name="download" :size="16" /> Export candidates</a>
+                @endif
+
+                @if ($user?->isSuperAdmin())
+                    <p class="side-nav-label">Access control</p>
+                    <a href="{{ route('admin.administrators.index') }}" @if (request()->routeIs('admin.administrators.*')) aria-current="page" @endif><x-icon name="shield" :size="16" /> Administrators</a>
+                @endif
 
                 <p class="side-nav-label">Site</p>
                 <a href="{{ route('home') }}"><x-icon name="external" :size="16" /> Public job board</a>
