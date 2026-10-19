@@ -56,7 +56,7 @@
             <details class="panel" style="margin-top:var(--space-4);">
                 <summary class="strong" style="cursor:pointer;">Prefer mobile OTP access?</summary>
                 <p class="text-sm muted" style="margin:var(--space-3) 0 0;">
-                    Mobile OTP sign-in is available to candidates whose number is verified by the Directorate. OTP codes are sent
+                    Mobile OTP sign-in is available to candidates whose number is verified by the employment office. OTP codes are sent
                     only to your registered mobile number — they are never displayed on screen. Until your number is verified,
                     please use password sign-in.
                 </p>

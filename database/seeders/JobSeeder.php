@@ -271,9 +271,11 @@ class JobSeeder extends Seeder
                     'age_limit' => $data['age_limit'],
                     'fees' => $data['fees'],
                     'vacancy_breakup' => $data['vacancy_breakup'],
-                    'official_website_url' => $data['official_website_url'],
-                    'apply_url' => $data['apply_url'],
-                    'notification_pdf_path' => $data['notification_pdf_path'],
+                    // External links are intentionally left empty so the demo
+                    // never surfaces government portals or branding.
+                    'official_website_url' => null,
+                    'apply_url' => null,
+                    'notification_pdf_path' => null,
                     'status' => Job::STATUS_PUBLISHED,
                 ],
             );

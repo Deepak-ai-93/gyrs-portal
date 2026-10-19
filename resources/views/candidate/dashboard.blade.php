@@ -204,7 +204,7 @@
                 <div class="between" style="margin-bottom:var(--space-4);">
                     <div>
                         <h2>Rozgar melas &amp; recruitment drives</h2>
-                        <p class="text-sm muted" style="margin:0;">Government-sponsored interview drives organised by the Directorate of Employment &amp; Training.</p>
+                        <p class="text-sm muted" style="margin:0;">Interview drives organised at district employment offices.</p>
                     </div>
                 </div>
 
@@ -261,7 +261,7 @@
                     <label class="form-label" for="profile-district">Home district</label>
                     <input class="form-control" id="profile-district" type="text" value="{{ $user->district->name ?? 'Not set' }}" disabled>
                     <input type="hidden" name="district_id" value="{{ $user->district_id }}">
-                    <p class="form-hint">Contact the Directorate to change your registered district.</p>
+                    <p class="form-hint">Contact support to change your registered district.</p>
                 </div>
                 <x-input name="qualification" label="Highest qualification" :value="$user->qualification" :required="true" />
             </div>

@@ -1,7 +1,7 @@
 @extends('layouts.public')
 
-@section('title', 'GYRS — Gujarat Youth Rojgar Setu | Government Job Portal')
-@section('meta_description', 'Explore verified Government of Gujarat and private vacancies across all 33 districts. Free candidate registration and application tracking.')
+@section('title', 'GYRS — Gujarat Youth Rojgar Setu | Job Portal')
+@section('meta_description', 'Explore verified public and private vacancies across all 33 districts. Free candidate registration and application tracking.')
 
 @php
     $keyword = $filters['keyword'] ?? '';
@@ -40,7 +40,7 @@
     <section class="hero">
         <div class="container">
             <div class="hero-inner">
-                <span class="hero-badge"><x-icon name="shield" :size="16" /> Directorate of Employment &amp; Training &middot; Government of Gujarat</span>
+                <span class="hero-badge"><x-icon name="shield" :size="16" /> Statewide employment &amp; placement initiative</span>
 
                 <h1 class="hero-title">
                     Find your next
@@ -202,7 +202,7 @@
                         <ul class="dot-list text-sm" style="margin:0;">
                             <li>100% free candidate registration</li>
                             <li>Zero intermediaries or agents</li>
-                            <li>Official Gujarat state verified postings</li>
+                            <li>Verified official postings</li>
                         </ul>
                     </div>
                 </aside>
@@ -266,10 +266,10 @@
 
             <div class="dept-grid">
                 @foreach ([
-                    ['Roads & Buildings Department (R&B)', 'Government of Gujarat &middot; Gandhinagar'],
+                    ['Roads & Buildings Department (R&B)', 'State department &middot; Gandhinagar'],
                     ['GIFT City Authority', 'Gandhinagar International Tech City'],
                     ['GETCO — Gujarat Energy Transmission', 'State power utility &middot; Vadodara'],
-                    ['Health & Family Welfare Department', 'State healthcare directorate &middot; Surat &amp; Rajkot'],
+                    ['Health & Family Welfare Department', 'State healthcare department &middot; Surat &amp; Rajkot'],
                     ['Dholera Special Investment Region', 'Mega industrial and greenfield hub'],
                     ['Gujarat Informatics Limited (GIL)', 'Department of Science &amp; Technology'],
                 ] as [$deptName, $deptMeta])
@@ -312,7 +312,7 @@
                 <details>
                     <summary>Are there any fees for registration or applications?</summary>
                     <div class="faq-answer">
-                        No. GYRS is an initiative of the Directorate of Employment &amp; Training, Government of Gujarat. Candidate
+                        No. GYRS is a free employment initiative. Candidate
                         registration, job filtering and application tracking are completely free of charge.
                     </div>
                 </details>

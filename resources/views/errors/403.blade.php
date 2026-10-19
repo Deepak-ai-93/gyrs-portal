@@ -29,7 +29,7 @@
                 </div>
             @endif
         @else
-            <p class="muted">You do not have permission to view this page. Sign in with the correct account or contact the Directorate systems team.</p>
+            <p class="muted">You do not have permission to view this page. Sign in with the correct account or contact the portal support team.</p>
             <div class="cluster" style="justify-content:center;">
                 <x-button variant="outline" :href="route('home')">Return to home</x-button>
                 <x-button variant="ghost" :href="route('candidate.login')">Candidate sign in</x-button>

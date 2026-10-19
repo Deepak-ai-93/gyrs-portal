@@ -12,7 +12,7 @@
             </div>
 
             <x-alert variant="warning">
-                Restricted access. This gateway is for authorised Directorate nodal personnel only. All administrative
+                Restricted access. This gateway is for authorised administrators only. All administrative
                 actions are recorded in the immutable audit trail.
             </x-alert>
 
@@ -50,7 +50,7 @@
             />
 
             <p class="text-sm muted" style="margin-top:var(--space-4);">
-                If you cannot access your administrator account, contact the Directorate of Employment &amp; Training systems
+                If you cannot access your administrator account, contact the portal systems
                 team.
             </p>
 
