@@ -907,7 +907,12 @@ hr {
 }
 
 .table-wrap {
+  /* Positioned so absolutely-placed .sr-only labels inside table action
+     forms stay inside this scroll container instead of stretching the
+     whole document on narrow screens. */
+  position: relative;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-surface);
@@ -2661,6 +2666,30 @@ body.modal-open {
   }
 }
 
+/* Top bar — let the header wrap on narrow screens instead of overflowing.
+   Previously the identity chip forced the (non-wrapping) flex row past the
+   viewport, which produced a horizontal scrollbar on phones. */
+@media (max-width: 640px) {
+  .site-header .container {
+    flex-wrap: wrap;
+    row-gap: 8px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+
+  .brand {
+    min-width: 0;
+  }
+
+  .identity-chip {
+    max-width: 150px;
+  }
+
+  .identity-chip .chip-role {
+    display: none;
+  }
+}
+
 @media (max-width: 768px) {
   :root {
     --gutter: 16px;
@@ -2958,6 +2987,15 @@ html {
 html,
 body {
   overflow-x: clip;
+}
+
+/* `overflow-x: clip` is unsupported on older iOS/Android, so fall back to
+   `hidden` on <html> only (keeping it off <body> so the sticky header keeps
+   working) to guarantee no horizontal scrollbar on legacy mobile browsers. */
+@supports not (overflow-x: clip) {
+  html {
+    overflow-x: hidden;
+  }
 }
 
 body {
