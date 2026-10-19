@@ -3181,6 +3181,22 @@ html.is-preloading body {
   left: -30%;
 }
 
+.pl-word-4 {
+  top: 2%;
+  right: -42%;
+}
+
+.pl-word-5 {
+  top: 52%;
+  left: -52%;
+  color: var(--color-heading);
+}
+
+.pl-word-6 {
+  bottom: -6%;
+  right: -64%;
+}
+
 .preloader-art {
   width: clamp(120px, 24vw, 168px);
   height: auto;

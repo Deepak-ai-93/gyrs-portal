@@ -67,6 +67,9 @@
                     <span class="pl-word pl-word-1">roles</span>
                     <span class="pl-word pl-word-2">opportunity</span>
                     <span class="pl-word pl-word-3">jobs</span>
+                    <span class="pl-word pl-word-4">skills</span>
+                    <span class="pl-word pl-word-5">upgrade</span>
+                    <span class="pl-word pl-word-6">stay informed</span>
                 </div>
             </div>
         </div>

@@ -91,7 +91,7 @@
                 .from(bull, { scale: 0, duration: 0.35, ease: 'back.out(2)', svgOrigin: '70 70' }, '-=0.25')
                 .to(
                     words,
-                    { opacity: 1, scale: 1, duration: 0.5, stagger: 0.14, ease: 'back.out(1.6)' },
+                    { opacity: 1, scale: 1, duration: 0.5, stagger: 0.09, ease: 'back.out(1.6)' },
                     0.35
                 )
                 .fromTo(
