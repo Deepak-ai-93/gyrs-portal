@@ -20,13 +20,6 @@
 <body class="layout-app">
     <a class="skip-link" href="#main">Skip to main content</a>
 
-    <div class="gov-bar">
-        <div class="container">
-            <span class="gov-meta"><x-icon name="building" :size="16" /> Government of Gujarat &middot; Directorate of Employment &amp; Training</span>
-            <span class="gov-meta"><a href="{{ route('home') }}">Public job board</a></span>
-        </div>
-    </div>
-
     <header class="site-header">
         <div class="container">
             <a class="brand" href="{{ route('home') }}">
@@ -45,10 +38,26 @@
         @yield('content')
     </main>
 
-    <footer class="site-footer" style="margin-top:0;">
+    <footer class="site-footer">
         <div class="container">
-            <div class="footer-bottom" style="border-top:0;margin-top:0;">
-                &copy; {{ date('Y') }} GYRS Portal &middot; Directorate of Employment &amp; Training, Government of Gujarat &middot; Toll-free 1800-233-5500
+            <div class="footer-grid">
+                <div>
+                    <h3><x-icon name="briefcase" :size="16" /> GYRS</h3>
+                    <p class="text-sm">Gujarat Youth Rojgar Setu — verified public and private opportunities across all 33 districts.</p>
+                </div>
+
+                <div>
+                    <h3>Quick links</h3>
+                    <ul class="text-sm">
+                        <li><a href="{{ route('home') }}">Home</a></li>
+                        <li><a href="{{ route('candidate.login') }}">Candidate login</a></li>
+                        <li><a href="{{ route('candidate.register') }}">Register new candidate</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                &copy; {{ date('Y') }} GYRS Portal. All rights reserved.
             </div>
         </div>
     </footer>

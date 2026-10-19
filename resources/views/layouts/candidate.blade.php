@@ -22,13 +22,6 @@
 
     @php($user = auth()->user())
 
-    <div class="gov-bar">
-        <div class="container">
-            <span class="gov-meta"><x-icon name="building" :size="16" /> Government of Gujarat &middot; Directorate of Employment &amp; Training</span>
-            <span class="gov-meta">Toll-free 1800-233-5500</span>
-        </div>
-    </div>
-
     <header class="site-header">
         <div class="container">
             <a class="brand" href="{{ route('candidate.dashboard') }}">
@@ -72,10 +65,34 @@
         @yield('content')
     </main>
 
-    <footer class="site-footer" style="margin-top:0;">
+    <footer class="site-footer">
         <div class="container">
-            <div class="footer-bottom" style="border-top:0;margin-top:0;">
-                &copy; {{ date('Y') }} GYRS Portal &middot; Directorate of Employment &amp; Training, Government of Gujarat
+            <div class="footer-grid">
+                <div>
+                    <h3><x-icon name="user" :size="16" /> Candidate workspace</h3>
+                    <p class="text-sm">Track your applications, keep your profile current and discover recommended vacancies.</p>
+                </div>
+
+                <div>
+                    <h3>Quick links</h3>
+                    <ul class="text-sm">
+                        <li><a href="{{ route('candidate.dashboard') }}">Dashboard</a></li>
+                        <li><a href="{{ route('candidate.applications.index') }}">My applications</a></li>
+                        <li><a href="{{ route('home') }}#job-explorer">Explore jobs</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h3>Account</h3>
+                    <ul class="text-sm">
+                        <li><a href="{{ route('home') }}">Public job board</a></li>
+                        <li><a href="{{ route('admin.login') }}"><x-icon name="lock" :size="14" /> Portal admin login</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                &copy; {{ date('Y') }} GYRS Portal. All rights reserved.
             </div>
         </div>
     </footer>

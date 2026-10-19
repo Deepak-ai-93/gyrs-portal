@@ -22,13 +22,6 @@
 
     @php($user = auth()->user())
 
-    <div class="gov-bar">
-        <div class="container">
-            <span class="gov-meta"><x-icon name="shield" :size="16" /> GYRS Portal &middot; Admin panel</span>
-            <span class="gov-meta"><a href="{{ route('home') }}"><x-icon name="external" :size="14" /> View public job board</a></span>
-        </div>
-    </div>
-
     <header class="site-header">
         <div class="container">
             <a class="brand" href="{{ route('admin.dashboard') }}">
@@ -73,10 +66,28 @@
         @yield('content')
     </main>
 
-    <footer class="site-footer" style="margin-top:0;">
+    <footer class="site-footer">
         <div class="container">
-            <div class="footer-bottom" style="border-top:0;margin-top:0;">
-                &copy; {{ date('Y') }} GYRS Portal &middot; Restricted administrative access
+            <div class="footer-grid">
+                <div>
+                    <h3><x-icon name="shield" :size="16" /> GYRS Portal</h3>
+                    <p class="text-sm">Administration for job vacancies, candidate verification and application audit.</p>
+                </div>
+
+                <div>
+                    <h3>Quick links</h3>
+                    <ul class="text-sm">
+                        <li><a href="{{ route('admin.dashboard') }}">Overview</a></li>
+                        <li><a href="{{ route('admin.jobs.index') }}">Jobs</a></li>
+                        <li><a href="{{ route('admin.candidates.index') }}">Candidates</a></li>
+                        <li><a href="{{ route('admin.applications.index') }}">Applications</a></li>
+                        <li><a href="{{ route('home') }}"><x-icon name="external" :size="14" /> Public job board</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                &copy; {{ date('Y') }} GYRS Portal. All rights reserved.
             </div>
         </div>
     </footer>

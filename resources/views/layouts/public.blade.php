@@ -20,17 +20,6 @@
 <body class="layout-public">
     <a class="skip-link" href="#main">Skip to main content</a>
 
-    <div class="gov-bar">
-        <div class="container">
-            <span class="gov-meta"><x-icon name="building" :size="16" /> Government of Gujarat &middot; Directorate of Employment &amp; Training (DET)</span>
-            <span class="gov-meta">
-                <a href="#accessibility">Accessibility</a>
-                <span aria-hidden="true">|</span>
-                <span>Toll-free 1800-233-5500</span>
-            </span>
-        </div>
-    </div>
-
     <header class="site-header">
         <div class="container">
             <a class="brand" href="{{ route('home') }}">
@@ -88,14 +77,14 @@
         @yield('content')
     </main>
 
-    <footer class="site-footer" id="accessibility">
+    <footer class="site-footer">
         <div class="container">
             <div class="footer-grid">
                 <div>
                     <h3><x-icon name="briefcase" :size="16" /> GYRS GUJARAT</h3>
                     <p class="text-sm">
-                        Gujarat Youth Rojgar Setu is an official platform of the Directorate of Employment &amp; Training, connecting
-                        young job seekers across all 33 districts with verified public and private employment opportunities.
+                        Gujarat Youth Rojgar Setu (GYRS) connects job seekers across all 33 districts with verified
+                        public and private employment opportunities.
                     </p>
                 </div>
 
@@ -120,15 +109,17 @@
                 </div>
 
                 <div>
-                    <h3>Directorate contact</h3>
-                    <p class="text-sm" style="margin-bottom:8px;">
-                        Block No. 14, Dr. Jivraj Mehta Bhavan,<br>
-                        Gandhinagar, Gujarat 382010
-                    </p>
-                    <p class="text-sm" style="margin-bottom:8px;">Toll-free helpline: 1800-233-5500</p>
-                    <p class="text-sm" style="margin-bottom:0;">support.gyrs@gujarat.gov.in</p>
-                    <p class="text-sm" style="margin-top:12px;"><a href="{{ route('admin.login') }}"><x-icon name="lock" :size="14" /> GYRS Portal admin login</a></p>
+                    <h3>Support</h3>
+                    <ul class="text-sm">
+                        <li><a href="{{ route('home') }}#faqs">Help &amp; FAQs</a></li>
+                        <li><a href="{{ route('home') }}#job-explorer">Browse vacancies</a></li>
+                        <li><a href="{{ route('admin.login') }}"><x-icon name="lock" :size="14" /> Portal admin login</a></li>
+                    </ul>
                 </div>
+            </div>
+
+            <div class="footer-bottom">
+                &copy; {{ date('Y') }} GYRS Portal. All rights reserved.
             </div>
         </div>
     </footer>
