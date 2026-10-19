@@ -266,6 +266,71 @@
         });
     });
 
+    /* District job-count tooltips (homepage ribbon) */
+    (function () {
+        var districts = toArray(document, '[data-district-jobs]');
+
+        if (!districts.length) {
+            return;
+        }
+
+        var tip = document.createElement('div');
+        tip.className = 'district-tip';
+        tip.setAttribute('role', 'tooltip');
+        document.body.appendChild(tip);
+
+        var active = null;
+
+        function hideTip() {
+            active = null;
+            tip.classList.remove('is-visible', 'is-below');
+        }
+
+        function showTip(el) {
+            var total = parseInt(el.getAttribute('data-district-jobs'), 10);
+
+            if (isNaN(total)) {
+                return;
+            }
+
+            active = el;
+            tip.textContent = total + (total === 1 ? ' open job' : ' open jobs');
+
+            var rect = el.getBoundingClientRect();
+            var half = tip.getBoundingClientRect().width / 2;
+            var left = Math.min(
+                Math.max(rect.left + rect.width / 2, half + 8),
+                window.innerWidth - half - 8
+            );
+            var below = rect.top - tip.getBoundingClientRect().height - 8 < 8;
+
+            tip.style.left = left + 'px';
+            tip.style.top = (below ? rect.bottom : rect.top) + 'px';
+            tip.classList.toggle('is-below', below);
+            tip.classList.add('is-visible');
+        }
+
+        districts.forEach(function (el) {
+            el.addEventListener('mouseenter', function () {
+                showTip(el);
+            });
+            el.addEventListener('mouseleave', function () {
+                if (active === el) {
+                    hideTip();
+                }
+            });
+        });
+
+        function repositionTip() {
+            if (active) {
+                showTip(active);
+            }
+        }
+
+        window.addEventListener('scroll', repositionTip, { passive: true });
+        window.addEventListener('resize', repositionTip);
+    })();
+
     /* Demo credential autofill */
     toArray(document, '[data-demo-fill]').forEach(function (button) {
         button.addEventListener('click', function () {

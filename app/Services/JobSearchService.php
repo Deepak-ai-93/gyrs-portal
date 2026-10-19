@@ -80,6 +80,21 @@ class JobSearchService
         return Job::query()->open()->count();
     }
 
+    /**
+     * Open job totals keyed by district id, for the homepage district ribbon.
+     *
+     * @return Collection<string, int>
+     */
+    public function openJobCountsByDistrict(): Collection
+    {
+        return Job::query()
+            ->open()
+            ->whereNotNull('district_id')
+            ->selectRaw('district_id, COUNT(*) as jobs_count')
+            ->groupBy('district_id')
+            ->pluck('jobs_count', 'district_id');
+    }
+
     protected function baseQuery(): Builder
     {
         return Job::query()->open()->with(['district', 'skills']);

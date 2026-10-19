@@ -1553,6 +1553,45 @@ body.modal-open {
   background: var(--color-border-strong);
 }
 
+.hero-district[data-district-jobs] {
+  cursor: help;
+}
+
+.hero-district[data-district-jobs]:hover {
+  color: var(--color-heading);
+}
+
+/* Floating job-count tooltip for district names. Appended to <body> by
+   app.js so the ribbon's overflow clipping never cuts it off. */
+.district-tip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 150;
+  padding: 6px 10px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-heading);
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+  box-shadow: var(--shadow-md);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, calc(-100% - 8px));
+  transition: opacity 0.15s ease;
+}
+
+.district-tip.is-visible {
+  opacity: 1;
+}
+
+.district-tip.is-below {
+  transform: translate(-50%, 8px);
+}
+
 @keyframes districtRibbon {
   from {
     transform: translateX(0);

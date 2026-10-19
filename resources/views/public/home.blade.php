@@ -116,10 +116,14 @@
             <div class="hero-districts" aria-label="Districts covered on GYRS">
                 <div class="hero-districts-track">
                     @foreach ($districts as $district)
-                        <span class="hero-district">{{ $districtLabel($district) }}</span>
+                        @php($districtCount = (int) ($districtJobCounts[$district->id] ?? 0))
+                        <span class="hero-district" data-district-jobs="{{ $districtCount }}">
+                            {{ $districtLabel($district) }}<span class="sr-only"> — {{ $districtCount }} {{ $districtCount === 1 ? 'open job' : 'open jobs' }}</span>
+                        </span>
                     @endforeach
                     @foreach ($districts as $district)
-                        <span class="hero-district" aria-hidden="true">{{ $districtLabel($district) }}</span>
+                        @php($districtCount = (int) ($districtJobCounts[$district->id] ?? 0))
+                        <span class="hero-district" data-district-jobs="{{ $districtCount }}" aria-hidden="true">{{ $districtLabel($district) }}</span>
                     @endforeach
                 </div>
             </div>

@@ -19,6 +19,7 @@ class JobController extends Controller
         return view('public.home', [
             'jobs' => $this->search->search($filters),
             'districts' => $this->search->districts(),
+            'districtJobCounts' => $this->search->openJobCountsByDistrict(),
             'employmentTypes' => $this->search->employmentTypes(),
             'filters' => $filters,
             'jobCount' => $this->search->publishedJobCount(),
