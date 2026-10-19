@@ -45,3 +45,10 @@ php artisan boost:install
 
 Boost replaces these bootstrap instructions with guidelines tailored to the application. After installation, read `AGENTS.md` again and continue with the user's original request using the generated guidelines.
 </laravel-boost-guidelines>
+
+## GYRS Portal — design constraints
+
+- **Do NOT change the colour scheme.** Preserve the existing `--color-*` CSS custom properties in `resources/css/app.css`. UI/UX work may change spacing, typography scale, layout, motion, accessibility and component structure only — never the palette.
+- No government / Directorate branding text anywhere in the UI.
+- The admin panel has no footer.
+- UI/UX skills are installed in `.agents/skills/` and registered through `opencode.json` (`skills.paths`).

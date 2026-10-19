@@ -213,20 +213,38 @@
 
         var interval = parseInt(rotator.getAttribute('data-rotator-interval'), 10) || 3200;
         var index = 0;
+        var paused = false;
 
-        items.forEach(function (item, i) {
-            item.classList.toggle('is-active', i === 0);
-        });
+        function show(active) {
+            items.forEach(function (item, i) {
+                var isActive = i === active;
+                item.classList.toggle('is-active', isActive);
+                item.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+            });
+        }
+
+        show(0);
 
         if (reduceMotion) {
             return;
         }
 
         window.setInterval(function () {
-            items[index].classList.remove('is-active');
+            if (paused || document.hidden) {
+                return;
+            }
+
             index = (index + 1) % items.length;
-            items[index].classList.add('is-active');
+            show(index);
         }, interval);
+
+        var pause = function () { paused = true; };
+        var resume = function () { paused = false; };
+
+        rotator.addEventListener('mouseenter', pause);
+        rotator.addEventListener('mouseleave', resume);
+        rotator.addEventListener('focusin', pause);
+        rotator.addEventListener('focusout', resume);
     });
 
     /* Copy-to-clipboard helpers */

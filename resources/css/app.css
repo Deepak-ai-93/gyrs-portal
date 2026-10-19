@@ -2851,3 +2851,49 @@ body.modal-open {
   }
 }
 
+/* ──────────────────────────────────────────────────────────────────
+   UI/UX polish pass — accessibility, touch & layout only.
+   The existing colour scheme and design tokens are NOT changed.
+   ────────────────────────────────────────────────────────────────── */
+html {
+  scroll-padding-top: calc(var(--header-h) + 16px);
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  overflow-x: clip;
+}
+
+body {
+  -webkit-tap-highlight-color: rgb(141 154 145 / 18%);
+}
+
+a,
+button,
+summary,
+label,
+input,
+select,
+textarea,
+[role='button'],
+.btn {
+  touch-action: manipulation;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  text-wrap: balance;
+}
+
+.btn:active,
+.menu-toggle:active {
+  transform: translateY(1px);
+}
+
+.nav-collapse {
+  overscroll-behavior: contain;
+}
+

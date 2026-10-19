@@ -58,7 +58,7 @@
 
                 <p class="hero-story">
                     <span class="hero-story-icon" aria-hidden="true"><x-icon name="sparkles" :size="15" /></span>
-                    <span class="rotator hero-story-rotator" data-rotator data-rotator-interval="4600" aria-live="polite">
+                    <span class="rotator hero-story-rotator" data-rotator data-rotator-interval="4600">
                         <span class="rotator-item is-active" data-rotator-item>From the first search to the final offer letter — one platform for every district.</span>
                         <span class="rotator-item" data-rotator-item>Register free, save the jobs you like and let smart matching surface the right roles.</span>
                         <span class="rotator-item" data-rotator-item>Government posts, department vacancies and private roles — verified and in one place.</span>
