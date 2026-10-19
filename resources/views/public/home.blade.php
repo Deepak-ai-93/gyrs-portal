@@ -40,8 +40,6 @@
     <section class="hero">
         <div class="container">
             <div class="hero-inner">
-                <span class="hero-badge"><x-icon name="shield" :size="16" /> Statewide employment &amp; placement initiative</span>
-
                 <h1 class="hero-title">
                     Find your next
                     <span class="rotator hero-rotator" data-rotator data-rotator-interval="2600">
