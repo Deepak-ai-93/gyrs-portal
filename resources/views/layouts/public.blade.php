@@ -16,8 +16,51 @@
     <title>@yield('title', 'GYRS — Gujarat Youth Rojgar Setu')</title>
     <meta name="description" content="@yield('meta_description', 'GYRS is the official public employment portal. Explore verified public and private vacancies across all 33 districts.')">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @if (request()->routeIs('home'))
+        <script>
+            (function () {
+                try {
+                    document.documentElement.classList.add('is-preloading');
+                    window.setTimeout(function () {
+                        document.documentElement.classList.remove('is-preloading');
+                    }, 6000);
+                } catch (e) {}
+            })();
+        </script>
+    @endif
+    <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script defer src="{{ asset('js/public-motion.js') }}"></script>
 </head>
 <body class="layout-public">
+    @if (request()->routeIs('home'))
+        <div class="preloader" id="gyrs-preloader" aria-hidden="true">
+            <div class="preloader-stage">
+                <div class="preloader-mark">
+                    <svg class="preloader-art" viewBox="0 0 140 140" width="140" height="140" aria-hidden="true" focusable="false">
+                        <g fill="none" stroke-linecap="round">
+                            <circle class="pl-ring" cx="70" cy="70" r="54" stroke-width="2" />
+                            <circle class="pl-ring" cx="70" cy="70" r="38" stroke-width="2" />
+                            <circle class="pl-ring" cx="70" cy="70" r="22" stroke-width="2" />
+                            <circle class="pl-ripple" cx="70" cy="70" r="8" stroke-width="2" opacity="0" />
+                            <circle class="pl-bull" cx="70" cy="70" r="7" />
+                        </g>
+                        <g class="pl-arrow" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+                            <line x1="72" y1="72" x2="114" y2="114" />
+                            <path d="M111 112 L104 116 M111 112 L116 104" />
+                            <path class="pl-tip" d="M70 70 L85.5 74.5 L74.5 85.5 Z" />
+                        </g>
+                    </svg>
+                </div>
+                <div class="preloader-words" aria-hidden="true">
+                    <span class="pl-word pl-word-1">roles</span>
+                    <span class="pl-word pl-word-2">opportunity</span>
+                    <span class="pl-word pl-word-3">jobs</span>
+                </div>
+            </div>
+        </div>
+    @endif
+
     <a class="skip-link" href="#main">Skip to main content</a>
 
     <header class="site-header">

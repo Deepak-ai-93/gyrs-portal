@@ -43,7 +43,7 @@
                         <x-icon name="arrow-left" :size="16" /> Back to all jobs
                     </a>
 
-                    <div class="page-head" style="margin-bottom:var(--space-4);">
+                    <div class="page-head" style="margin-bottom:var(--space-4);" data-motion-hero>
                         <div>
                             <h1 style="font-size:clamp(1.75rem,3vw,2.5rem);">{{ $job->title }}</h1>
                             <p class="lead">{{ $job->department }}@if ($job->district) &middot; {{ $job->district->name }}@endif</p>
@@ -63,7 +63,7 @@
                         </div>
                     @endif
 
-                    <div class="panel" style="margin-bottom:var(--space-6);">
+                    <div class="panel" style="margin-bottom:var(--space-6);" data-motion-reveal>
                         <ul class="data-list">
                             <li>
                                 <span class="data-label">Location</span>
@@ -113,13 +113,13 @@
                         @endif
                     </div>
 
-                    <div class="detail-section">
+                    <div class="detail-section" data-motion-reveal>
                         <h2>Overview</h2>
                         <p style="white-space:pre-line;">{{ $job->description }}</p>
                     </div>
 
                     @if ($eligibility->isNotEmpty())
-                        <div class="detail-section">
+                        <div class="detail-section" data-motion-reveal>
                             <h2>Eligibility</h2>
                             <ul class="doc-list">
                                 @foreach ($eligibility as $item)
@@ -129,7 +129,7 @@
                         </div>
                     @endif
 
-                    <div class="detail-section">
+                    <div class="detail-section" data-motion-reveal>
                         <h2>Vacancy details</h2>
                         <ul class="data-list">
                             <li>
@@ -152,7 +152,7 @@
                     </div>
 
                     @if ($responsibilities->isNotEmpty())
-                        <div class="detail-section">
+                        <div class="detail-section" data-motion-reveal>
                             <h2>Roles &amp; responsibilities</h2>
                             <ul class="doc-list">
                                 @foreach ($responsibilities as $item)
@@ -163,7 +163,7 @@
                     @endif
 
                     @if ($selectionSteps->isNotEmpty())
-                        <div class="detail-section">
+                        <div class="detail-section" data-motion-reveal>
                             <h2>Selection process</h2>
                             <ol class="doc-list">
                                 @foreach ($selectionSteps as $item)
@@ -174,7 +174,7 @@
                     @endif
 
                     @if ($applicationSteps->isNotEmpty())
-                        <div class="detail-section">
+                        <div class="detail-section" data-motion-reveal>
                             <h2>How to apply</h2>
                             <ol class="doc-list">
                                 @foreach ($applicationSteps as $item)
@@ -184,7 +184,7 @@
                         </div>
                     @endif
 
-                    <div class="detail-section">
+                    <div class="detail-section" data-motion-reveal>
                         <h2>Official notification</h2>
                         @if ($pdfUrl)
                             <x-button variant="outline" :href="$pdfUrl" target="_blank" rel="noopener noreferrer">
@@ -196,7 +196,7 @@
                     </div>
                 </div>
 
-                <aside aria-label="Application and related links">
+                <aside aria-label="Application and related links" data-motion-reveal data-motion-stagger>
                     <div class="side-card">
                         <h2>Apply for this vacancy</h2>
 

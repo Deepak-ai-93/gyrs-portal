@@ -38,17 +38,22 @@
     </div>
 
     <section class="hero">
+        <span class="hero-glow hero-glow-a" aria-hidden="true"></span>
+        <span class="hero-glow hero-glow-b" aria-hidden="true"></span>
+
         <div class="container">
-            <div class="hero-inner">
+            <div class="hero-inner" data-motion-hero>
                 <h1 class="hero-title">
-                    Find your next
-                    <span class="rotator hero-rotator" data-rotator data-rotator-interval="2600">
-                        <span class="rotator-item is-active" data-rotator-item>role</span>
-                        <span class="rotator-item" data-rotator-item>career</span>
-                        <span class="rotator-item" data-rotator-item>opportunity</span>
-                        <span class="rotator-item" data-rotator-item>future</span>
+                    <span class="hero-line"><span class="hero-line-inner" data-motion-line>Find your next</span></span>
+                    <span class="hero-line hero-line-keyword">
+                        <span class="rotator hero-rotator" data-rotator data-rotator-interval="2600" data-motion-line>
+                            <span class="rotator-item is-active" data-rotator-item>role</span>
+                            <span class="rotator-item" data-rotator-item>career</span>
+                            <span class="rotator-item" data-rotator-item>opportunity</span>
+                            <span class="rotator-item" data-rotator-item>future</span>
+                        </span>
                     </span>
-                    in Gujarat
+                    <span class="hero-line"><span class="hero-line-inner" data-motion-line>in Gujarat</span></span>
                 </h1>
 
                 <p class="hero-sub">
@@ -106,21 +111,34 @@
                 </div>
             </div>
         </div>
+
+        @if ($districts->isNotEmpty())
+            <div class="hero-districts" aria-label="Districts covered on GYRS">
+                <div class="hero-districts-track">
+                    @foreach ($districts as $district)
+                        <span class="hero-district">{{ $districtLabel($district) }}</span>
+                    @endforeach
+                    @foreach ($districts as $district)
+                        <span class="hero-district" aria-hidden="true">{{ $districtLabel($district) }}</span>
+                    @endforeach
+                </div>
+            </div>
+        @endif
     </section>
 
     <div class="metric-strip">
         <div class="container">
-            <div class="grid grid-4">
+            <div class="grid grid-4" data-motion-reveal data-motion-stagger>
                 <div class="metric">
-                    <div class="metric-num">{{ number_format((int) $jobCount) }}</div>
+                    <div class="metric-num" data-count-to="{{ (int) $jobCount }}">{{ number_format((int) $jobCount) }}</div>
                     <div class="metric-label">Open vacancies on GYRS</div>
                 </div>
                 <div class="metric">
-                    <div class="metric-num">33</div>
+                    <div class="metric-num" data-count-to="33">33</div>
                     <div class="metric-label">Districts covered statewide</div>
                 </div>
                 <div class="metric">
-                    <div class="metric-num">100%</div>
+                    <div class="metric-num" data-count-to="100" data-count-suffix="%">100%</div>
                     <div class="metric-label">Free candidate registration</div>
                 </div>
                 <div class="metric">
@@ -154,7 +172,7 @@
                             </x-slot:action>
                         </x-empty-state>
                     @else
-                        <div class="jobs-grid">
+                        <div class="jobs-grid" data-motion-reveal data-motion-stagger>
                             @foreach ($jobs as $job)
                                 <x-job-card :job="$job" :saved="in_array($job->getKey(), $savedJobIds ?? [], true)" />
                             @endforeach
@@ -217,26 +235,29 @@
                 </div>
             </div>
 
-            <div class="steps-grid">
-                <div class="step-card">
-                    <span class="step-num">01</span>
-                    <h3>Create your free profile</h3>
-                    <p>Register with your qualification, skills and district. Complete your candidate dossier in minutes.</p>
-                </div>
-                <div class="step-card">
-                    <span class="step-num">02</span>
-                    <h3>Explore &amp; read details</h3>
-                    <p>Filter verified openings across all 33 districts and open any job to read the full official notification.</p>
-                </div>
-                <div class="step-card">
-                    <span class="step-num">03</span>
-                    <h3>Save &amp; shortlist interests</h3>
-                    <p>Mark any vacancy as interested, review AI-matched recommendations and build a personal shortlist of roles.</p>
-                </div>
-                <div class="step-card">
-                    <span class="step-num">04</span>
-                    <h3>Attend &amp; get placed</h3>
-                    <p>Attend interview calls or state Rozgar Melas and receive your official verified appointment.</p>
+            <div class="steps-track" data-motion-steps>
+                <span class="steps-line" aria-hidden="true"><span class="steps-line-fill" data-motion-steps-fill></span></span>
+                <div class="steps-grid">
+                    <div class="step-card" data-motion-step>
+                        <span class="step-num">01</span>
+                        <h3>Create your free profile</h3>
+                        <p>Register with your qualification, skills and district. Complete your candidate dossier in minutes.</p>
+                    </div>
+                    <div class="step-card" data-motion-step>
+                        <span class="step-num">02</span>
+                        <h3>Explore &amp; read details</h3>
+                        <p>Filter verified openings across all 33 districts and open any job to read the full official notification.</p>
+                    </div>
+                    <div class="step-card" data-motion-step>
+                        <span class="step-num">03</span>
+                        <h3>Save &amp; shortlist interests</h3>
+                        <p>Mark any vacancy as interested, review AI-matched recommendations and build a personal shortlist of roles.</p>
+                    </div>
+                    <div class="step-card" data-motion-step>
+                        <span class="step-num">04</span>
+                        <h3>Attend &amp; get placed</h3>
+                        <p>Attend interview calls or state Rozgar Melas and receive your official verified appointment.</p>
+                    </div>
                 </div>
             </div>
 
@@ -262,7 +283,7 @@
                 </div>
             </div>
 
-            <div class="dept-grid">
+            <div class="dept-grid" data-motion-reveal data-motion-stagger>
                 @foreach ([
                     ['Roads & Buildings Department (R&B)', 'State department &middot; Gandhinagar'],
                     ['GIFT City Authority', 'Gandhinagar International Tech City'],
@@ -291,7 +312,7 @@
                 </div>
             </div>
 
-            <div class="faq-list">
+            <div class="faq-list" data-motion-reveal data-motion-stagger>
                 <details open>
                     <summary>How do I apply for official state vacancies through GYRS?</summary>
                     <div class="faq-answer">
