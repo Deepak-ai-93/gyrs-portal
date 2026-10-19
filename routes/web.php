@@ -12,7 +12,16 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', [PublicJobController::class, 'index'])->name('home');
+Route::get('/', function () {
+    // During the evaluation period the site entry point opens the admin
+    // sign-in page (with demo credentials shown) so reviewers land in the
+    // dashboard straight away. Disable GYRS_DEMO to restore the public board.
+    if (config('gyrs.demo.enabled')) {
+        return redirect()->route('admin.login');
+    }
+
+    return app(PublicJobController::class)->index(request());
+})->name('home');
 Route::get('/jobs/{job:slug}', [PublicJobController::class, 'show'])->name('jobs.show');
 
 Route::get('/health', function () {
