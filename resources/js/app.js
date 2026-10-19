@@ -201,4 +201,74 @@
             }
         });
     });
+
+    /* Text rotators (headline keywords, storytelling lines) */
+    var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    toArray(document, '[data-rotator]').forEach(function (rotator) {
+        var items = toArray(rotator, '[data-rotator-item]');
+        if (items.length < 2) {
+            return;
+        }
+
+        var interval = parseInt(rotator.getAttribute('data-rotator-interval'), 10) || 3200;
+        var index = 0;
+
+        items.forEach(function (item, i) {
+            item.classList.toggle('is-active', i === 0);
+        });
+
+        if (reduceMotion) {
+            return;
+        }
+
+        window.setInterval(function () {
+            items[index].classList.remove('is-active');
+            index = (index + 1) % items.length;
+            items[index].classList.add('is-active');
+        }, interval);
+    });
+
+    /* Copy-to-clipboard helpers */
+    toArray(document, '[data-copy]').forEach(function (button) {
+        button.addEventListener('click', function () {
+            var value = button.getAttribute('data-copy');
+
+            if (!value || !navigator.clipboard) {
+                return;
+            }
+
+            navigator.clipboard.writeText(value).then(function () {
+                var original = button.textContent;
+                button.textContent = 'Copied';
+                window.setTimeout(function () {
+                    button.textContent = original;
+                }, 1400);
+            });
+        });
+    });
+
+    /* Demo credential autofill */
+    toArray(document, '[data-demo-fill]').forEach(function (button) {
+        button.addEventListener('click', function () {
+            var form = document.querySelector(button.getAttribute('data-demo-form'));
+
+            if (!form) {
+                return;
+            }
+
+            var loginField = form.querySelector('[name="' + button.getAttribute('data-demo-login-name') + '"]');
+            var passwordField = form.querySelector('[name="password"]');
+
+            if (loginField) {
+                loginField.value = button.getAttribute('data-demo-login') || '';
+                loginField.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+
+            if (passwordField) {
+                passwordField.value = button.getAttribute('data-demo-password') || '';
+                passwordField.dispatchEvent(new Event('input', { bubbles: true }));
+            }
+        });
+    });
 })();

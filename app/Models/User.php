@@ -76,6 +76,27 @@ class User extends Authenticatable
         return $this->hasMany(Application::class, 'candidate_id');
     }
 
+    public function savedJobs(): HasMany
+    {
+        return $this->hasMany(SavedJob::class);
+    }
+
+    /**
+     * Jobs the candidate has marked as interested.
+     */
+    public function interestedJobs(): BelongsToMany
+    {
+        return $this->belongsToMany(Job::class, 'saved_jobs', 'user_id', 'job_id')
+            ->withTimestamps();
+    }
+
+    public function hasSavedJob(Job|string $job): bool
+    {
+        $jobId = $job instanceof Job ? $job->getKey() : $job;
+
+        return $this->savedJobs()->where('job_id', $jobId)->exists();
+    }
+
     public function isAdmin(): bool
     {
         return $this->role === self::ROLE_ADMIN;

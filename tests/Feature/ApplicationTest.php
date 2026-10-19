@@ -76,7 +76,7 @@ class ApplicationTest extends TestCase
 
         $response = $this->actingAs($candidate)->post(route('jobs.applications.store', $job));
 
-        $response->assertRedirect(route('candidate.applications.index'));
+        $response->assertRedirect(route('candidate.dashboard'));
         $this->assertDatabaseHas('applications', [
             'candidate_id' => $candidate->getKey(),
             'job_id' => $job->getKey(),

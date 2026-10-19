@@ -19,6 +19,22 @@ Route::get('/health', function () {
     return response()->json(['status' => 'ok']);
 })->name('health');
 
+if (app()->environment('local')) {
+    Route::get('/dev/login-admin', function () {
+        $admin = \App\Models\User::query()->where('role', \App\Models\User::ROLE_ADMIN)->firstOrFail();
+        auth()->login($admin);
+
+        return redirect()->route('admin.dashboard');
+    })->name('dev.login.admin');
+
+    Route::get('/dev/login-candidate', function () {
+        $candidate = \App\Models\User::query()->where('role', \App\Models\User::ROLE_CANDIDATE)->firstOrFail();
+        auth()->login($candidate);
+
+        return redirect()->route('candidate.dashboard');
+    })->name('dev.login.candidate');
+}
+
 /*
 |--------------------------------------------------------------------------
 | Candidate authentication
@@ -49,6 +65,10 @@ Route::post('/jobs/{job}/applications', [Candidate\ApplicationController::class,
     ->middleware(['auth', 'role:candidate'])
     ->name('jobs.applications.store');
 
+Route::post('/jobs/{job}/interested', [Candidate\InterestedJobController::class, 'toggle'])
+    ->middleware(['auth', 'role:candidate'])
+    ->name('candidate.interested.toggle');
+
 /*
 |--------------------------------------------------------------------------
 | Candidate authenticated area
@@ -58,7 +78,7 @@ Route::post('/jobs/{job}/applications', [Candidate\ApplicationController::class,
 Route::prefix('candidate')->middleware(['auth', 'role:candidate'])->group(function () {
     Route::get('/dashboard', [Candidate\DashboardController::class, 'index'])->name('candidate.dashboard');
     Route::patch('/profile', [Candidate\ProfileController::class, 'update'])->name('candidate.profile.update');
-    Route::get('/applications', [Candidate\ApplicationController::class, 'index'])->name('candidate.applications.index');
+    Route::get('/interested', [Candidate\InterestedJobController::class, 'index'])->name('candidate.interested.index');
 });
 
 /*

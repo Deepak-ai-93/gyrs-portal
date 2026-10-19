@@ -31,6 +31,25 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Demo / evaluation access
+    |--------------------------------------------------------------------------
+    |
+    | When enabled, a read-only "demo access" panel is shown on the sign-in
+    | pages so reviewers and clients can explore the portal. Set GYRS_DEMO=false
+    | (or remove the values) to hide the panel entirely in production.
+    |
+    */
+
+    'demo' => [
+        'enabled' => (bool) env('GYRS_DEMO', true),
+        'admin_email' => env('GYRS_ADMIN_EMAIL', 'admin.gyrs@gujarat.gov.in'),
+        'admin_password' => env('GYRS_DEMO_ADMIN_PASSWORD', env('GYRS_DEV_PASSWORD', 'gyrs-dev-password')),
+        'candidate_identifier' => env('GYRS_DEMO_CANDIDATE', 'jagan.trivedi@gyrs.gov.in'),
+        'candidate_password' => env('GYRS_DEMO_CANDIDATE_PASSWORD', env('GYRS_DEV_PASSWORD', 'gyrs-dev-password')),
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Candidate Enrollment ID Prefix
     |--------------------------------------------------------------------------
     */

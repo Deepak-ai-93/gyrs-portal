@@ -64,4 +64,31 @@ class JobMatchService
             ->take($limit)
             ->values();
     }
+
+    /**
+     * In-demand skills drawn from open vacancies that the candidate does not
+     * yet list, ordered by how many roles request them.
+     *
+     * @return Collection<int, array{name: string, jobs: int}>
+     */
+    public function suggestedSkills(User $user, int $limit = 6): Collection
+    {
+        $owned = ($user->relationLoaded('skills')
+            ? $user->skills->pluck('name')
+            : $user->skills()->pluck('name'))
+            ->map(fn (string $name) => mb_strtolower($name))
+            ->all();
+
+        return Job::query()
+            ->open()
+            ->with('skills')
+            ->get()
+            ->flatMap(fn (Job $job) => $job->skills)
+            ->filter(fn ($skill) => ! in_array(mb_strtolower($skill->name), $owned, true))
+            ->groupBy(fn ($skill) => $skill->name)
+            ->map(fn (Collection $group, string $name) => ['name' => $name, 'jobs' => $group->count()])
+            ->sortByDesc('jobs')
+            ->take($limit)
+            ->values();
+    }
 }

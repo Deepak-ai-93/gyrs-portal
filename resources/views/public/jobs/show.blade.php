@@ -6,6 +6,7 @@
 @php
     $user = auth()->user();
     $isCandidate = $user && method_exists($user, 'isCandidate') && $user->isCandidate();
+    $isSaved = $isCandidate && $user->hasSavedJob($job);
     $lastDate = $job->last_date ? \Illuminate\Support\Carbon::parse($job->last_date) : null;
     $isExpired = ($lastDate && $lastDate->isPast()) || (method_exists($job, 'isExpired') && $job->isExpired());
     $isClosed = in_array($job->status, ['closed', 'archived'], true) || $isExpired;
@@ -218,8 +219,11 @@
                                 </x-button>
                             </form>
                             <p class="text-sm muted" style="margin:var(--space-3) 0 0;">
-                                Your application is logged into your candidate dossier and tracked through four live stages.
+                                Your application is logged into your candidate dossier for the recruitment cell to review.
                             </p>
+                            <div style="margin-top:var(--space-4);">
+                                <x-interested-button :job="$job" :saved="$isSaved" block />
+                            </div>
                         @elseif ($user)
                             <p class="text-sm muted" style="margin-bottom:var(--space-3);">
                                 You are signed in as an administrator. Applications are submitted from candidate accounts.

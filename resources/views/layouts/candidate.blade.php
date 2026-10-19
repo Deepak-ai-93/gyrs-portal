@@ -14,7 +14,7 @@
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Candidate workspace — GYRS')</title>
-    <meta name="description" content="@yield('meta_description', 'GYRS candidate workspace: track applications, manage your profile and discover recommended vacancies.')">
+    <meta name="description" content="@yield('meta_description', 'GYRS candidate workspace: save interested jobs, manage your profile and discover AI-matched vacancies.')">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="layout-candidate">
@@ -36,7 +36,7 @@
             <div class="nav-collapse" id="candidate-navigation" data-mobile-menu>
                 <nav class="main-nav" aria-label="Candidate">
                     <a href="{{ route('candidate.dashboard') }}" @if (request()->routeIs('candidate.dashboard')) aria-current="page" @endif><x-icon name="home" :size="16" /> Dashboard</a>
-                    <a href="{{ route('candidate.applications.index') }}" @if (request()->routeIs('candidate.applications.index')) aria-current="page" @endif><x-icon name="file" :size="16" /> My applications</a>
+                    <a href="{{ route('candidate.interested.index') }}" @if (request()->routeIs('candidate.interested.index')) aria-current="page" @endif><x-icon name="sparkles" :size="16" /> Interested jobs</a>
                     <a href="{{ route('home') }}#job-explorer"><x-icon name="search" :size="16" /> Explore jobs</a>
                 </nav>
 
@@ -70,14 +70,14 @@
             <div class="footer-grid">
                 <div>
                     <h3><x-icon name="user" :size="16" /> Candidate workspace</h3>
-                    <p class="text-sm">Track your applications, keep your profile current and discover recommended vacancies.</p>
+                    <p class="text-sm">Save jobs you are interested in, keep your profile current and discover AI-matched vacancies.</p>
                 </div>
 
                 <div>
                     <h3>Quick links</h3>
                     <ul class="text-sm">
                         <li><a href="{{ route('candidate.dashboard') }}">Dashboard</a></li>
-                        <li><a href="{{ route('candidate.applications.index') }}">My applications</a></li>
+                        <li><a href="{{ route('candidate.interested.index') }}">Interested jobs</a></li>
                         <li><a href="{{ route('home') }}#job-explorer">Explore jobs</a></li>
                     </ul>
                 </div>

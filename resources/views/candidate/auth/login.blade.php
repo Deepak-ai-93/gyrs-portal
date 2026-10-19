@@ -16,7 +16,7 @@
                 account yet, you can <a href="{{ route('candidate.register') }}">register free</a> in a few minutes.
             </x-alert>
 
-            <form method="POST" action="{{ route('candidate.login') }}" data-loading-form>
+            <form method="POST" action="{{ route('candidate.login') }}" id="candidate-login-form" data-loading-form>
                 @csrf
 
                 <x-input
@@ -43,6 +43,15 @@
 
                 <x-button variant="outline" block type="submit">Sign in to dashboard</x-button>
             </form>
+
+            <x-demo-credentials
+                role="Candidate"
+                login-label="Email or mobile"
+                fill-name="identifier"
+                form="candidate-login-form"
+                :login="config('gyrs.demo.candidate_identifier')"
+                :password="config('gyrs.demo.candidate_password')"
+            />
 
             <details class="panel" style="margin-top:var(--space-4);">
                 <summary class="strong" style="cursor:pointer;">Prefer mobile OTP access?</summary>

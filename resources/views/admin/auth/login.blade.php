@@ -16,7 +16,7 @@
                 actions are recorded in the immutable audit trail.
             </x-alert>
 
-            <form method="POST" action="{{ route('admin.login') }}" data-loading-form>
+            <form method="POST" action="{{ route('admin.login') }}" id="admin-login-form" data-loading-form>
                 @csrf
 
                 <x-input
@@ -40,9 +40,18 @@
                 </x-button>
             </form>
 
+            <x-demo-credentials
+                role="Administrator"
+                login-label="Admin email"
+                fill-name="email"
+                form="admin-login-form"
+                :login="config('gyrs.demo.admin_email')"
+                :password="config('gyrs.demo.admin_password')"
+            />
+
             <p class="text-sm muted" style="margin-top:var(--space-4);">
                 If you cannot access your administrator account, contact the Directorate of Employment &amp; Training systems
-                team. Credentials are never issued or displayed on this page.
+                team.
             </p>
 
             <div class="auth-foot">

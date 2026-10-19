@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Candidate;
 
 use App\Http\Controllers\Controller;
-use App\Models\Application;
 use App\Models\RozgarMela;
 use App\Services\JobMatchService;
 use App\Services\ProfileCompletenessService;
@@ -19,21 +18,30 @@ class DashboardController extends Controller
 
     public function index(Request $request): View
     {
-        $user = $request->user()->load(['district', 'skills', 'applications.job.district']);
+        $user = $request->user()->load(['district', 'skills']);
 
-        $kpis = [
-            'applications' => $user->applications->count(),
-            'verified' => $user->applications->where('status', Application::STATUS_UNDER_REVIEW)->count(),
-            'shortlisted' => $user->applications->where('status', Application::STATUS_SHORTLISTED)->count(),
-            'interview_call' => $user->applications->where('status', Application::STATUS_INTERVIEW_CALL)->count(),
-        ];
+        $recommendedJobs = $this->matcher->recommendedJobs($user);
+
+        $savedJobs = $user->interestedJobs()
+            ->with(['district', 'skills'])
+            ->latest('saved_jobs.created_at')
+            ->get();
+
+        $melas = RozgarMela::query()->upcoming()->with('district')->limit(4)->get();
 
         return view('candidate.dashboard', [
             'user' => $user,
             'profileCompleteness' => $this->completeness->calculate($user),
-            'recommendedJobs' => $this->matcher->recommendedJobs($user),
-            'kpis' => $kpis,
-            'melas' => RozgarMela::query()->upcoming()->with('district')->limit(4)->get(),
+            'savedJobs' => $savedJobs,
+            'savedJobIds' => $savedJobs->pluck('id')->all(),
+            'recommendedJobs' => $recommendedJobs,
+            'suggestedSkills' => $this->matcher->suggestedSkills($user),
+            'kpis' => [
+                'interested' => $savedJobs->count(),
+                'recommended' => $recommendedJobs->count(),
+                'melas' => $melas->count(),
+            ],
+            'melas' => $melas,
         ]);
     }
 }

@@ -29,67 +29,52 @@
                 <span class="brand-sub">Administration</span>
             </a>
 
-            <button type="button" class="menu-toggle" data-menu-toggle aria-expanded="false" aria-controls="admin-navigation">
+            <button type="button" class="menu-toggle" data-menu-toggle aria-expanded="false" aria-controls="admin-sidebar">
                 <x-icon name="menu" :size="18" /> Menu
             </button>
 
-            <div class="nav-collapse" id="admin-navigation" data-mobile-menu>
-                <nav class="main-nav" aria-label="Administration">
-                    <a href="{{ route('admin.dashboard') }}" @if (request()->routeIs('admin.dashboard')) aria-current="page" @endif><x-icon name="home" :size="16" /> Overview</a>
-                    <a href="{{ route('admin.jobs.index') }}" @if (request()->routeIs('admin.jobs.*')) aria-current="page" @endif><x-icon name="briefcase" :size="16" /> Jobs</a>
-                    <a href="{{ route('admin.candidates.index') }}" @if (request()->routeIs('admin.candidates.*')) aria-current="page" @endif><x-icon name="users" :size="16" /> Candidates</a>
-                    <a href="{{ route('admin.applications.index') }}" @if (request()->routeIs('admin.applications.*')) aria-current="page" @endif><x-icon name="file" :size="16" /> Applications</a>
-                </nav>
-
-                <div class="header-actions">
-                    @if ($user)
-                        <span class="identity-chip">
-                            <x-icon name="shield" :size="15" />
-                            <span class="name">{{ $user->name }}</span>
-                        </span>
-                    @endif
-                    <form method="POST" action="{{ route('admin.logout') }}">
-                        @csrf
-                        <x-button variant="ghost" size="sm" type="submit"><x-icon name="logout" :size="16" /> Sign out</x-button>
-                    </form>
-                </div>
+            <div class="header-actions">
+                @if ($user)
+                    <span class="identity-chip">
+                        <x-icon name="shield" :size="15" />
+                        <span class="name">{{ $user->name }}</span>
+                    </span>
+                @endif
+                <form method="POST" action="{{ route('admin.logout') }}">
+                    @csrf
+                    <x-button variant="ghost" size="sm" type="submit"><x-icon name="logout" :size="16" /> Sign out</x-button>
+                </form>
             </div>
         </div>
     </header>
 
-    <main id="main" class="page-main" tabindex="-1">
-        <div class="container">
-            @include('partials.flash')
-            @include('partials.errors')
-        </div>
+    <div class="admin-shell">
+        <aside class="admin-sidebar" id="admin-sidebar" data-mobile-menu>
+            <nav class="side-nav" aria-label="Administration">
+                <p class="side-nav-label">Overview</p>
+                <a href="{{ route('admin.dashboard') }}" @if (request()->routeIs('admin.dashboard')) aria-current="page" @endif><x-icon name="home" :size="16" /> Dashboard</a>
 
-        @yield('content')
-    </main>
+                <p class="side-nav-label">Manage</p>
+                <a href="{{ route('admin.jobs.index') }}" @if (request()->routeIs('admin.jobs.*')) aria-current="page" @endif><x-icon name="briefcase" :size="16" /> Job postings</a>
+                <a href="{{ route('admin.candidates.index') }}" @if (request()->routeIs('admin.candidates.*')) aria-current="page" @endif><x-icon name="users" :size="16" /> Candidates</a>
+                <a href="{{ route('admin.applications.index') }}" @if (request()->routeIs('admin.applications.*')) aria-current="page" @endif><x-icon name="file" :size="16" /> Applications</a>
 
-    <footer class="site-footer">
-        <div class="container">
-            <div class="footer-grid">
-                <div>
-                    <h3><x-icon name="shield" :size="16" /> GYRS Portal</h3>
-                    <p class="text-sm">Administration for job vacancies, candidate verification and application audit.</p>
-                </div>
+                <p class="side-nav-label">Data</p>
+                <a href="{{ route('admin.exports.candidates') }}"><x-icon name="download" :size="16" /> Export candidates</a>
 
-                <div>
-                    <h3>Quick links</h3>
-                    <ul class="text-sm">
-                        <li><a href="{{ route('admin.dashboard') }}">Overview</a></li>
-                        <li><a href="{{ route('admin.jobs.index') }}">Jobs</a></li>
-                        <li><a href="{{ route('admin.candidates.index') }}">Candidates</a></li>
-                        <li><a href="{{ route('admin.applications.index') }}">Applications</a></li>
-                        <li><a href="{{ route('home') }}"><x-icon name="external" :size="14" /> Public job board</a></li>
-                    </ul>
-                </div>
+                <p class="side-nav-label">Site</p>
+                <a href="{{ route('home') }}"><x-icon name="external" :size="16" /> Public job board</a>
+            </nav>
+        </aside>
+
+        <main id="main" class="page-main admin-main" tabindex="-1">
+            <div class="container">
+                @include('partials.flash')
+                @include('partials.errors')
             </div>
 
-            <div class="footer-bottom">
-                &copy; {{ date('Y') }} GYRS Portal. All rights reserved.
-            </div>
-        </div>
-    </footer>
+            @yield('content')
+        </main>
+    </div>
 </body>
 </html>

@@ -11,6 +11,11 @@
     $typeValue = fn ($type) => is_object($type) ? (string) ($type->value ?? $type->slug ?? $type->name ?? '') : (string) $type;
     $districtValue = fn ($district) => is_object($district) ? (string) ($district->slug ?? $district->id ?? '') : (string) $district;
     $districtLabel = fn ($district) => is_object($district) ? (string) ($district->name ?? $district->title ?? '') : (string) $district;
+
+    $authUser = auth()->user();
+    $savedJobIds = $authUser && $authUser->isCandidate()
+        ? $authUser->savedJobs()->pluck('job_id')->all()
+        : [];
 @endphp
 
 @section('content')
@@ -36,10 +41,31 @@
         <div class="container">
             <div class="hero-inner">
                 <span class="hero-badge"><x-icon name="shield" :size="16" /> Directorate of Employment &amp; Training &middot; Government of Gujarat</span>
-                <h1>Find your next role in Gujarat</h1>
+
+                <h1 class="hero-title">
+                    Find your next
+                    <span class="rotator hero-rotator" data-rotator data-rotator-interval="2600">
+                        <span class="rotator-item is-active" data-rotator-item>role</span>
+                        <span class="rotator-item" data-rotator-item>career</span>
+                        <span class="rotator-item" data-rotator-item>opportunity</span>
+                        <span class="rotator-item" data-rotator-item>future</span>
+                    </span>
+                    in Gujarat
+                </h1>
+
                 <p class="hero-sub">
                     Search verified state government positions, public department vacancies and leading private sector roles
                     across all 33 districts — free for every candidate.
+                </p>
+
+                <p class="hero-story">
+                    <span class="hero-story-icon" aria-hidden="true"><x-icon name="sparkles" :size="15" /></span>
+                    <span class="rotator hero-story-rotator" data-rotator data-rotator-interval="4600" aria-live="polite">
+                        <span class="rotator-item is-active" data-rotator-item>From the first search to the final offer letter — one platform for every district.</span>
+                        <span class="rotator-item" data-rotator-item>Register free, save the jobs you like and let smart matching surface the right roles.</span>
+                        <span class="rotator-item" data-rotator-item>Government posts, department vacancies and private roles — verified and in one place.</span>
+                        <span class="rotator-item" data-rotator-item>33 districts. Thousands of aspirations. One Gujarat.</span>
+                    </span>
                 </p>
 
                 <form class="search-panel" method="GET" action="{{ route('home') }}" role="search" data-loading-form>
@@ -100,8 +126,8 @@
                     <div class="metric-label">Free candidate registration</div>
                 </div>
                 <div class="metric">
-                    <div class="metric-num">4-stage</div>
-                    <div class="metric-label">Live application tracking</div>
+                    <div class="metric-num">AI</div>
+                    <div class="metric-label">Matched recommendations</div>
                 </div>
             </div>
         </div>
@@ -132,41 +158,7 @@
                     @else
                         <div class="jobs-grid">
                             @foreach ($jobs as $job)
-                                <article class="job-card card is-interactive">
-                                    <div class="card-body">
-                                        <div class="job-card-top">
-                                            <h3 class="job-card-title"><a href="{{ route('jobs.show', $job) }}">{{ $job->title }}</a></h3>
-                                            @if (! is_null($job->match_score))
-                                                <span class="badge badge-info">{{ (int) $job->match_score }}% match</span>
-                                            @endif
-                                        </div>
-                                        <p class="job-card-dept">{{ $job->department }}</p>
-
-                                        <ul class="meta-list">
-                                            <li><x-icon name="map-pin" :size="16" /> {{ $job->district->name ?? $job->location }}</li>
-                                            @if ($job->employment_type)
-                                                <li><x-icon name="briefcase" :size="16" /> {{ $job->employment_type }}</li>
-                                            @endif
-                                            @if ($job->salary_text)
-                                                <li><x-icon name="award" :size="16" /> {{ $job->salary_text }}</li>
-                                            @endif
-                                            @if ($job->last_date)
-                                                <li><x-icon name="calendar" :size="16" /> Apply by {{ \Illuminate\Support\Carbon::parse($job->last_date)->format('d M Y') }}</li>
-                                            @endif
-                                        </ul>
-
-                                        @if ($job->relationLoaded('skills') && $job->skills->isNotEmpty())
-                                            <div class="badge-row">
-                                                @foreach ($job->skills as $skill)
-                                                    <span class="badge">{{ $skill->name }}</span>
-                                                @endforeach
-                                            </div>
-                                        @endif
-                                    </div>
-                                    <div class="card-foot">
-                                        <x-button variant="outline" size="sm" :href="route('jobs.show', $job)">View details</x-button>
-                                    </div>
-                                </article>
+                                <x-job-card :job="$job" :saved="in_array($job->getKey(), $savedJobIds ?? [], true)" />
                             @endforeach
                         </div>
 
@@ -240,8 +232,8 @@
                 </div>
                 <div class="step-card">
                     <span class="step-num">03</span>
-                    <h3>Apply &amp; track status</h3>
-                    <p>Apply once per vacancy and follow your live four-stage tracker: Applied, Under Review, Shortlisted, Interview Call.</p>
+                    <h3>Save &amp; shortlist interests</h3>
+                    <p>Mark any vacancy as interested, review AI-matched recommendations and build a personal shortlist of roles.</p>
                 </div>
                 <div class="step-card">
                     <span class="step-num">04</span>
@@ -252,8 +244,8 @@
 
             <div class="panel panel-accent between" style="margin-top:var(--space-8);">
                 <div>
-                    <h2 style="font-size:1.0625rem;margin-bottom:4px;">Ready to track your applications or register as a new candidate?</h2>
-                    <p class="text-sm muted" style="margin:0;">Sign in to your candidate dashboard to view applications, interview calls and recommended jobs.</p>
+                    <h2 style="font-size:1.0625rem;margin-bottom:4px;">Ready to shortlist jobs you are interested in?</h2>
+                    <p class="text-sm muted" style="margin:0;">Sign in to your candidate dashboard to view interested jobs, AI recommendations and upcoming Rozgar melas.</p>
                 </div>
                 <div class="cluster">
                     <x-button variant="outline" :href="route('candidate.login')">Candidate sign in</x-button>
@@ -311,10 +303,10 @@
                     </div>
                 </details>
                 <details>
-                    <summary>How can I track the live status of my application?</summary>
+                    <summary>How do I keep track of the jobs I am interested in?</summary>
                     <div class="faq-answer">
-                        Sign in to your candidate dashboard. The live four-stage tracker shows your exact stage at all times:
-                        Applied, Under Review, Shortlisted and Interview Call, with dates and next steps.
+                        Sign in and choose <strong>Mark interested</strong> on any vacancy. Your candidate dashboard keeps a simple directory
+                        of interested jobs, alongside AI-matched recommendations and suggested skills to learn next.
                     </div>
                 </details>
                 <details>

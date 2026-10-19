@@ -3,21 +3,21 @@
 @section('title', 'Candidate dashboard — GYRS')
 
 @php
-    $applications = $user->applications ?? collect();
     $completeness = (int) ($profileCompleteness ?? 0);
-    $stageKeys = ['applied', 'under_review', 'shortlisted', 'interview_call'];
-    $stageLabels = ['Applied', 'Under review', 'Shortlisted', 'Interview call'];
     $initials = collect(explode(' ', trim((string) $user->name)))
         ->filter()
         ->take(2)
         ->map(fn ($part) => Str::upper(Str::substr($part, 0, 1)))
         ->implode('');
-    if ($applications->isEmpty()) {
-        $nextAction = ['label' => 'Explore open vacancies', 'href' => route('home') . '#job-explorer', 'note' => 'Start by finding roles that match your qualification and district.'];
+
+    if ($savedJobs->isEmpty() && $recommendedJobs->isEmpty()) {
+        $nextAction = ['label' => 'Explore open vacancies', 'href' => route('home') . '#job-explorer', 'note' => 'Start by browsing verified vacancies that match your qualification and district.'];
+    } elseif ($savedJobs->isEmpty()) {
+        $nextAction = ['label' => 'Save jobs you like', 'href' => '#recommended', 'note' => 'You have AI recommendations ready — mark the ones you are interested in to shortlist them.'];
     } elseif ($completeness < 100) {
-        $nextAction = ['label' => 'Complete your profile', 'href' => '#profile', 'note' => 'A complete dossier improves your match score and visibility to employers.'];
+        $nextAction = ['label' => 'Complete your profile', 'href' => '#profile', 'note' => 'A complete profile improves your match score and the quality of AI suggestions.'];
     } else {
-        $nextAction = ['label' => 'Track your applications', 'href' => '#applications', 'note' => 'Your dossier is complete — monitor each application stage below.'];
+        $nextAction = ['label' => 'Review your interest list', 'href' => '#interested', 'note' => 'Your profile is complete — keep your interested jobs list up to date.'];
     }
 @endphp
 
@@ -46,7 +46,7 @@
 
                 <div class="identity-actions">
                     <x-button variant="outline" size="sm" data-modal-open="profile">Edit profile</x-button>
-                    <x-button variant="ghost" size="sm" :href="route('candidate.applications.index')">All applications</x-button>
+                    <x-button variant="ghost" size="sm" :href="route('candidate.interested.index')">My interested jobs</x-button>
                 </div>
             </div>
 
@@ -67,31 +67,35 @@
             <div class="kpi-grid" style="margin-bottom:var(--space-6);">
                 <div class="kpi">
                     <div>
-                        <div class="kpi-label">Applications</div>
-                        <div class="kpi-value">{{ $kpis['applications'] ?? 0 }}</div>
+                        <div class="kpi-label">Interested jobs</div>
+                        <div class="kpi-value">{{ $kpis['interested'] ?? 0 }}</div>
+                        <div class="kpi-note">Saved to your list</div>
                     </div>
-                    <span class="kpi-icon"><x-icon name="file" :size="20" /></span>
+                    <span class="kpi-icon"><x-icon name="sparkles" :size="20" /></span>
                 </div>
                 <div class="kpi">
                     <div>
-                        <div class="kpi-label">Verified</div>
-                        <div class="kpi-value">{{ $kpis['verified'] ?? 0 }}</div>
+                        <div class="kpi-label">AI matches</div>
+                        <div class="kpi-value">{{ $kpis['recommended'] ?? 0 }}</div>
+                        <div class="kpi-note">Recommended for you</div>
                     </div>
-                    <span class="kpi-icon"><x-icon name="check-circle" :size="20" /></span>
+                    <span class="kpi-icon"><x-icon name="briefcase" :size="20" /></span>
                 </div>
                 <div class="kpi">
                     <div>
-                        <div class="kpi-label">Shortlisted</div>
-                        <div class="kpi-value">{{ $kpis['shortlisted'] ?? 0 }}</div>
-                    </div>
-                    <span class="kpi-icon"><x-icon name="award" :size="20" /></span>
-                </div>
-                <div class="kpi">
-                    <div>
-                        <div class="kpi-label">Interview calls</div>
-                        <div class="kpi-value">{{ $kpis['interview_call'] ?? 0 }}</div>
+                        <div class="kpi-label">Rozgar melas</div>
+                        <div class="kpi-value">{{ $kpis['melas'] ?? 0 }}</div>
+                        <div class="kpi-note">Upcoming drives</div>
                     </div>
                     <span class="kpi-icon"><x-icon name="calendar" :size="20" /></span>
+                </div>
+                <div class="kpi">
+                    <div>
+                        <div class="kpi-label">Profile strength</div>
+                        <div class="kpi-value">{{ $completeness }}%</div>
+                        <div class="kpi-note">Complete your dossier</div>
+                    </div>
+                    <span class="kpi-icon"><x-icon name="user" :size="20" /></span>
                 </div>
             </div>
 
@@ -104,95 +108,44 @@
             </div>
 
             <nav class="tabs" aria-label="Dashboard sections">
-                <a href="#applications" class="is-active"><x-icon name="file" :size="16" /> Applications &amp; tracker</a>
-                <a href="#recommended"><x-icon name="sparkles" :size="16" /> Recommended</a>
+                <a href="#interested" class="is-active"><x-icon name="sparkles" :size="16" /> Interested jobs</a>
+                <a href="#recommended"><x-icon name="briefcase" :size="16" /> AI recommended</a>
+                <a href="#skills"><x-icon name="award" :size="16" /> Skill upgradation</a>
                 <a href="#melas"><x-icon name="calendar" :size="16" /> Rozgar melas</a>
             </nav>
 
-            <div id="applications" style="scroll-margin-top:80px;">
+            <div id="interested" style="scroll-margin-top:80px;">
                 <div class="between" style="margin-bottom:var(--space-4);">
                     <div>
-                        <h2>Application tracker</h2>
-                        <p class="text-sm muted" style="margin:0;">Every application follows four live stages.</p>
+                        <h2>Jobs you are interested in</h2>
+                        <p class="text-sm muted" style="margin:0;">A simple directory of roles you have saved. Remove any that no longer interest you.</p>
                     </div>
                 </div>
 
-                @if ($applications->isEmpty())
+                @if ($savedJobs->isEmpty())
                     <x-empty-state
-                        icon="inbox"
-                        title="No applications yet"
-                        message="When you apply for a vacancy it appears here with a live four-stage tracker: Applied, Under review, Shortlisted and Interview call."
+                        icon="sparkles"
+                        title="No interested jobs yet"
+                        message="Mark any vacancy as interested while browsing and it will appear here for quick access."
                     >
                         <x-slot:action>
                             <x-button variant="outline" :href="route('home') . '#job-explorer'">Explore open vacancies</x-button>
                         </x-slot:action>
                     </x-empty-state>
                 @else
-                    @foreach ($applications as $application)
-                        @php
-                            $status = $application->status;
-                            $current = array_search($status, $stageKeys, true);
-                            $isRejected = $status === 'rejected';
-                            $isPlaced = $status === 'placed';
-                        @endphp
-
-                        <article class="application-item">
-                            <div class="application-head">
-                                <div>
-                                    <h3>{{ $application->job->title ?? 'Vacancy' }}</h3>
-                                    <p class="text-sm muted" style="margin:0;">
-                                        {{ $application->job->department ?? '' }}
-                                        @if ($application->job && $application->job->district) &middot; {{ $application->job->district->name }} @endif
-                                    </p>
-                                </div>
-                                <div class="cluster">
-                                    <x-status-badge :status="$status" />
-                                    @if ($application->job)
-                                        <x-button variant="ghost" size="sm" :href="route('jobs.show', $application->job)">View vacancy</x-button>
-                                    @endif
-                                </div>
-                            </div>
-
-                            @if ($isRejected)
-                                <p class="text-sm muted" style="margin:0;">
-                                    This application was not progressed. You can continue applying for other vacancies.
-                                </p>
-                            @else
-                                <div class="tracker" role="list">
-                                    @foreach ($stageLabels as $index => $label)
-                                        @php
-                                            $isDone = $isPlaced || ($current !== false && $index < $current);
-                                            $isCurrent = ! $isPlaced && $current !== false && $index === $current;
-                                            $stateLabel = $isDone ? 'Completed' : ($isCurrent ? 'Current stage' : 'Pending');
-                                        @endphp
-                                        <div class="tracker-step {{ $isDone ? 'is-done' : '' }} {{ $isCurrent ? 'is-current' : '' }}" role="listitem">
-                                            <span class="step-dot" aria-hidden="true">{{ $isDone ? '✓' : $index + 1 }}</span>
-                                            <span class="step-label">{{ $label }}</span>
-                                            <span class="step-time">{{ $stateLabel }}</span>
-                                        </div>
-                                    @endforeach
-                                </div>
-                            @endif
-
-                            <p class="text-sm muted" style="margin:var(--space-3) 0 0;">
-                                Applied
-                                @if ($application->applied_at)
-                                    on {{ \Illuminate\Support\Carbon::parse($application->applied_at)->format('d M Y') }}
-                                @endif
-                                @if ($application->status_changed_at)
-                                    &middot; last updated {{ \Illuminate\Support\Carbon::parse($application->status_changed_at)->diffForHumans() }}
-                                @endif
-                            </p>
-                        </article>
-                    @endforeach
+                    <div class="jobs-grid">
+                        @foreach ($savedJobs as $job)
+                            <x-job-card :job="$job" :saved="true" />
+                        @endforeach
+                    </div>
                 @endif
             </div>
 
             <div id="recommended" style="margin-top:var(--space-12);scroll-margin-top:80px;">
                 <div class="between" style="margin-bottom:var(--space-4);">
                     <div>
-                        <h2>Recommended vacancies</h2>
-                        <p class="text-sm muted" style="margin:0;">Roles matched to your qualification, skills and district.</p>
+                        <h2><x-icon name="sparkles" :size="18" /> AI recommended for you</h2>
+                        <p class="text-sm muted" style="margin:0;">Roles matched to your qualification, skills and district by our recommendation engine.</p>
                     </div>
                     <x-button variant="ghost" size="sm" :href="route('home') . '#job-explorer'">View all</x-button>
                 </div>
@@ -206,25 +159,41 @@
                 @else
                     <div class="jobs-grid">
                         @foreach ($recommendedJobs as $job)
-                            <article class="job-card card is-interactive">
-                                <div class="card-body">
-                                    <div class="job-card-top">
-                                        <h3 class="job-card-title"><a href="{{ route('jobs.show', $job) }}">{{ $job->title }}</a></h3>
-                                        @if (! is_null($job->match_score))
-                                            <span class="badge badge-info">{{ (int) $job->match_score }}% match</span>
-                                        @endif
-                                    </div>
-                                    <p class="job-card-dept">{{ $job->department }}</p>
-                                    <ul class="meta-list">
-                                        <li><x-icon name="map-pin" :size="16" /> {{ $job->district->name ?? $job->location }}</li>
-                                        @if ($job->employment_type)<li><x-icon name="briefcase" :size="16" /> {{ $job->employment_type }}</li>@endif
-                                        @if ($job->salary_text)<li><x-icon name="award" :size="16" /> {{ $job->salary_text }}</li>@endif
-                                        @if ($job->last_date)<li><x-icon name="calendar" :size="16" /> Apply by {{ \Illuminate\Support\Carbon::parse($job->last_date)->format('d M Y') }}</li>@endif
-                                    </ul>
+                            <x-job-card :job="$job" :saved="in_array($job->getKey(), $savedJobIds, true)" />
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+
+            <div id="skills" style="margin-top:var(--space-12);scroll-margin-top:80px;">
+                <div class="between" style="margin-bottom:var(--space-4);">
+                    <div>
+                        <h2><x-icon name="award" :size="18" /> Skill upgradation</h2>
+                        <p class="text-sm muted" style="margin:0;">In-demand skills appearing across matched vacancies that are not yet on your profile.</p>
+                    </div>
+                </div>
+
+                @if ($suggestedSkills->isEmpty())
+                    <x-empty-state
+                        icon="check-circle"
+                        title="Your skills are in demand"
+                        message="Your profile already covers the skills requested by the vacancies we matched to you. Keep it updated as you learn more."
+                    />
+                @else
+                    <div class="skill-grid">
+                        @foreach ($suggestedSkills as $skill)
+                            <article class="skill-card">
+                                <div class="cluster">
+                                    <span class="badge badge-info"><x-icon name="sparkles" :size="13" /> In demand</span>
+                                    <span class="badge">{{ $skill['jobs'] }} {{ Str::plural('role', $skill['jobs']) }}</span>
                                 </div>
-                                <div class="card-foot">
-                                    <x-button variant="outline" size="sm" :href="route('jobs.show', $job)">View details</x-button>
-                                </div>
+                                <h3>{{ $skill['name'] }}</h3>
+                                <p class="text-sm muted" style="margin:0;">
+                                    Requested by {{ $skill['jobs'] }} open {{ Str::plural('vacancy', $skill['jobs']) }}. Upskill in this area to raise your match score.
+                                </p>
+                                <x-button variant="outline" size="sm" :href="route('home', ['keyword' => $skill['name']]) . '#job-explorer'">
+                                    View roles needing this
+                                </x-button>
                             </article>
                         @endforeach
                     </div>

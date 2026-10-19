@@ -112,6 +112,11 @@ class Job extends Model
         return $this->hasMany(Application::class);
     }
 
+    public function savedBy(): HasMany
+    {
+        return $this->hasMany(SavedJob::class);
+    }
+
     public function eligibility(): HasMany
     {
         return $this->hasMany(JobEligibility::class)->orderBy('sort_order');
