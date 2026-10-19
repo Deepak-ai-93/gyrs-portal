@@ -21,10 +21,14 @@ class AdminAuthorizationTest extends TestCase
     {
         $candidate = User::factory()->candidate()->create();
 
-        $this->actingAs($candidate)->get(route('admin.dashboard'))->assertForbidden();
-        $this->actingAs($candidate)->get(route('admin.jobs.index'))->assertForbidden();
-        $this->actingAs($candidate)->get(route('admin.candidates.index'))->assertForbidden();
-        $this->actingAs($candidate)->get(route('admin.applications.index'))->assertForbidden();
+        // Browsing into the admin area redirects the candidate back to their
+        // own dashboard rather than showing a dead-end 403 page.
+        $this->actingAs($candidate)->get(route('admin.dashboard'))->assertRedirect(route('candidate.dashboard'));
+        $this->actingAs($candidate)->get(route('admin.jobs.index'))->assertRedirect(route('candidate.dashboard'));
+        $this->actingAs($candidate)->get(route('admin.candidates.index'))->assertRedirect(route('candidate.dashboard'));
+        $this->actingAs($candidate)->get(route('admin.applications.index'))->assertRedirect(route('candidate.dashboard'));
+
+        // State-changing requests are still rejected outright.
         $this->actingAs($candidate)->post(route('admin.jobs.store'))->assertForbidden();
     }
 
@@ -32,7 +36,7 @@ class AdminAuthorizationTest extends TestCase
     {
         $admin = User::factory()->admin()->create();
 
-        $this->actingAs($admin)->get(route('candidate.dashboard'))->assertForbidden();
+        $this->actingAs($admin)->get(route('candidate.dashboard'))->assertRedirect(route('admin.dashboard'));
     }
 
     public function test_admin_can_manage_job_status_via_model_scope(): void

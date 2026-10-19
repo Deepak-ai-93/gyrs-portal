@@ -24,7 +24,7 @@ class CandidateExportTest extends TestCase
 
         $this->actingAs($candidate)
             ->get(route('admin.exports.candidates'))
-            ->assertForbidden();
+            ->assertRedirect(route('candidate.dashboard'));
     }
 
     public function test_admin_can_export_roster_and_audit_log_is_written(): void
