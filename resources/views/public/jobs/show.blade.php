@@ -237,7 +237,7 @@
 
                         @if ($job->apply_url)
                             <div style="margin-top:var(--space-4);padding-top:var(--space-4);border-top:1px solid var(--color-border);">
-                                <p class="text-sm muted" style="margin-bottom:8px;">Official application portal:</p>
+                                <p class="text-sm muted" style="margin-bottom:8px;">Official government application portal:</p>
                                 <x-button variant="ghost" block :href="$job->apply_url" target="_blank" rel="noopener noreferrer">
                                     <x-icon name="external" :size="16" /> Apply on official portal
                                 </x-button>
