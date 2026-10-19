@@ -20,10 +20,21 @@
         <script>
             (function () {
                 try {
-                    document.documentElement.classList.add('is-preloading');
-                    window.setTimeout(function () {
-                        document.documentElement.classList.remove('is-preloading');
-                    }, 6000);
+                    var el = document.documentElement;
+                    el.classList.add('is-preloading');
+
+                    var released = false;
+                    window.__gyrsPreloaderRelease = function () {
+                        if (released) {
+                            return;
+                        }
+                        released = true;
+                        el.classList.remove('is-preloading');
+                    };
+
+                    /* Safety net: never let the overlay trap the page if the
+                       motion script fails to load or throw. */
+                    window.setTimeout(window.__gyrsPreloaderRelease, 4000);
                 } catch (e) {}
             })();
         </script>

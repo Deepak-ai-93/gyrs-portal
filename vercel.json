@@ -19,6 +19,10 @@
             "dest": "/public/build/assets/$1"
         },
         {
+            "src": "/js/(.*)",
+            "dest": "/public/js/$1"
+        },
+        {
             "src": "/favicon.(.*)",
             "dest": "/public/favicon.$1"
         },

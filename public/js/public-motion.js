@@ -58,6 +58,14 @@
         var overlay = document.getElementById('gyrs-preloader');
         var hold = 0;
 
+        function releasePreloader() {
+            if (typeof window.__gyrsPreloaderRelease === 'function') {
+                window.__gyrsPreloaderRelease();
+            } else {
+                root.classList.remove('is-preloading');
+            }
+        }
+
         function runPreloader() {
             var rings = overlay.querySelectorAll('.pl-ring');
             var bull = overlay.querySelector('.pl-bull');
@@ -110,7 +118,7 @@
                         if (words.length) {
                             gsap.killTweensOf(words);
                         }
-                        root.classList.remove('is-preloading');
+                        releasePreloader();
                     }
                 });
 
@@ -133,7 +141,7 @@
         if (overlay && gsap && !prefersReduced) {
             hold = runPreloader();
         } else {
-            root.classList.remove('is-preloading');
+            releasePreloader();
         }
 
         if (!gsap || !ScrollTrigger || prefersReduced) {
