@@ -446,12 +446,24 @@ hr {
 }
 
 .site-footer {
-  background: var(--color-surface);
-  border-top: 1px solid var(--color-border);
-  color: var(--color-text);
+  background: var(--color-heading);
+  border-top: 1px solid var(--color-heading);
+  color: #eceeec;
   padding: var(--space-12) 0 var(--space-6);
   margin-top: var(--space-16);
   font-size: 0.9375rem;
+}
+
+.site-footer a {
+  color: #e2e5e2;
+}
+
+.site-footer a:hover {
+  color: #ffffff;
+}
+
+.site-footer :focus-visible {
+  outline-color: #ffffff;
 }
 
 .footer-grid {
@@ -463,6 +475,7 @@ hr {
 .site-footer h3 {
   font-size: 0.9375rem;
   margin-bottom: var(--space-3);
+  color: var(--color-surface);
 }
 
 .site-footer ul {
@@ -476,12 +489,12 @@ hr {
 }
 
 .footer-bottom {
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
   margin-top: var(--space-8);
   padding-top: var(--space-4);
   text-align: center;
   font-size: 0.8125rem;
-  color: var(--color-muted);
+  color: rgba(255, 255, 255, 0.72);
 }
 
 .flash-region {
@@ -3010,7 +3023,7 @@ body.modal-open {
 
   .footer-grid > div + div {
     padding-top: var(--space-4);
-    border-top: 1px solid var(--color-border);
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
   }
 }
 
@@ -3152,17 +3165,21 @@ html.no-js .steps-line-fill {
   }
 }
 
-/* Preloader — arrow finding its target. Only ever shown while the html
+/* Preloader — Navigation Compass & Career Horizon. Only ever shown while the html
    element carries `is-preloading`, which is added by JS, so a no-JS or
    reduced-motion visitor never sees an overlay. */
 .preloader {
   position: fixed;
   inset: 0;
-  z-index: 300;
+  z-index: 500;
   display: none;
   align-items: center;
   justify-content: center;
   background: var(--color-page);
+  padding: var(--space-4);
+  overflow: hidden;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 html.is-preloading .preloader {
@@ -3177,97 +3194,194 @@ html.is-preloading body {
 .preloader-stage {
   position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  max-width: 440px;
+  min-height: 380px;
 }
 
 .preloader-mark {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  filter: drop-shadow(0 10px 30px rgba(79, 80, 79, 0.08));
 }
 
-.preloader-words {
+.preloader-art {
+  width: clamp(140px, 30vw, 196px);
+  height: clamp(140px, 30vw, 196px);
+  display: block;
+  overflow: visible;
+}
+
+/* SVG Elements */
+.pl-ambient {
+  transform-origin: 100px 100px;
+}
+
+.pl-cardinals,
+.pl-orbit-group,
+.pl-arrow-system,
+.pl-sparks {
+  transform-origin: 100px 100px;
+}
+
+/* Floating Orbit Chips */
+.preloader-chips {
   position: absolute;
   inset: 0;
   pointer-events: none;
 }
 
-.pl-word {
+.pl-chip {
   position: absolute;
-  opacity: 0;
-  font-size: clamp(0.75rem, 2.4vw, 0.875rem);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 11px;
+  border-radius: 999px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: 0 2px 8px rgba(79, 80, 79, 0.06);
+  font-size: 0.75rem;
   font-weight: 600;
+  color: var(--color-heading);
   letter-spacing: 0.01em;
-  color: var(--color-muted);
   white-space: nowrap;
+  opacity: 0;
   will-change: transform, opacity;
 }
 
-.pl-word-1 {
-  top: 10%;
-  left: -44%;
+.pl-chip-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-focus);
 }
 
-.pl-word-2 {
-  top: 44%;
-  right: -56%;
+.pl-chip-1 {
+  top: 8%;
+  left: -6%;
+}
+
+.pl-chip-2 {
+  top: 14%;
+  right: -8%;
+}
+
+.pl-chip-3 {
+  top: 50%;
+  right: -12%;
+}
+
+.pl-chip-4 {
+  bottom: 24%;
+  left: -10%;
+}
+
+.pl-chip-5 {
+  bottom: 22%;
+  right: -4%;
+}
+
+@media (max-width: 520px) {
+  .pl-chip {
+    font-size: 0.6875rem;
+    padding: 3px 8px;
+  }
+  .pl-chip-1 { top: 2%; left: 2%; }
+  .pl-chip-2 { top: 4%; right: 2%; }
+  .pl-chip-3 { display: none; }
+  .pl-chip-4 { bottom: 26%; left: 0; }
+  .pl-chip-5 { bottom: 26%; right: 0; }
+}
+
+/* Telemetry & HUD Progress */
+.preloader-telemetry {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+  width: 100%;
+  max-width: 250px;
+}
+
+.pl-status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.pl-pulse-beacon {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-focus);
+  box-shadow: 0 0 0 0 rgba(141, 154, 145, 0.7);
+  animation: pl-beacon-pulse 1.6s infinite ease-out;
+}
+
+@keyframes pl-beacon-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(141, 154, 145, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(141, 154, 145, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(141, 154, 145, 0);
+  }
+}
+
+.pl-status-text {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   color: var(--color-heading);
 }
 
-.pl-word-3 {
-  bottom: 6%;
-  left: -30%;
+.pl-meter-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
 }
 
-.pl-word-4 {
-  top: 2%;
-  right: -42%;
+.pl-meter-track {
+  position: relative;
+  flex: 1;
+  height: 4px;
+  background: var(--color-border);
+  border-radius: 999px;
+  overflow: hidden;
 }
 
-.pl-word-5 {
-  top: 52%;
-  left: -52%;
-  color: var(--color-heading);
+.pl-meter-bar {
+  position: absolute;
+  inset: 0;
+  width: 0%;
+  background: var(--color-heading);
+  border-radius: 999px;
+  will-change: width;
 }
 
-.pl-word-6 {
-  bottom: -6%;
-  right: -64%;
-}
-
-.preloader-art {
-  width: clamp(120px, 24vw, 168px);
-  height: auto;
-  display: block;
-}
-
-.pl-ring {
-  fill: none;
-  stroke: var(--color-border-strong);
-}
-
-.pl-ring:first-child {
-  stroke: var(--color-border);
-}
-
-.pl-ripple {
-  fill: none;
-  stroke: var(--color-accent);
-}
-
-.pl-bull {
-  fill: var(--color-accent);
-  stroke: none;
-}
-
-.pl-arrow {
-  stroke: var(--color-heading);
-}
-
-.pl-arrow .pl-tip {
-  fill: var(--color-heading);
-  stroke: none;
+.pl-counter {
+  font-size: 0.75rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-weight: 600;
+  color: var(--color-muted);
+  min-width: 34px;
+  text-align: right;
 }
 
 @media (prefers-reduced-motion: reduce) {

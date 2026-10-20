@@ -48,28 +48,105 @@
         <div class="preloader" id="gyrs-preloader" aria-hidden="true">
             <div class="preloader-stage">
                 <div class="preloader-mark">
-                    <svg class="preloader-art" viewBox="0 0 140 140" width="140" height="140" aria-hidden="true" focusable="false">
-                        <g fill="none" stroke-linecap="round">
-                            <circle class="pl-ring" cx="70" cy="70" r="54" stroke-width="2" />
-                            <circle class="pl-ring" cx="70" cy="70" r="38" stroke-width="2" />
-                            <circle class="pl-ring" cx="70" cy="70" r="22" stroke-width="2" />
-                            <circle class="pl-ripple" cx="70" cy="70" r="8" stroke-width="2" opacity="0" />
-                            <circle class="pl-bull" cx="70" cy="70" r="7" />
+                    <svg class="preloader-art" viewBox="0 0 200 200" width="200" height="200" aria-hidden="true" focusable="false">
+                        <defs>
+                            <radialGradient id="pl-radar-glow" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="var(--color-heading)" stop-opacity="0.08" />
+                                <stop offset="60%" stop-color="var(--color-heading)" stop-opacity="0.02" />
+                                <stop offset="100%" stop-color="var(--color-heading)" stop-opacity="0" />
+                            </radialGradient>
+                            <linearGradient id="pl-arrow-grad-l" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="var(--color-heading)" />
+                                <stop offset="100%" stop-color="var(--color-text)" />
+                            </linearGradient>
+                            <linearGradient id="pl-arrow-grad-r" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="var(--color-accent-hover)" />
+                                <stop offset="100%" stop-color="var(--color-muted)" />
+                            </linearGradient>
+                        </defs>
+
+                        <!-- Ambient Radar Field -->
+                        <circle class="pl-ambient" cx="100" cy="100" r="92" fill="url(#pl-radar-glow)" />
+
+                        <!-- Outer Dial & Graduations -->
+                        <circle class="pl-outer-frame" cx="100" cy="100" r="88" fill="none" stroke="var(--color-border)" stroke-width="1.5" />
+                        <circle class="pl-dial-track" cx="100" cy="100" r="80" fill="none" stroke="var(--color-border-strong)" stroke-width="2" stroke-dasharray="2 10" stroke-linecap="round" />
+
+                        <!-- Cardinal Calibration Markers -->
+                        <g class="pl-cardinals">
+                            <line class="pl-cardinal pl-card-n" x1="100" y1="6" x2="100" y2="18" stroke="var(--color-heading)" stroke-width="2" stroke-linecap="round" />
+                            <line class="pl-cardinal pl-card-s" x1="100" y1="182" x2="100" y2="194" stroke="var(--color-heading)" stroke-width="2" stroke-linecap="round" />
+                            <line class="pl-cardinal pl-card-w" x1="6" y1="100" x2="18" y2="100" stroke="var(--color-heading)" stroke-width="2" stroke-linecap="round" />
+                            <line class="pl-cardinal pl-card-e" x1="182" y1="100" x2="194" y2="100" stroke="var(--color-heading)" stroke-width="2" stroke-linecap="round" />
+                            <circle class="pl-pip" cx="156" cy="44" r="2" fill="var(--color-muted)" />
+                            <circle class="pl-pip" cx="156" cy="156" r="2" fill="var(--color-muted)" />
+                            <circle class="pl-pip" cx="44" cy="156" r="2" fill="var(--color-muted)" />
+                            <circle class="pl-pip" cx="44" cy="44" r="2" fill="var(--color-muted)" />
                         </g>
-                        <g class="pl-arrow" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
-                            <line x1="72" y1="72" x2="114" y2="114" />
-                            <path d="M111 112 L104 116 M111 112 L116 104" />
-                            <path class="pl-tip" d="M70 70 L85.5 74.5 L74.5 85.5 Z" />
+
+                        <!-- Orbital Tracking Gyro -->
+                        <g class="pl-orbit-group">
+                            <circle class="pl-orbit-ring" cx="100" cy="100" r="62" fill="none" stroke="var(--color-border-strong)" stroke-width="1.5" stroke-dasharray="44 18 14 18" stroke-linecap="round" />
+                            <circle class="pl-satellite" cx="100" cy="38" r="3.5" fill="var(--color-heading)" />
+                            <circle class="pl-satellite-pulse" cx="100" cy="38" r="7" fill="none" stroke="var(--color-heading)" stroke-width="1" opacity="0.4" />
+                        </g>
+
+                        <!-- Reticle Crosshairs & Inner Target -->
+                        <circle class="pl-inner-ring" cx="100" cy="100" r="42" fill="none" stroke="var(--color-border)" stroke-width="1.5" stroke-dasharray="8 8" />
+                        <line class="pl-crosshair" x1="78" y1="100" x2="122" y2="100" stroke="var(--color-border-strong)" stroke-width="1.2" stroke-linecap="round" />
+                        <line class="pl-crosshair" x1="100" y1="78" x2="100" y2="122" stroke="var(--color-border-strong)" stroke-width="1.2" stroke-linecap="round" />
+
+                        <!-- Resonance Shockwave Ripples -->
+                        <circle class="pl-ripple pl-ripple-1" cx="100" cy="100" r="10" stroke="var(--color-heading)" stroke-width="2" fill="none" opacity="0" />
+                        <circle class="pl-ripple pl-ripple-2" cx="100" cy="100" r="10" stroke="var(--color-accent-hover)" stroke-width="1.5" fill="none" opacity="0" />
+
+                        <!-- Starburst Flare Sparks on Alignment Lock -->
+                        <g class="pl-sparks" opacity="0">
+                            <line class="pl-spark" x1="100" y1="84" x2="100" y2="66" stroke="var(--color-heading)" stroke-width="2" stroke-linecap="round" />
+                            <line class="pl-spark" x1="111" y1="89" x2="124" y2="76" stroke="var(--color-heading)" stroke-width="2" stroke-linecap="round" />
+                            <line class="pl-spark" x1="116" y1="100" x2="134" y2="100" stroke="var(--color-heading)" stroke-width="2" stroke-linecap="round" />
+                            <line class="pl-spark" x1="111" y1="111" x2="124" y2="124" stroke="var(--color-heading)" stroke-width="2" stroke-linecap="round" />
+                            <line class="pl-spark" x1="100" y1="116" x2="100" y2="134" stroke="var(--color-heading)" stroke-width="2" stroke-linecap="round" />
+                            <line class="pl-spark" x1="89" y1="111" x2="76" y2="124" stroke="var(--color-heading)" stroke-width="2" stroke-linecap="round" />
+                            <line class="pl-spark" x1="84" y1="100" x2="66" y2="100" stroke="var(--color-heading)" stroke-width="2" stroke-linecap="round" />
+                            <line class="pl-spark" x1="89" y1="89" x2="76" y2="76" stroke="var(--color-heading)" stroke-width="2" stroke-linecap="round" />
+                        </g>
+
+                        <!-- Precision Pathfinder Needle / Arrow Group -->
+                        <g class="pl-arrow-system">
+                            <!-- Aerodynamic Pathfinder Needle -->
+                            <path class="pl-arrow-blade-left" d="M100 34 L100 100 L90 88 Z" fill="url(#pl-arrow-grad-l)" />
+                            <path class="pl-arrow-blade-right" d="M100 34 L110 88 L100 100 Z" fill="url(#pl-arrow-grad-r)" />
+                            <path class="pl-arrow-tail-left" d="M100 100 L100 126 L94 118 Z" fill="var(--color-muted)" />
+                            <path class="pl-arrow-tail-right" d="M100 100 L106 118 L100 126 Z" fill="var(--color-border-strong)" />
+                            <!-- Central Nexus Hub -->
+                            <circle class="pl-hub-ring" cx="100" cy="100" r="9" fill="var(--color-surface)" stroke="var(--color-heading)" stroke-width="2.5" />
+                            <circle class="pl-bull" cx="100" cy="100" r="4.5" fill="var(--color-heading)" />
                         </g>
                     </svg>
                 </div>
-                <div class="preloader-words" aria-hidden="true">
-                    <span class="pl-word pl-word-1">roles</span>
-                    <span class="pl-word pl-word-2">opportunity</span>
-                    <span class="pl-word pl-word-3">jobs</span>
-                    <span class="pl-word pl-word-4">skills</span>
-                    <span class="pl-word pl-word-5">upgrade</span>
-                    <span class="pl-word pl-word-6">stay informed</span>
+
+                <!-- Floating Orbit Chips -->
+                <div class="preloader-chips" aria-hidden="true">
+                    <span class="pl-chip pl-chip-1"><span class="pl-chip-dot"></span>Opportunities</span>
+                    <span class="pl-chip pl-chip-2"><span class="pl-chip-dot"></span>Skill Match</span>
+                    <span class="pl-chip pl-chip-3"><span class="pl-chip-dot"></span>33 Districts</span>
+                    <span class="pl-chip pl-chip-4"><span class="pl-chip-dot"></span>Rozgar Melas</span>
+                    <span class="pl-chip pl-chip-5"><span class="pl-chip-dot"></span>Career Setu</span>
+                </div>
+
+                <!-- Telemetry & Live Progress HUD -->
+                <div class="preloader-telemetry" aria-hidden="true">
+                    <div class="pl-status-pill">
+                        <span class="pl-pulse-beacon"></span>
+                        <span class="pl-status-text" id="pl-status-text">CALIBRATING OPPORTUNITIES</span>
+                    </div>
+                    <div class="pl-meter-row">
+                        <div class="pl-meter-track">
+                            <div class="pl-meter-bar" id="pl-meter-bar"></div>
+                        </div>
+                        <span class="pl-counter" id="pl-counter">0%</span>
+                    </div>
                 </div>
             </div>
         </div>
