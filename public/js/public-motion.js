@@ -319,8 +319,83 @@
                     duration: 0.8,
                     ease: 'power3.out',
                     stagger: 0.09,
-                    delay: hold + 0.55
+                    delay: hold + 0.35
                 });
+            }
+
+            var visual = document.querySelector('[data-motion-visual]');
+            if (visual) {
+                gsap.set(visual, { opacity: 0, scale: 0.94, y: 16 });
+                gsap.to(visual, {
+                    opacity: 1,
+                    scale: 1,
+                    y: 0,
+                    duration: 1.1,
+                    ease: 'power3.out',
+                    delay: hold + 0.25
+                });
+
+                var card1 = visual.querySelector('.hero-float-card-1');
+                var card2 = visual.querySelector('.hero-float-card-2');
+                var card3 = visual.querySelector('.hero-float-card-3');
+
+                /* Staggered stage entrance: each pedestal group fades/slides up */
+                var step01 = visual.querySelector('.hero-step-01');
+                var step02 = visual.querySelector('.hero-step-02');
+                var step03 = visual.querySelector('.hero-step-03');
+                var stages = [step01, step02, step03].filter(Boolean);
+
+                if (stages.length) {
+                    gsap.set(stages, { opacity: 0, y: 30 });
+                    gsap.to(stages, {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.7,
+                        ease: 'power3.out',
+                        stagger: 0.18,
+                        delay: hold + 0.5
+                    });
+                }
+
+                /* Ascent trajectory: draw-on effect */
+                var ascentTrack = visual.querySelector('.hero-ascent-track');
+                var ascentPulse = visual.querySelector('.hero-ascent-pulse');
+                [ascentTrack, ascentPulse].forEach(function (path) {
+                    if (path) {
+                        var len = path.getTotalLength ? path.getTotalLength() : 580;
+                        gsap.set(path, { strokeDasharray: len, strokeDashoffset: len });
+                        gsap.to(path, {
+                            strokeDashoffset: 0,
+                            duration: 1.4,
+                            ease: 'power2.inOut',
+                            delay: hold + 0.9
+                        });
+                    }
+                });
+
+                /* Waypoint milestone dots: scale pop after line draws in */
+                var waypoints = visual.querySelectorAll('.hero-art-svg > circle[cx="120"], .hero-art-svg > circle[cx="260"], .hero-art-svg > circle[cx="420"]');
+                if (waypoints.length) {
+                    gsap.set(waypoints, { scale: 0, transformOrigin: 'center center' });
+                    gsap.to(waypoints, {
+                        scale: 1,
+                        duration: 0.45,
+                        ease: 'back.out(2.5)',
+                        stagger: 0.12,
+                        delay: hold + 1.8
+                    });
+                }
+
+                /* Floating cards gentle bob */
+                if (card1) {
+                    gsap.to(card1, { y: -8, duration: 3.2, ease: 'sine.inOut', yoyo: true, repeat: -1 });
+                }
+                if (card2) {
+                    gsap.to(card2, { y: 7, duration: 2.8, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 0.4 });
+                }
+                if (card3) {
+                    gsap.to(card3, { y: -6, duration: 3.5, ease: 'sine.inOut', yoyo: true, repeat: -1, delay: 0.8 });
+                }
             }
 
             var section = stage.closest('.hero');

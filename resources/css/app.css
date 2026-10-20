@@ -1406,17 +1406,164 @@ body.modal-open {
 
 .hero-inner {
   position: relative;
-  max-width: 960px;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: var(--space-8);
+  align-items: center;
+  max-width: var(--container);
   margin: 0 auto;
-  text-align: center;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+  text-align: left;
+}
+
+.hero-visual {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.hero-art-stage {
+  position: relative;
+  width: 100%;
+  max-width: 520px;
+  filter: drop-shadow(0 16px 36px rgba(79, 80, 79, 0.08));
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-art-stage:hover {
+  transform: translateY(-3px);
+}
+
+.hero-art-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+  overflow: visible;
+}
+
+/* ── Hero SVG micro-animations ── */
+
+/* Gyro orbit ring spinning around the skill-upgrade reactor */
+.hero-orbit-spin {
+  transform-origin: 260px 240px;
+  animation: heroOrbitSpin 6s linear infinite;
+}
+
+@keyframes heroOrbitSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* Expanding / fading beacon ring on the goal summit */
+.hero-summit-pulse {
+  transform-origin: 420px 75px;
+  animation: heroSummitPulse 2.4s ease-out infinite;
+}
+
+@keyframes heroSummitPulse {
+  0% {
+    r: 14;
+    opacity: 0.8;
+    stroke-width: 1.8px;
+  }
+  100% {
+    r: 32;
+    opacity: 0;
+    stroke-width: 0.4px;
+  }
+}
+
+/* Shimmer sweep on the progress bar inside floating card 1 */
+.hero-progress-fill {
+  position: relative;
+}
+
+.hero-progress-fill::after {
+  content: '';
+}
+
+/* SVG-safe shimmer via stroke-dashoffset */
+@keyframes heroProgressShimmer {
+  0%   { opacity: 1; }
+  50%  { opacity: 0.6; }
+  100% { opacity: 1; }
+}
+
+.hero-progress-fill {
+  animation: heroProgressShimmer 2.6s ease-in-out infinite;
+}
+
+/* Starburst sparkle rays: scale-pulse */
+.hero-goal-sparks {
+  transform-origin: 420px 28px;
+  animation: heroGoalSparks 3s ease-in-out infinite;
+}
+
+@keyframes heroGoalSparks {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(0.88);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+
+/* Ascending energy pulse: animated dashoffset for the trajectory line */
+.hero-ascent-pulse {
+  stroke-dasharray: 14 8;
+  stroke-dashoffset: 0;
+  animation: heroAscentFlow 2.2s linear infinite;
+}
+
+@keyframes heroAscentFlow {
+  to { stroke-dashoffset: -44; }
+}
+
+/* Ascending chevrons above the reactor */
+.hero-step-02 path[d*="198"],
+.hero-step-02 path[d*="188"] {
+  animation: heroChevronBob 1.6s ease-in-out infinite alternate;
+}
+
+.hero-step-02 path[d*="188"] {
+  animation-delay: 0.25s;
+}
+
+@keyframes heroChevronBob {
+  0%   { transform: translateY(0); opacity: 0.7; }
+  100% { transform: translateY(-4px); opacity: 1; }
+}
+
+/* Reduced-motion: kill all SVG hero animations */
+@media (prefers-reduced-motion: reduce) {
+  .hero-orbit-spin,
+  .hero-summit-pulse,
+  .hero-progress-fill,
+  .hero-goal-sparks,
+  .hero-ascent-pulse,
+  .hero-step-02 path[d*="198"],
+  .hero-step-02 path[d*="188"] {
+    animation: none !important;
+  }
 }
 
 .hero-title {
-  font-size: clamp(2.5rem, 7.4vw, 5rem);
-  line-height: 1.04;
+  font-size: clamp(2.25rem, 4.4vw, 3.85rem);
+  line-height: 1.06;
   letter-spacing: -0.02em;
   font-weight: 800;
-  margin: 0 0 var(--space-6);
+  margin: 0 0 var(--space-5);
+  text-align: left;
 }
 
 .hero-line {
@@ -1442,10 +1589,33 @@ body.modal-open {
   padding: 5px 14px;
   border: 1px solid var(--color-border);
   border-radius: 999px;
-  background: var(--color-surface-raised);
+  background: var(--color-surface);
   font-size: 0.8125rem;
+  font-weight: 600;
   color: var(--color-heading);
   margin-bottom: var(--space-4);
+  box-shadow: var(--shadow-sm);
+}
+
+.hero-badge-pulse {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-success);
+  box-shadow: 0 0 0 0 rgba(84, 122, 97, 0.7);
+  animation: heroLivePulse 2s infinite ease-out;
+}
+
+@keyframes heroLivePulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(84, 122, 97, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(84, 122, 97, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(84, 122, 97, 0);
+  }
 }
 
 .rotator {
@@ -1467,7 +1637,7 @@ body.modal-open {
 }
 
 .hero-rotator {
-  justify-items: center;
+  justify-items: start;
   line-height: 1.06;
   padding-bottom: 0.08em;
 }
@@ -1498,34 +1668,86 @@ body.modal-open {
 
 .hero-sub {
   color: var(--color-text);
-  max-width: 62ch;
-  margin: 0 auto var(--space-6);
-  font-size: clamp(1rem, 1.4vw, 1.125rem);
+  max-width: 56ch;
+  margin: 0 0 var(--space-6);
+  font-size: clamp(1rem, 1.3vw, 1.125rem);
+  text-align: left;
 }
 
-.hero-story {
+.hero-content .chip-row {
+  justify-content: flex-start;
+}
+
+.hero-trust {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  max-width: 62ch;
-  min-height: 2.8em;
-  margin: 0 auto var(--space-6);
-  color: var(--color-heading);
+  gap: var(--space-4);
+  margin-top: var(--space-5);
+  font-size: 0.8125rem;
+  color: var(--color-muted);
+}
+
+.hero-trust-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-text);
   font-weight: 500;
 }
 
-.hero-story-icon {
-  flex: none;
-  display: inline-flex;
-  color: var(--color-accent);
+.hero-trust-item .icon {
+  color: var(--color-success);
 }
 
-.hero-story-rotator {
-  min-width: 0;
-  max-width: 100%;
-  text-align: center;
-  line-height: 1.5;
+@media (max-width: 980px) {
+  .hero-inner {
+    grid-template-columns: minmax(0, 1fr);
+    text-align: center;
+    gap: var(--space-6);
+  }
+
+  .hero-content {
+    text-align: center;
+  }
+
+  .hero-title {
+    text-align: center;
+  }
+
+  .hero-rotator {
+    justify-items: center;
+  }
+
+  .hero-sub {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+  }
+
+  .hero-content .chip-row {
+    justify-content: center;
+  }
+
+  .hero-trust {
+    justify-content: center;
+  }
+
+  .hero-visual {
+    max-width: 440px;
+    margin: 0 auto;
+    order: 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero-visual {
+    max-width: 360px;
+  }
+
+  .hero-title {
+    font-size: 2.25rem;
+  }
 }
 
 .hero-districts {

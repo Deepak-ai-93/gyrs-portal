@@ -42,72 +42,224 @@
         <span class="hero-glow hero-glow-b" aria-hidden="true"></span>
 
         <div class="container">
-            <div class="hero-inner" data-motion-hero>
-                <h1 class="hero-title">
-                    <span class="hero-line"><span class="hero-line-inner" data-motion-line>Find your next</span></span>
-                    <span class="hero-line hero-line-keyword">
-                        <span class="rotator hero-rotator" data-rotator data-rotator-interval="2600" data-motion-line>
-                            <span class="rotator-item is-active" data-rotator-item>role</span>
-                            <span class="rotator-item" data-rotator-item>career</span>
-                            <span class="rotator-item" data-rotator-item>opportunity</span>
-                            <span class="rotator-item" data-rotator-item>future</span>
+            <div class="hero-inner">
+                <div class="hero-content" data-motion-hero>
+                    <div class="hero-badge">
+                        <span class="hero-badge-pulse" aria-hidden="true"></span>
+                        <span>Statewide Public &amp; Private Vacancies</span>
+                    </div>
+
+                    <h1 class="hero-title">
+                        <span class="hero-line"><span class="hero-line-inner" data-motion-line>Find your next</span></span>
+                        <span class="hero-line hero-line-keyword">
+                            <span class="rotator hero-rotator" data-rotator data-rotator-interval="2600" data-motion-line>
+                                <span class="rotator-item is-active" data-rotator-item>career</span>
+                                <span class="rotator-item" data-rotator-item>opportunity</span>
+                                <span class="rotator-item" data-rotator-item>role</span>
+                                <span class="rotator-item" data-rotator-item>future</span>
+                            </span>
                         </span>
-                    </span>
-                    <span class="hero-line"><span class="hero-line-inner" data-motion-line>in Gujarat</span></span>
-                </h1>
+                        <span class="hero-line"><span class="hero-line-inner" data-motion-line>in Gujarat</span></span>
+                    </h1>
 
-                <p class="hero-sub">
-                    Search verified state government positions, public department vacancies and leading private sector roles
-                    across all 33 districts — free for every candidate.
-                </p>
+                    <p class="hero-sub">
+                        Explore verified state government positions, public department vacancies and leading private sector roles
+                        across all 33 districts — free for every candidate.
+                    </p>
 
-                <p class="hero-story">
-                    <span class="hero-story-icon" aria-hidden="true"><x-icon name="sparkles" :size="15" /></span>
-                    <span class="rotator hero-story-rotator" data-rotator data-rotator-interval="4600">
-                        <span class="rotator-item is-active" data-rotator-item>From the first search to the final offer letter — one platform for every district.</span>
-                        <span class="rotator-item" data-rotator-item>Register free, save the jobs you like and let smart matching surface the right roles.</span>
-                        <span class="rotator-item" data-rotator-item>Government posts, department vacancies and private roles — verified and in one place.</span>
-                        <span class="rotator-item" data-rotator-item>33 districts. Thousands of aspirations. One Gujarat.</span>
-                    </span>
-                </p>
+                    <form class="search-panel" method="GET" action="{{ route('home') }}" role="search" data-loading-form>
+                        <div class="search-seg">
+                            <x-icon name="search" />
+                            <label class="sr-only" for="search-keyword">Keyword</label>
+                            <input class="form-control" type="search" id="search-keyword" name="keyword" value="{{ $keyword }}" placeholder="Skills, job title or department" autocomplete="off">
+                        </div>
 
-                <form class="search-panel" method="GET" action="{{ route('home') }}" role="search" data-loading-form>
-                    <div class="search-seg">
-                        <x-icon name="search" />
-                        <label class="sr-only" for="search-keyword">Keyword</label>
-                        <input class="form-control" type="search" id="search-keyword" name="keyword" value="{{ $keyword }}" placeholder="Skills, job title or department">
+                        <div class="search-seg">
+                            <x-icon name="briefcase" />
+                            <label class="sr-only" for="search-type">Employment type</label>
+                            <select class="form-select" id="search-type" name="type">
+                                <option value="">All employment types</option>
+                                @foreach ($employmentTypes as $type)
+                                    <option value="{{ $typeValue($type) }}" @selected($activeType === $typeValue($type))>{{ $typeLabel($type) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="search-seg">
+                            <x-icon name="map-pin" />
+                            <label class="sr-only" for="search-district">District</label>
+                            <select class="form-select" id="search-district" name="district">
+                                <option value="">All 33 districts</option>
+                                @foreach ($districts as $district)
+                                    <option value="{{ $districtValue($district) }}" @selected($activeDistrict === $districtValue($district))>{{ $districtLabel($district) }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-outline"><x-icon name="search" :size="18" /> Search jobs</button>
+                    </form>
+
+                    <div class="chip-row">
+                        <span class="text-sm muted" style="align-self:center;">Popular searches:</span>
+                        @foreach (['Software Engineer', 'Civil Engineer', 'Staff Nurse', 'Data Entry', 'Apprenticeship'] as $term)
+                            <a class="chip" href="{{ route('home', ['keyword' => $term]) }}">{{ $term }}</a>
+                        @endforeach
                     </div>
 
-                    <div class="search-seg">
-                        <x-icon name="briefcase" />
-                        <label class="sr-only" for="search-type">Employment type</label>
-                        <select class="form-select" id="search-type" name="type">
-                            <option value="">All employment types</option>
-                            @foreach ($employmentTypes as $type)
-                                <option value="{{ $typeValue($type) }}" @selected($activeType === $typeValue($type))>{{ $typeLabel($type) }}</option>
-                            @endforeach
-                        </select>
+                    <div class="hero-trust">
+                        <span class="hero-trust-item"><x-icon name="check" :size="14" /> 33 districts statewide</span>
+                        <span class="hero-trust-item"><x-icon name="shield" :size="14" /> 100% free registration</span>
+                        <span class="hero-trust-item"><x-icon name="sparkles" :size="14" /> Verified official postings</span>
                     </div>
+                </div>
 
-                    <div class="search-seg">
-                        <x-icon name="map-pin" />
-                        <label class="sr-only" for="search-district">District</label>
-                        <select class="form-select" id="search-district" name="district">
-                            <option value="">All 33 districts</option>
-                            @foreach ($districts as $district)
-                                <option value="{{ $districtValue($district) }}" @selected($activeDistrict === $districtValue($district))>{{ $districtLabel($district) }}</option>
-                            @endforeach
-                        </select>
+                <div class="hero-visual" data-motion-visual aria-hidden="true">
+                    <div class="hero-art-stage">
+                        <svg class="hero-art-svg" viewBox="0 0 540 480" width="540" height="480" aria-hidden="true" focusable="false">
+                            <defs>
+                                <!-- Summit Ambient Glow -->
+                                <radialGradient id="hero-summit-glow" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stop-color="var(--color-focus)" stop-opacity="0.22" />
+                                    <stop offset="50%" stop-color="var(--color-heading)" stop-opacity="0.05" />
+                                    <stop offset="100%" stop-color="var(--color-heading)" stop-opacity="0" />
+                                </radialGradient>
+                                <!-- Skill Upgrade Reactor Glow -->
+                                <radialGradient id="hero-reactor-glow" cx="50%" cy="50%" r="50%">
+                                    <stop offset="0%" stop-color="var(--color-focus)" stop-opacity="0.18" />
+                                    <stop offset="60%" stop-color="var(--color-heading)" stop-opacity="0.03" />
+                                    <stop offset="100%" stop-color="var(--color-heading)" stop-opacity="0" />
+                                </radialGradient>
+                                <!-- Energy Ascent Pipeline Gradient -->
+                                <linearGradient id="hero-ascent-line" x1="0%" y1="100%" x2="100%" y2="0%">
+                                    <stop offset="0%" stop-color="var(--color-muted)" stop-opacity="0.3" />
+                                    <stop offset="45%" stop-color="var(--color-focus)" stop-opacity="0.9" />
+                                    <stop offset="100%" stop-color="var(--color-heading)" stop-opacity="0.9" />
+                                </linearGradient>
+                                <filter id="hero-card-shadow" x="-15%" y="-15%" width="130%" height="135%">
+                                    <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#4f504f" flood-opacity="0.09" />
+                                </filter>
+                            </defs>
+
+                            <!-- Ambient Halos -->
+                            <circle cx="415" cy="100" r="160" fill="url(#hero-summit-glow)" />
+                            <circle cx="260" cy="235" r="130" fill="url(#hero-reactor-glow)" />
+
+                            <!-- Background Isometric Grid Perspective -->
+                            <g class="hero-grid-matrix" stroke="var(--color-border)" stroke-width="1" opacity="0.6">
+                                <path d="M40 400 L260 270 L480 400" fill="none" />
+                                <path d="M70 360 L260 250 L450 360" fill="none" stroke-dasharray="3 4" />
+                                <path d="M100 320 L260 230 L420 320" fill="none" />
+                                <path d="M130 280 L260 210 L390 280" fill="none" stroke-dasharray="3 4" />
+                                <line x1="260" y1="210" x2="260" y2="420" stroke="var(--color-border-strong)" stroke-width="1.2" />
+                                <line x1="140" y1="280" x2="60" y2="420" />
+                                <line x1="380" y1="280" x2="460" y2="420" />
+                            </g>
+
+                            <!-- ── STAGE 01: Profile & Assessment Pedestal ── -->
+                            <g class="hero-step-01">
+                                <!-- Base Isometric Pedestal -->
+                                <polygon points="50,375 120,340 190,375 120,410" fill="var(--color-surface)" stroke="var(--color-border-strong)" stroke-width="1.5" />
+                                <polygon points="50,375 120,410 120,422 50,387" fill="var(--color-subtle)" stroke="var(--color-border)" />
+                                <polygon points="120,410 190,375 190,387 120,422" fill="var(--color-border)" stroke="var(--color-border-strong)" />
+                                <!-- Center Hub Dot -->
+                                <circle cx="120" cy="375" r="6" fill="var(--color-heading)" />
+                                <circle cx="120" cy="375" r="12" fill="none" stroke="var(--color-border-strong)" stroke-width="1.5" />
+                                <text x="120" y="440" text-anchor="middle" font-size="10" font-weight="700" fill="var(--color-muted)" font-family="Inter, system-ui, sans-serif" letter-spacing="0.05em">LEVEL 01 · PROFILE</text>
+                            </g>
+
+                            <!-- ── STAGE 02: Skill Upgrade Reactor Pedestal ── -->
+                            <g class="hero-step-02">
+                                <!-- Elevated Isometric Pedestal -->
+                                <polygon points="190,240 260,205 330,240 260,275" fill="var(--color-surface)" stroke="var(--color-border-strong)" stroke-width="1.5" />
+                                <polygon points="190,240 260,275 260,290 190,255" fill="var(--color-subtle)" stroke="var(--color-border)" />
+                                <polygon points="260,275 330,240 330,255 260,290" fill="var(--color-border)" stroke="var(--color-border-strong)" />
+
+                                <!-- Gyro Orbit Ring around Skill Hub -->
+                                <ellipse cx="260" cy="240" rx="44" ry="22" fill="none" stroke="var(--color-focus)" stroke-width="1.5" stroke-dasharray="6 4" class="hero-orbit-spin" />
+                                <circle cx="260" cy="218" r="3.5" fill="var(--color-heading)" />
+
+                                <!-- Center Reactor Core -->
+                                <circle cx="260" cy="238" r="8" fill="var(--color-heading)" />
+                                <circle cx="260" cy="238" r="16" fill="none" stroke="var(--color-focus)" stroke-width="1.2" opacity="0.6" />
+
+                                <!-- Ascending Skill Chevrons -->
+                                <path d="M255 198 L260 192 L265 198" fill="none" stroke="var(--color-heading)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                                <path d="M255 188 L260 182 L265 188" fill="none" stroke="var(--color-focus)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+
+                                <text x="260" y="308" text-anchor="middle" font-size="10" font-weight="700" fill="var(--color-heading)" font-family="Inter, system-ui, sans-serif" letter-spacing="0.05em">LEVEL 02 · SKILL UPGRADE</text>
+                            </g>
+
+                            <!-- ── STAGE 03: The Summit Peak (Goal Achieved!) ── -->
+                            <g class="hero-step-03">
+                                <!-- Summit Pillar Pedestal -->
+                                <polygon points="350,110 420,75 490,110 420,145" fill="var(--color-surface)" stroke="var(--color-heading)" stroke-width="2" />
+                                <polygon points="350,110 420,145 420,162 350,127" fill="var(--color-subtle)" stroke="var(--color-border-strong)" />
+                                <polygon points="420,145 490,110 490,127 420,162" fill="var(--color-border-strong)" stroke="var(--color-heading)" />
+
+                                <!-- Summit Goal Banner & Trophy Crest -->
+                                <line x1="420" y1="75" x2="420" y2="28" stroke="var(--color-heading)" stroke-width="2.5" stroke-linecap="round" />
+                                <path d="M420 30 L456 42 L420 54 Z" fill="var(--color-heading)" />
+                                <circle cx="420" cy="28" r="4" fill="var(--color-focus)" />
+
+                                <!-- Celebratory Starburst Rays on Goal Summit -->
+                                <g class="hero-goal-sparks">
+                                    <line x1="420" y1="14" x2="420" y2="4" stroke="var(--color-heading)" stroke-width="2" stroke-linecap="round" />
+                                    <line x1="432" y1="18" x2="440" y2="10" stroke="var(--color-heading)" stroke-width="2" stroke-linecap="round" />
+                                    <line x1="436" y1="28" x2="446" y2="28" stroke="var(--color-heading)" stroke-width="2" stroke-linecap="round" />
+                                    <line x1="408" y1="18" x2="400" y2="10" stroke="var(--color-heading)" stroke-width="2" stroke-linecap="round" />
+                                    <line x1="404" y1="28" x2="394" y2="28" stroke="var(--color-heading)" stroke-width="2" stroke-linecap="round" />
+                                </g>
+
+                                <!-- Pulsing Goal Beacon Ring -->
+                                <circle cx="420" cy="75" r="14" fill="none" stroke="var(--color-focus)" stroke-width="1.8" class="hero-summit-pulse" />
+
+                                <text x="420" y="178" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--color-heading)" font-family="Inter, system-ui, sans-serif" letter-spacing="0.06em">LEVEL 03 · GOAL ACHIEVED</text>
+                            </g>
+
+                            <!-- ── Continuous Ascending Energy Trajectory ── -->
+                            <path class="hero-ascent-track" d="M120 375 C160 350, 200 280, 260 238 C320 196, 360 130, 420 75" fill="none" stroke="var(--color-border-strong)" stroke-width="2" stroke-dasharray="4 4" />
+                            <path class="hero-ascent-pulse" d="M120 375 C160 350, 200 280, 260 238 C320 196, 360 130, 420 75" fill="none" stroke="url(#hero-ascent-line)" stroke-width="3.5" stroke-linecap="round" />
+
+                            <!-- Milestone Waypoint Nodes -->
+                            <circle cx="120" cy="375" r="4.5" fill="var(--color-heading)" />
+                            <circle cx="260" cy="238" r="5" fill="var(--color-heading)" />
+                            <circle cx="420" cy="75" r="5.5" fill="var(--color-heading)" />
+
+                            <!-- ── Floating Milestone Card 1: Skill Upgrade Engine ── -->
+                            <g class="hero-float-card hero-float-card-1" transform="translate(18, 145)" filter="url(#hero-card-shadow)">
+                                <rect width="186" height="66" rx="12" fill="var(--color-surface)" stroke="var(--color-border)" stroke-width="1" />
+                                <circle cx="26" cy="26" r="13" fill="var(--color-subtle)" />
+                                <text x="26" y="30" text-anchor="middle" font-size="13">⚡</text>
+                                <text x="48" y="22" font-size="11.5" font-weight="700" fill="var(--color-heading)" font-family="Inter, system-ui, sans-serif">Skill Upgrade +42%</text>
+                                <text x="48" y="37" font-size="9.5" fill="var(--color-muted)" font-family="Inter, system-ui, sans-serif">Technical &amp; Core Certifications</text>
+                                <!-- Mini Readiness Progress Bar -->
+                                <rect x="48" y="46" width="124" height="4" rx="2" fill="var(--color-border)" />
+                                <rect x="48" y="46" width="108" height="4" rx="2" fill="var(--color-heading)" class="hero-progress-fill" />
+                            </g>
+
+                            <!-- ── Floating Milestone Card 2: Summit Goal Achieved ── -->
+                            <g class="hero-float-card hero-float-card-2" transform="translate(295, 12)" filter="url(#hero-card-shadow)">
+                                <rect width="210" height="64" rx="12" fill="var(--color-surface)" stroke="var(--color-heading)" stroke-width="1.5" />
+                                <circle cx="28" cy="26" r="14" fill="var(--color-subtle)" />
+                                <text x="28" y="31" text-anchor="middle" font-size="14">🏆</text>
+                                <text x="50" y="22" font-size="12" font-weight="800" fill="var(--color-heading)" font-family="Inter, system-ui, sans-serif">Goal Achieved!</text>
+                                <text x="50" y="37" font-size="9.5" fill="var(--color-muted)" font-family="Inter, system-ui, sans-serif">Verified Appointment Letter</text>
+                                <g transform="translate(50, 45)">
+                                    <rect width="68" height="15" rx="7.5" fill="var(--color-success-soft)" />
+                                    <text x="34" y="11" text-anchor="middle" font-size="8.5" font-weight="700" fill="var(--color-success)" font-family="Inter, system-ui, sans-serif">✓ OFFER READY</text>
+                                </g>
+                            </g>
+
+                            <!-- ── Floating Milestone Card 3: AI Smart Recommendation ── -->
+                            <g class="hero-float-card hero-float-card-3" transform="translate(280, 350)" filter="url(#hero-card-shadow)">
+                                <rect width="195" height="54" rx="12" fill="var(--color-surface)" stroke="var(--color-border)" stroke-width="1" />
+                                <circle cx="26" cy="27" r="13" fill="var(--color-subtle)" />
+                                <text x="26" y="31" text-anchor="middle" font-size="13">🎯</text>
+                                <text x="48" y="22" font-size="11" font-weight="700" fill="var(--color-heading)" font-family="Inter, system-ui, sans-serif">Smart Match: 98%</text>
+                                <text x="48" y="38" font-size="9.5" fill="var(--color-muted)" font-family="Inter, system-ui, sans-serif">33 Districts · 1,450+ Roles</text>
+                            </g>
+                        </svg>
                     </div>
-
-                    <button type="submit" class="btn btn-outline"><x-icon name="search" :size="18" /> Search jobs</button>
-                </form>
-
-                <div class="chip-row">
-                    <span class="text-sm muted" style="align-self:center;">Popular searches:</span>
-                    @foreach (['Software Engineer', 'Civil Engineer', 'Staff Nurse', 'Data Entry', 'Solar Technician', 'Apprenticeship'] as $term)
-                        <a class="chip" href="{{ route('home', ['keyword' => $term]) }}">{{ $term }}</a>
-                    @endforeach
                 </div>
             </div>
         </div>
