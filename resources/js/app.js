@@ -319,6 +319,14 @@
                     hideTip();
                 }
             });
+            el.addEventListener('focus', function () {
+                showTip(el);
+            });
+            el.addEventListener('blur', function () {
+                if (active === el) {
+                    hideTip();
+                }
+            });
         });
 
         function repositionTip() {
@@ -330,6 +338,26 @@
         window.addEventListener('scroll', repositionTip, { passive: true });
         window.addEventListener('resize', repositionTip);
     })();
+
+    /* Mobile filter drawer toggle */
+    toArray(document, '[data-filter-toggle]').forEach(function (button) {
+        var panelId = button.getAttribute('aria-controls');
+        var panel = panelId ? document.getElementById(panelId) : document.querySelector('.filter-panel');
+        if (!panel) {
+            return;
+        }
+
+        button.addEventListener('click', function () {
+            var open = panel.classList.toggle('is-open');
+            button.setAttribute('aria-expanded', open ? 'true' : 'false');
+            if (open) {
+                var firstInput = panel.querySelector('input, select');
+                if (firstInput) {
+                    firstInput.focus();
+                }
+            }
+        });
+    });
 
     /* Demo credential autofill */
     toArray(document, '[data-demo-fill]').forEach(function (button) {

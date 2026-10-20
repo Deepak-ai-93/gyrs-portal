@@ -116,14 +116,22 @@
             <div class="hero-districts" aria-label="Districts covered on GYRS">
                 <div class="hero-districts-track">
                     @foreach ($districts as $district)
-                        @php($districtCount = (int) ($districtJobCounts[$district->id] ?? 0))
-                        <span class="hero-district" data-district-jobs="{{ $districtCount }}">
+                        @php $districtCount = (int) ($districtJobCounts[$district->id] ?? 0); @endphp
+                        <a href="{{ route('home', ['district' => $districtValue($district)]) }}#job-explorer"
+                           class="hero-district @if($activeDistrict === $districtValue($district)) is-active @endif"
+                           data-district-jobs="{{ $districtCount }}">
                             {{ $districtLabel($district) }}<span class="sr-only"> — {{ $districtCount }} {{ $districtCount === 1 ? 'open job' : 'open jobs' }}</span>
-                        </span>
+                        </a>
                     @endforeach
                     @foreach ($districts as $district)
-                        @php($districtCount = (int) ($districtJobCounts[$district->id] ?? 0))
-                        <span class="hero-district" data-district-jobs="{{ $districtCount }}" aria-hidden="true">{{ $districtLabel($district) }}</span>
+                        @php $districtCount = (int) ($districtJobCounts[$district->id] ?? 0); @endphp
+                        <a href="{{ route('home', ['district' => $districtValue($district)]) }}#job-explorer"
+                           class="hero-district @if($activeDistrict === $districtValue($district)) is-active @endif"
+                           data-district-jobs="{{ $districtCount }}"
+                           aria-hidden="true"
+                           tabindex="-1">
+                            {{ $districtLabel($district) }}
+                        </a>
                     @endforeach
                 </div>
             </div>
@@ -157,10 +165,63 @@
         <div class="container">
             <div class="page-head">
                 <div>
-                    <h2>Explore open jobs in Gujarat</h2>
-                    <p class="lead">Verified state government posts, public department vacancies and private industrial roles.</p>
+                    <h2 style="text-wrap:balance;">Explore open jobs in Gujarat</h2>
+                    <p class="lead" style="text-wrap:balance;">Verified state government posts, public department vacancies and private industrial roles.</p>
                 </div>
                 <p class="result-count">Showing <strong>{{ $jobs->total() }}</strong> matching {{ Str::plural('opportunity', $jobs->total()) }}</p>
+            </div>
+
+            @php
+                $activeFilterCount = ($keyword ? 1 : 0) + ($activeDistrict ? 1 : 0) + ($activeType ? 1 : 0);
+            @endphp
+
+            @if ($activeFilterCount > 0)
+                <div class="active-filters-bar" aria-label="Current active search filters">
+                    <span class="active-filters-label"><x-icon name="filter" :size="14" /> Active filters:</span>
+                    <div class="active-filters-list">
+                        @if ($keyword)
+                            <a href="{{ route('home', array_filter(['district' => $activeDistrict, 'type' => $activeType])) }}#job-explorer" class="active-filter-chip">
+                                <span>Keyword: <strong>"{{ $keyword }}"</strong></span>
+                                <span class="active-filter-remove" aria-hidden="true">&times;</span>
+                                <span class="sr-only">Remove keyword filter</span>
+                            </a>
+                        @endif
+                        @if ($activeDistrict)
+                            @php
+                                $matchedDistrict = $districts->first(fn($d) => $districtValue($d) === $activeDistrict);
+                            @endphp
+                            <a href="{{ route('home', array_filter(['keyword' => $keyword, 'type' => $activeType])) }}#job-explorer" class="active-filter-chip">
+                                <span>District: <strong>{{ $matchedDistrict ? $districtLabel($matchedDistrict) : $activeDistrict }}</strong></span>
+                                <span class="active-filter-remove" aria-hidden="true">&times;</span>
+                                <span class="sr-only">Remove district filter</span>
+                            </a>
+                        @endif
+                        @if ($activeType)
+                            @php
+                                $matchedType = collect($employmentTypes)->first(fn($t) => $typeValue($t) === $activeType);
+                            @endphp
+                            <a href="{{ route('home', array_filter(['keyword' => $keyword, 'district' => $activeDistrict])) }}#job-explorer" class="active-filter-chip">
+                                <span>Type: <strong>{{ $matchedType ? $typeLabel($matchedType) : $activeType }}</strong></span>
+                                <span class="active-filter-remove" aria-hidden="true">&times;</span>
+                                <span class="sr-only">Remove employment type filter</span>
+                            </a>
+                        @endif
+                        <a href="{{ route('home') }}#job-explorer" class="active-filter-clear">Clear all</a>
+                    </div>
+                </div>
+            @endif
+
+            <div class="mobile-filter-bar">
+                <button type="button" class="btn btn-outline btn-sm mobile-filter-toggle" data-filter-toggle aria-expanded="false" aria-controls="sidebar-filters">
+                    <x-icon name="filter" :size="15" />
+                    <span>Filter opportunities</span>
+                    @if ($activeFilterCount > 0)
+                        <span class="badge badge-accent" style="margin-left:4px;">{{ $activeFilterCount }}</span>
+                    @endif
+                </button>
+                @if ($activeFilterCount > 0)
+                    <a href="{{ route('home') }}#job-explorer" class="btn btn-ghost btn-sm">Clear filters</a>
+                @endif
             </div>
 
             <div class="split">
@@ -186,7 +247,7 @@
                     @endif
                 </div>
 
-                <aside class="filter-panel" aria-label="Filter vacancies">
+                <aside class="filter-panel" id="sidebar-filters" aria-label="Filter vacancies">
                     <div class="between" style="margin-bottom:var(--space-3);">
                         <h2 style="margin:0;"><x-icon name="filter" :size="16" /> Filters</h2>
                         <a class="filter-reset" href="{{ route('home') }}">Clear all</a>
@@ -289,18 +350,21 @@
 
             <div class="dept-grid" data-motion-reveal data-motion-stagger>
                 @foreach ([
-                    ['Roads & Buildings Department (R&B)', 'State department &middot; Gandhinagar'],
-                    ['GIFT City Authority', 'Gandhinagar International Tech City'],
-                    ['GETCO — Gujarat Energy Transmission', 'State power utility &middot; Vadodara'],
-                    ['Health & Family Welfare Department', 'State healthcare department &middot; Surat &amp; Rajkot'],
-                    ['Dholera Special Investment Region', 'Mega industrial and greenfield hub'],
-                    ['Gujarat Informatics Limited (GIL)', 'Department of Science &amp; Technology'],
-                ] as [$deptName, $deptMeta])
-                    <div class="dept-card">
+                    ['Roads & Buildings Department (R&B)', 'State department &middot; Gandhinagar', 'Roads & Buildings'],
+                    ['GIFT City Authority', 'Gandhinagar International Tech City', 'GIFT City'],
+                    ['GETCO — Gujarat Energy Transmission', 'State power utility &middot; Vadodara', 'GETCO'],
+                    ['Health & Family Welfare Department', 'State healthcare department &middot; Surat &amp; Rajkot', 'Health'],
+                    ['Dholera Special Investment Region', 'Mega industrial and greenfield hub', 'Dholera'],
+                    ['Gujarat Informatics Limited (GIL)', 'Department of Science &amp; Technology', 'Gujarat Informatics'],
+                ] as [$deptName, $deptMeta, $deptQuery])
+                    <div class="dept-card card is-interactive">
                         <span class="badge" style="align-self:flex-start;"><x-icon name="building" :size="14" /> Department</span>
                         <h3>{{ $deptName }}</h3>
                         <span class="dept-meta">{!! $deptMeta !!}</span>
-                        <a class="text-sm" style="margin-top:auto;padding-top:8px;" href="{{ route('home') }}#job-explorer">View jobs</a>
+                        <a class="dept-action-link" href="{{ route('home', ['keyword' => $deptQuery]) }}#job-explorer">
+                            <span>View openings</span>
+                            <x-icon name="arrow-right" :size="14" />
+                        </a>
                     </div>
                 @endforeach
             </div>

@@ -25,9 +25,12 @@
 
         @if ($job->relationLoaded('skills') && $job->skills->isNotEmpty())
             <div class="badge-row">
-                @foreach ($job->skills as $skill)
+                @foreach ($job->skills->take(4) as $skill)
                     <span class="badge">{{ $skill->name }}</span>
                 @endforeach
+                @if ($job->skills->count() > 4)
+                    <span class="badge" title="{{ $job->skills->slice(4)->pluck('name')->join(', ') }}">+{{ $job->skills->count() - 4 }}</span>
+                @endif
             </div>
         @endif
     </div>
