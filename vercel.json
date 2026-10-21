@@ -55,11 +55,7 @@
         "LOG_CHANNEL": "stderr",
         "SESSION_DRIVER": "cookie",
         "VIEW_COMPILED_PATH": "/tmp",
-        "DB_CONNECTION": "sqlite",
-        "DB_DATABASE": "/tmp/gyrs.sqlite",
-        "GYRS_DEMO": "true",
-        "GYRS_DEV_PASSWORD": "gyrs-dev-password",
-        "GYRS_DEMO_ADMIN_PASSWORD": "gyrs-dev-password",
-        "GYRS_DEMO_CANDIDATE_PASSWORD": "gyrs-dev-password"
+        "DB_CONNECTION": "pgsql",
+        "GYRS_DEMO": "false"
     }
 }
