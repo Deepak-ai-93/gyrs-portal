@@ -41,11 +41,7 @@ return [
     */
 
     'demo' => [
-        'enabled' => (bool) env('GYRS_DEMO', true),
-        'admin_email' => env('GYRS_ADMIN_EMAIL', 'admin.gyrs@gujarat.gov.in'),
-        'admin_password' => env('GYRS_DEMO_ADMIN_PASSWORD', env('GYRS_DEV_PASSWORD', 'gyrs-dev-password')),
-        'candidate_identifier' => env('GYRS_DEMO_CANDIDATE', 'jagan.trivedi@gyrs.gov.in'),
-        'candidate_password' => env('GYRS_DEMO_CANDIDATE_PASSWORD', env('GYRS_DEV_PASSWORD', 'gyrs-dev-password')),
+        'enabled' => false,
     ],
 
     /*

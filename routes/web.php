@@ -19,24 +19,14 @@ Route::get('/health', function () {
     return response()->json(['status' => 'ok']);
 })->name('health');
 
-if (app()->environment('local')) {
-    Route::get('/dev/login-admin', function () {
-        $admin = \App\Models\User::query()
-            ->where('role', \App\Models\User::ROLE_ADMIN)
-            ->orderByDesc('is_super_admin')
-            ->firstOrFail();
-        auth()->login($admin);
+/*
+|--------------------------------------------------------------------------
+| Google OAuth
+|--------------------------------------------------------------------------
+*/
 
-        return redirect()->route('admin.dashboard');
-    })->name('dev.login.admin');
-
-    Route::get('/dev/login-candidate', function () {
-        $candidate = \App\Models\User::query()->where('role', \App\Models\User::ROLE_CANDIDATE)->firstOrFail();
-        auth()->login($candidate);
-
-        return redirect()->route('candidate.dashboard');
-    })->name('dev.login.candidate');
-}
+Route::get('/auth/google/redirect', [Auth\GoogleLoginController::class, 'redirect'])->name('auth.google.redirect');
+Route::get('/auth/google/callback', [Auth\GoogleLoginController::class, 'callback'])->name('auth.google.callback');
 
 /*
 |--------------------------------------------------------------------------

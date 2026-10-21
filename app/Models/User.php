@@ -47,6 +47,8 @@ class User extends Authenticatable
         'cgpa',
         'status',
         'approved_at',
+        'google_id',
+        'avatar',
     ];
 
     protected $hidden = [

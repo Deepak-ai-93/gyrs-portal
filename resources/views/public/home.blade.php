@@ -443,81 +443,108 @@
         </div>
     </section>
 
-    <section class="section" id="how-it-works" style="background:var(--color-surface);border-top:1px solid var(--color-border);border-bottom:1px solid var(--color-border);">
+    <section class="section how-section" id="how-it-works">
+        <span class="how-glow" aria-hidden="true"></span>
         <div class="container">
-            <div class="page-head" style="justify-content:center;text-align:center;">
-                <div>
-                    <h2>How Gujarat Rojgar Setu works</h2>
-                    <p class="lead">A clear four-step path from registration to a verified placement.</p>
-                </div>
+            <div class="how-head">
+                <span class="how-eyebrow"><x-icon name="sparkles" :size="14" /> Your route to a role</span>
+                <h2>How Gujarat Rojgar Setu works</h2>
+                <p class="lead">A clear four-step path from registration to a verified placement — no agents, no fees, no guesswork.</p>
             </div>
 
             <div class="steps-track" data-motion-steps>
                 <span class="steps-line" aria-hidden="true"><span class="steps-line-fill" data-motion-steps-fill></span></span>
                 <div class="steps-grid">
-                    <div class="step-card" data-motion-step>
+                    <div class="step-card" data-motion-step data-step="01">
                         <span class="step-num">01</span>
+                        <div class="step-top">
+                            <span class="step-icon"><x-icon name="user" :size="20" /></span>
+                            <span class="step-kicker">Profile</span>
+                        </div>
                         <h3>Create your free profile</h3>
                         <p>Register with your qualification, skills and district. Complete your candidate dossier in minutes.</p>
+                        <span class="step-outcome"><x-icon name="check-circle" :size="14" /> Profile ready in minutes</span>
                     </div>
-                    <div class="step-card" data-motion-step>
+                    <div class="step-card" data-motion-step data-step="02">
                         <span class="step-num">02</span>
+                        <div class="step-top">
+                            <span class="step-icon"><x-icon name="search" :size="20" /></span>
+                            <span class="step-kicker">Explore</span>
+                        </div>
                         <h3>Explore &amp; read details</h3>
                         <p>Filter verified openings across all 33 districts and open any job to read the full official notification.</p>
+                        <span class="step-outcome"><x-icon name="check-circle" :size="14" /> Full notification access</span>
                     </div>
-                    <div class="step-card" data-motion-step>
+                    <div class="step-card" data-motion-step data-step="03">
                         <span class="step-num">03</span>
+                        <div class="step-top">
+                            <span class="step-icon"><x-icon name="sparkles" :size="20" /></span>
+                            <span class="step-kicker">Shortlist</span>
+                        </div>
                         <h3>Save &amp; shortlist interests</h3>
                         <p>Mark any vacancy as interested, review AI-matched recommendations and build a personal shortlist of roles.</p>
+                        <span class="step-outcome"><x-icon name="check-circle" :size="14" /> Personal shortlist built</span>
                     </div>
-                    <div class="step-card" data-motion-step>
+                    <div class="step-card" data-motion-step data-step="04">
                         <span class="step-num">04</span>
+                        <div class="step-top">
+                            <span class="step-icon"><x-icon name="award" :size="20" /></span>
+                            <span class="step-kicker">Placed</span>
+                        </div>
                         <h3>Attend &amp; get placed</h3>
                         <p>Attend interview calls or state Rozgar Melas and receive your official verified appointment.</p>
+                        <span class="step-outcome"><x-icon name="check-circle" :size="14" /> Verified appointment</span>
                     </div>
                 </div>
             </div>
 
-            <div class="panel panel-accent between" style="margin-top:var(--space-8);">
-                <div>
-                    <h2 style="font-size:1.0625rem;margin-bottom:4px;">Ready to shortlist jobs you are interested in?</h2>
-                    <p class="text-sm muted" style="margin:0;">Sign in to your candidate dashboard to view interested jobs, AI recommendations and upcoming Rozgar melas.</p>
+            <div class="how-cta">
+                <span class="how-cta-rings" aria-hidden="true"></span>
+                <div class="how-cta-copy">
+                    <span class="how-cta-eyebrow"><x-icon name="sparkles" :size="14" /> Ready when you are</span>
+                    <h2>Turn your shortlist into a placement.</h2>
+                    <p>Sign in to your candidate dashboard to view interested jobs, AI recommendations and upcoming Rozgar Melas — or create your free profile in minutes.</p>
                 </div>
-                <div class="cluster">
-                    <x-button variant="outline" :href="route('candidate.login')">Candidate sign in</x-button>
-                    <x-button variant="ghost" :href="route('candidate.register')">Register free</x-button>
+                <div class="how-cta-actions">
+                    <div class="cluster">
+                        <x-button variant="outline" :href="route('candidate.login')">Candidate sign in</x-button>
+                        <x-button variant="ghost" :href="route('candidate.register')">Register free</x-button>
+                    </div>
+                    <span class="how-cta-note"><x-icon name="shield" :size="14" /> Free · Verified postings · No intermediaries</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="section" id="departments">
+    <section class="section dept-section" id="departments">
         <div class="container">
-            <div class="page-head" style="justify-content:center;text-align:center;">
-                <div>
-                    <h2>Top hiring departments &amp; organizations</h2>
-                    <p class="lead">Partner government boards, state public sector undertakings and major industrial projects recruiting through GYRS.</p>
-                </div>
+            <div class="how-head dept-head">
+                <span class="how-eyebrow"><x-icon name="building" :size="14" /> Verified hiring partners</span>
+                <h2>Top hiring departments &amp; organizations</h2>
+                <p class="lead">Partner government boards, state public sector undertakings and major industrial projects recruiting through GYRS.</p>
             </div>
 
             <div class="dept-grid" data-motion-reveal data-motion-stagger>
                 @foreach ([
-                    ['Roads & Buildings Department (R&B)', 'State department &middot; Gandhinagar', 'Roads & Buildings'],
-                    ['GIFT City Authority', 'Gandhinagar International Tech City', 'GIFT City'],
-                    ['GETCO — Gujarat Energy Transmission', 'State power utility &middot; Vadodara', 'GETCO'],
-                    ['Health & Family Welfare Department', 'State healthcare department &middot; Surat &amp; Rajkot', 'Health'],
-                    ['Dholera Special Investment Region', 'Mega industrial and greenfield hub', 'Dholera'],
-                    ['Gujarat Informatics Limited (GIL)', 'Department of Science &amp; Technology', 'Gujarat Informatics'],
-                ] as [$deptName, $deptMeta, $deptQuery])
-                    <div class="dept-card card is-interactive">
-                        <span class="badge" style="align-self:flex-start;"><x-icon name="building" :size="14" /> Department</span>
+                    ['Roads & Buildings Department (R&B)', 'State department', 'Gandhinagar', 'Roads & Buildings', 'R&B'],
+                    ['GIFT City Authority', 'Authority', 'Gandhinagar International Tech City', 'GIFT City', 'GIFT'],
+                    ['GETCO — Gujarat Energy Transmission', 'State power utility', 'Vadodara', 'GETCO', 'GETCO'],
+                    ['Health & Family Welfare Department', 'State department', 'Surat & Rajkot', 'Health', 'HFW'],
+                    ['Dholera Special Investment Region', 'Industrial region', 'Dholera', 'Dholera', 'DSIR'],
+                    ['Gujarat Informatics Limited (GIL)', 'State undertaking', 'Department of Science & Technology', 'Gujarat Informatics', 'GIL'],
+                ] as [$deptName, $deptType, $deptLocation, $deptQuery, $deptMark])
+                    <a class="dept-card card is-interactive" href="{{ route('home', ['keyword' => $deptQuery]) }}#job-explorer">
+                        <div class="dept-top">
+                            <span class="dept-mark" aria-hidden="true">{{ $deptMark }}</span>
+                            <span class="dept-type">{{ $deptType }}</span>
+                        </div>
                         <h3>{{ $deptName }}</h3>
-                        <span class="dept-meta">{!! $deptMeta !!}</span>
-                        <a class="dept-action-link" href="{{ route('home', ['keyword' => $deptQuery]) }}#job-explorer">
+                        <span class="dept-meta"><x-icon name="map-pin" :size="14" /> {{ $deptLocation }}</span>
+                        <span class="dept-action-link">
                             <span>View openings</span>
-                            <x-icon name="arrow-right" :size="14" />
-                        </a>
-                    </div>
+                            <span class="dept-arrow"><x-icon name="arrow-right" :size="14" /></span>
+                        </span>
+                    </a>
                 @endforeach
             </div>
         </div>

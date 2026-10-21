@@ -2238,51 +2238,337 @@ body.modal-open {
   margin-top: 2px;
 }
 
+/* How it works — four-step journey board */
+.how-section {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-surface);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  isolation: isolate;
+  scroll-margin-top: calc(var(--header-h) + 16px);
+}
+
+.how-glow {
+  position: absolute;
+  top: -180px;
+  left: 50%;
+  z-index: -1;
+  width: min(920px, 92vw);
+  height: 460px;
+  transform: translateX(-50%);
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--color-focus) 13%, transparent), transparent 76%);
+  pointer-events: none;
+}
+
+.how-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  max-width: 660px;
+  margin: 0 auto var(--space-12);
+  text-align: center;
+}
+
+.how-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface-raised);
+  color: var(--color-heading);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.how-head h2 {
+  margin: 0;
+  font-size: clamp(1.75rem, 3vw, 2.4rem);
+  letter-spacing: -0.015em;
+}
+
+.how-head .lead {
+  max-width: 56ch;
+  margin: 0;
+  color: var(--color-muted);
+}
+
 .steps-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-4);
+  padding-top: 28px;
 }
 
 .step-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 264px;
+  padding: 34px 22px 20px;
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  background: var(--color-surface);
-  padding: var(--space-5) var(--space-4);
-  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, var(--color-surface-raised), var(--color-surface));
+  isolation: isolate;
+  transition: border-color 0.28s ease, box-shadow 0.28s ease, background-color 0.28s ease;
 }
 
-.step-card:hover {
-  transform: translateY(-2px);
+.step-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  background: radial-gradient(130% 105% at 12% 0%, color-mix(in srgb, var(--color-focus) 16%, transparent), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.step-card::after {
+  content: attr(data-step);
+  position: absolute;
+  right: 14px;
+  bottom: 46px;
+  z-index: 0;
+  color: color-mix(in srgb, var(--color-heading) 7%, transparent);
+  font-size: 3.25rem;
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  pointer-events: none;
+}
+
+.step-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.step-card:hover,
+.step-card:focus-within {
   border-color: var(--color-border-strong);
-  box-shadow: var(--shadow-sm);
+  box-shadow: var(--shadow-md);
+}
+
+.step-card:hover::before,
+.step-card.is-current::before {
+  opacity: 1;
 }
 
 .step-num {
+  position: absolute;
+  top: -21px;
+  left: 24px;
+  z-index: 2;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 1.5px solid var(--color-border-strong);
+  width: 42px;
+  height: 42px;
+  border: 1px solid var(--color-border-strong);
+  border-radius: 999px;
+  background: var(--color-surface);
+  box-shadow: 0 0 0 6px var(--color-surface);
   color: var(--color-heading);
+  font-size: 0.8125rem;
   font-weight: 700;
-  font-size: 0.875rem;
   font-variant-numeric: tabular-nums;
-  margin-bottom: var(--space-3);
-  background: var(--color-surface-raised);
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+.step-card:hover .step-num,
+.step-card.is-current .step-num {
+  border-color: var(--color-heading);
+  background: var(--color-heading);
+  color: var(--color-surface);
+}
+
+.step-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: 2px;
+}
+
+.step-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-subtle);
+  color: var(--color-heading);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+.step-card:hover .step-icon,
+.step-card.is-current .step-icon {
+  transform: translateY(-2px);
+  border-color: var(--color-heading);
+  background: var(--color-heading);
+  color: var(--color-surface);
+}
+
+.step-kicker {
+  color: var(--color-muted);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
 }
 
 .step-card h3 {
-  font-size: 1rem;
-  margin-bottom: 6px;
+  margin: 2px 0 0;
+  font-size: 1.0625rem;
+  letter-spacing: -0.01em;
 }
 
 .step-card p {
   margin: 0;
-  font-size: 0.875rem;
   color: var(--color-text);
+  font-size: 0.9rem;
+  line-height: 1.55;
+}
+
+.step-outcome {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: auto;
+  padding-top: var(--space-3);
+  border-top: 1px dashed var(--color-border);
+  color: var(--color-heading);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.step-outcome .icon {
+  color: var(--color-success);
+}
+
+/* Dark closing banner for the journey */
+.how-cta {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-8);
+  flex-wrap: wrap;
+  margin-top: var(--space-12);
+  padding: clamp(24px, 4vw, 40px);
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: var(--color-heading);
+  box-shadow: var(--shadow-md);
+  color: color-mix(in srgb, var(--color-surface) 78%, transparent);
+  isolation: isolate;
+}
+
+.how-cta-rings {
+  position: absolute;
+  top: 50%;
+  right: -70px;
+  z-index: 0;
+  width: 300px;
+  height: 300px;
+  border: 1px solid color-mix(in srgb, var(--color-surface) 9%, transparent);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  box-shadow:
+    0 0 0 46px color-mix(in srgb, var(--color-surface) 5%, transparent),
+    0 0 0 92px color-mix(in srgb, var(--color-surface) 3%, transparent),
+    0 0 0 138px color-mix(in srgb, var(--color-surface) 2%, transparent);
+  pointer-events: none;
+}
+
+.how-cta-copy {
+  position: relative;
+  z-index: 1;
+  max-width: 560px;
+}
+
+.how-cta-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: var(--space-2);
+  color: color-mix(in srgb, var(--color-surface) 74%, transparent);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.how-cta h2 {
+  margin: 0 0 6px;
+  color: var(--color-surface);
+  font-size: clamp(1.35rem, 2.2vw, 1.75rem);
+  letter-spacing: -0.015em;
+}
+
+.how-cta p {
+  margin: 0;
+  color: color-mix(in srgb, var(--color-surface) 80%, transparent);
+  font-size: 0.9375rem;
+}
+
+.how-cta-actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.how-cta .btn-outline {
+  border-color: var(--color-surface);
+  background: var(--color-surface);
+  color: var(--color-heading);
+}
+
+.how-cta .btn-outline:hover,
+.how-cta .btn-outline:focus-visible {
+  border-color: var(--color-subtle);
+  background: var(--color-subtle);
+  color: var(--color-heading);
+}
+
+.how-cta .btn-ghost {
+  border-color: color-mix(in srgb, var(--color-surface) 30%, transparent);
+  color: var(--color-surface);
+}
+
+.how-cta .btn-ghost:hover,
+.how-cta .btn-ghost:focus-visible {
+  border-color: color-mix(in srgb, var(--color-surface) 52%, transparent);
+  background: color-mix(in srgb, var(--color-surface) 12%, transparent);
+  color: var(--color-surface);
+}
+
+.how-cta-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: color-mix(in srgb, var(--color-surface) 72%, transparent);
+  font-size: 0.75rem;
+}
+
+.dept-section {
+  position: relative;
+}
+
+.dept-head {
+  margin-bottom: var(--space-8);
 }
 
 .dept-grid {
@@ -2292,44 +2578,157 @@ body.modal-open {
 }
 
 .dept-card {
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  padding: var(--space-5) var(--space-4);
+  gap: 10px;
+  min-height: 214px;
+  padding: 22px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-surface);
+  color: inherit;
+  text-decoration: none;
+  isolation: isolate;
+  transition: border-color 0.24s ease, box-shadow 0.24s ease;
+}
+
+.dept-card:hover,
+.dept-card:focus-visible {
+  color: inherit;
+  text-decoration: none;
+}
+
+.dept-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  background: radial-gradient(120% 100% at 10% 0%, color-mix(in srgb, var(--color-focus) 15%, transparent), transparent 58%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.dept-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.dept-card:hover::before,
+.dept-card:focus-visible::before {
+  opacity: 1;
+}
+
+.dept-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  margin-bottom: 4px;
+}
+
+.dept-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 46px;
+  height: 46px;
+  padding: 0 10px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  background: var(--color-surface);
-  min-height: 180px;
+  background: var(--color-subtle);
+  color: var(--color-heading);
+  font-size: 0.8125rem;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  transition: background-color 0.24s ease, border-color 0.24s ease, color 0.24s ease;
+}
+
+.dept-type {
+  padding: 4px 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface-raised);
+  color: var(--color-muted);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: color 0.24s ease, border-color 0.24s ease;
 }
 
 .dept-card h3 {
-  font-size: 0.9375rem;
   margin: 0;
-  line-height: 1.4;
+  font-size: 1.0625rem;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
 }
 
-.dept-card .dept-meta {
-  font-size: 0.8125rem;
+.dept-meta {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 6px;
   color: var(--color-muted);
+  font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.dept-meta .icon {
+  flex: none;
+  margin-top: 2px;
 }
 
 .dept-action-link {
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: space-between;
+  gap: var(--space-2);
   margin-top: auto;
-  padding-top: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+  color: var(--color-heading);
   font-size: 0.8125rem;
   font-weight: 600;
-  color: var(--color-heading);
   text-decoration: none;
-  transition: color 0.15s ease, gap 0.15s ease;
+  transition: color 0.2s ease;
 }
 
-.dept-action-link:hover,
-.dept-action-link:focus-visible {
-  color: var(--color-accent-hover);
-  gap: 9px;
+.dept-arrow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: var(--color-surface-raised);
+  color: var(--color-heading);
+  transition: transform 0.24s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.dept-card:hover .dept-mark,
+.dept-card:focus-visible .dept-mark {
+  border-color: var(--color-heading);
+  background: var(--color-heading);
+  color: var(--color-surface);
+}
+
+.dept-card:hover .dept-type,
+.dept-card:focus-visible .dept-type {
+  border-color: var(--color-border-strong);
+  color: var(--color-heading);
+}
+
+.dept-card:hover .dept-arrow,
+.dept-card:focus-visible .dept-arrow {
+  transform: translateX(3px);
+  border-color: var(--color-heading);
+  background: var(--color-heading);
+  color: var(--color-surface);
 }
 
 .faq-list {
@@ -3555,19 +3954,20 @@ h4 {
   pointer-events: none;
 }
 
-/* Process steps: a drawing rail behind the sequence markers */
+/* Process steps: a drawing rail that threads the numbered stations */
 .steps-track {
   position: relative;
 }
 
 .steps-line {
   position: absolute;
-  top: 33px;
-  left: 33px;
-  right: 33px;
-  height: 2px;
-  background: var(--color-border);
+  top: 27px;
+  left: 45px;
+  right: 45px;
   z-index: 0;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--color-border);
   pointer-events: none;
 }
 
@@ -3575,9 +3975,10 @@ h4 {
   display: block;
   width: 100%;
   height: 100%;
+  border-radius: inherit;
   transform: scaleX(0);
   transform-origin: 0 50%;
-  background: var(--color-accent);
+  background: linear-gradient(90deg, var(--color-border-strong), var(--color-accent));
 }
 
 .steps-track .step-card {
@@ -3594,12 +3995,6 @@ h4 {
   box-shadow: var(--shadow-md);
 }
 
-.step-card.is-current .step-num {
-  background: var(--color-subtle);
-  border-color: var(--color-accent);
-  color: var(--color-accent-hover);
-}
-
 /* No-JS / reduced-motion fallbacks keep the rail legible */
 html.no-js .steps-line-fill {
   transform: scaleX(1);
@@ -3611,9 +4006,46 @@ html.no-js .steps-line-fill {
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .steps-line {
     display: none;
+  }
+
+  .steps-grid {
+    row-gap: 42px;
+  }
+}
+
+@media (max-width: 768px) {
+  .how-head {
+    margin-bottom: var(--space-8);
+  }
+
+  .steps-grid {
+    padding-top: 24px;
+  }
+
+  .step-card {
+    min-height: 0;
+    padding: 32px 20px 18px;
+  }
+
+  .step-num {
+    left: 20px;
+  }
+
+  .step-card::after {
+    bottom: 40px;
+  }
+
+  .how-cta {
+    align-items: flex-start;
+    gap: var(--space-6);
+    margin-top: var(--space-8);
+  }
+
+  .how-cta-actions {
+    width: 100%;
   }
 }
 

@@ -34,6 +34,10 @@ node_modules/
 # Vercel
 .vercel/
 
+# Storage framework
+storage/framework/views/*
+!storage/framework/views/.gitignore
+
 # Python tooling
 __pycache__/
 *.pyc
