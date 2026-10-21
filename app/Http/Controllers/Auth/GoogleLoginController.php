@@ -28,7 +28,9 @@ class GoogleLoginController extends Controller
 
         session(['google_auth_role' => $role]);
 
-        return Socialite::driver('google')->redirect();
+        return Socialite::driver('google')
+            ->redirectUrl(url('/auth/google/callback'))
+            ->redirect();
     }
 
     /**
@@ -37,7 +39,9 @@ class GoogleLoginController extends Controller
     public function callback(Request $request): RedirectResponse
     {
         try {
-            $googleUser = Socialite::driver('google')->user();
+            $googleUser = Socialite::driver('google')
+                ->redirectUrl(url('/auth/google/callback'))
+                ->user();
         } catch (\Throwable $e) {
             return redirect()->route('candidate.login')
                 ->with('error', 'Google sign-in failed. Please try again.');
