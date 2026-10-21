@@ -5,6 +5,7 @@ Thumbs.db
 # Laravel
 *.log
 .env
+.env.*
 .env.backup
 .env.production
 .phpactor.json
