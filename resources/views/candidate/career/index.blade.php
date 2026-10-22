@@ -59,39 +59,32 @@
                 </div>
             @endif
 
-            <!-- No analysis yet or AI unavailable -->
-            @if (! $latest)
-                <div class="alert alert-info" style="margin-bottom:var(--space-6);">
-                    <strong>No analysis yet.</strong>
-                    <p style="margin:8px 0 0;">Upload a résumé or paste text to get started with career suggestions.</p>
+            @if (session('rate_limit'))
+                <div class="alert alert-warning" role="alert" style="margin-bottom:var(--space-6);">
+                    <strong>Daily analysis limit reached.</strong>
+                    <p style="margin:8px 0 0;">Please try again tomorrow. Your existing results are still available.</p>
                 </div>
             @endif
 
-            @if ($latest && in_array($latest->status, [\App\Models\ResumeAnalysis::STATUS_PROCESSING, \App\Models\ResumeAnalysis::STATUS_FAILED]))
+            @if (! $latest)
+                <div class="alert alert-info" style="margin-bottom:var(--space-6);">
+                    <strong>No analysis yet.</strong>
+                    <p style="margin:8px 0 0;">Upload a résumé or paste text to get started. Without an AI key, a local analysis is used and no API tokens are spent.</p>
+                </div>
+            @endif
+
+            @if ($latest && $latest->status === \App\Models\ResumeAnalysis::STATUS_PROCESSING)
                 <div class="alert alert-warning" style="margin-bottom:var(--space-6);">
-                    @if ($latest->status === \App\Models\ResumeAnalysis::STATUS_PROCESSING)
-                        <strong>Analysing your résumé…</strong>
-                    @else
-                        <strong>Analysis failed.</strong>
-                    @endif
-                    <p style="margin:8px 0 0;">{{ $latest->error_message ?: 'Please try again or paste the text instead.' }}</p>
+                    <strong>Analysing your résumé…</strong>
+                    <p style="margin:8px 0 0;">Keep this page open while we prepare your results.</p>
                 </div>
             @endif
 
             @if ($latest && $latest->status === \App\Models\ResumeAnalysis::STATUS_FAILED)
-                @if ($latest->error_message && str_contains($latest->error_message, 'rate limit'))
-                    <div class="alert alert-warning" style="margin-bottom:var(--space-6);">
-                        <strong>Rate limit exceeded.</strong>
-                        <p style="margin:8px 0 0;">You have reached the daily analysis limit. Please try again tomorrow.</p>
-                    </div>
-                @elseif ($latest->error_message && str_contains($latest->error_message, 'AI'))
-                    <div class="alert alert-warning" style="margin-bottom:var(--space-6);">
-                        <strong>AI service unavailable.</strong>
-                        <p style="margin:8px 0 0;">The AI provider is currently unavailable. A local analysis will be used instead.</p>
-                    </div>
-                    @endif
-                @endif
-
+                <div class="alert alert-danger" role="alert" style="margin-bottom:var(--space-6);">
+                    <strong>We could not finish the last analysis.</strong>
+                    <p style="margin:8px 0 0;">Please try again or paste the text instead. Your uploaded file was discarded.</p>
+                </div>
             @elseif ($latest && $latest->status === \App\Models\ResumeAnalysis::STATUS_COMPLETED)
                 <div class="career-latest panel panel-accent">
                     <div class="career-latest-main">
@@ -117,11 +110,6 @@
                         <x-button variant="primary" :href="route('candidate.career.show', $latest)">View my results</x-button>
                         <x-button variant="outline" :href="route('candidate.career.index') . '#analyse'">Analyse again</x-button>
                     </div>
-                </div>
-            @elseif ($latest && $latest->status === \App\Models\ResumeAnalysis::STATUS_FAILED)
-                <div class="alert alert-danger" style="margin-bottom:var(--space-6);">
-                    <strong>We could not finish the last analysis.</strong>
-                    <p style="margin:8px 0 0;">{{ $latest->error_message ?: 'Please try again with a PDF, DOCX or pasted text.' }}</p>
                 </div>
             @endif
 
@@ -207,11 +195,12 @@
                             </x-button>
                         </div>
 
-                        <div class="career-progress" data-ai-progress hidden aria-live="polite">
+                        <div class="career-progress" data-ai-progress hidden>
                             <div class="career-progress-head">
                                 <span class="spinner" aria-hidden="true"></span>
                                 <strong>Analysing your résumé…</strong>
                             </div>
+                            <p class="text-sm muted" data-ai-progress-message role="status" aria-live="polite">Reading your résumé</p>
                             <ol>
                                 <li data-ai-step="1" class="is-active">Reading your résumé</li>
                                 <li data-ai-step="2">Extracting skills and experience</li>

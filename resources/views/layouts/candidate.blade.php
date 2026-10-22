@@ -37,6 +37,7 @@
             <div class="nav-collapse" id="candidate-navigation" data-mobile-menu>
                 <nav class="main-nav" aria-label="Candidate">
                     <a href="{{ route('candidate.dashboard') }}" @if (request()->routeIs('candidate.dashboard')) aria-current="page" @endif><x-icon name="home" :size="16" /> Dashboard</a>
+                    <a href="{{ route('candidate.career.index') }}" @if (request()->routeIs('candidate.career.*')) aria-current="page" @endif><x-icon name="sparkles" :size="16" /> Career Assistant</a>
                     <a href="{{ route('candidate.interested.index') }}" @if (request()->routeIs('candidate.interested.index')) aria-current="page" @endif><x-icon name="sparkles" :size="16" /> Interested jobs</a>
                     <a href="{{ route('home') }}#job-explorer"><x-icon name="search" :size="16" /> Explore jobs</a>
                 </nav>

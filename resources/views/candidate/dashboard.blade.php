@@ -107,6 +107,33 @@
                 <x-button variant="outline" :href="$nextAction['href']">{{ $nextAction['label'] }}</x-button>
             </div>
 
+            <section class="panel between" aria-labelledby="career-assistant-heading" style="margin-bottom:var(--space-6);">
+                <div>
+                    <span class="badge badge-info"><x-icon name="sparkles" :size="13" /> Career Assistant</span>
+                    <h2 id="career-assistant-heading" style="margin:var(--space-2) 0;">
+                        @if (! $careerAnalysis)
+                            Get a résumé snapshot and skill plan
+                        @elseif ($careerAnalysis->isCompleted())
+                            Your latest résumé analysis is ready
+                        @elseif ($careerAnalysis->status === \App\Models\ResumeAnalysis::STATUS_PROCESSING)
+                            Your résumé analysis is processing
+                        @else
+                            Analyse your résumé again
+                        @endif
+                    </h2>
+                    <p class="text-sm muted" style="margin:0;">
+                        @if ($careerAnalysis?->isCompleted())
+                            {{ $careerAnalysis->completed_at?->diffForHumans() ?? 'Recently completed' }} · {{ $careerAnalysis->is_ai_generated ? 'AI-assisted' : 'Local analysis' }}
+                        @else
+                            See open-job matches and a practical 30/60/90-day skill plan.
+                        @endif
+                    </p>
+                </div>
+                <x-button variant="outline" :href="$careerAnalysis?->isCompleted() ? route('candidate.career.show', $careerAnalysis) : route('candidate.career.index')">
+                    {{ $careerAnalysis?->isCompleted() ? 'View analysis' : 'Open Career Assistant' }}
+                </x-button>
+            </section>
+
             <nav class="tabs" aria-label="Dashboard sections">
                 <a href="#interested" class="is-active"><x-icon name="sparkles" :size="16" /> Interested jobs</a>
                 <a href="#recommended"><x-icon name="briefcase" :size="16" /> AI recommended</a>

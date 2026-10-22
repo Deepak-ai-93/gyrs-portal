@@ -87,6 +87,21 @@ class User extends Authenticatable
         return $this->hasMany(SavedJob::class);
     }
 
+    public function resumeAnalyses(): HasMany
+    {
+        return $this->hasMany(ResumeAnalysis::class)->latest();
+    }
+
+    public function skillPlans(): HasMany
+    {
+        return $this->hasMany(CandidateSkillPlan::class);
+    }
+
+    public function latestResumeAnalysis(): ?ResumeAnalysis
+    {
+        return $this->resumeAnalyses()->first();
+    }
+
     /**
      * Jobs the candidate has marked as interested.
      */

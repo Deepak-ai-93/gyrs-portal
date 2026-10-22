@@ -72,6 +72,15 @@ Route::prefix('candidate')->middleware(['auth', 'role:candidate'])->group(functi
     Route::get('/dashboard', [Candidate\DashboardController::class, 'index'])->name('candidate.dashboard');
     Route::patch('/profile', [Candidate\ProfileController::class, 'update'])->name('candidate.profile.update');
     Route::get('/interested', [Candidate\InterestedJobController::class, 'index'])->name('candidate.interested.index');
+
+    Route::get('/career', [Candidate\CareerAssistantController::class, 'index'])->name('candidate.career.index');
+    Route::post('/career/analyze', [Candidate\CareerAssistantController::class, 'store'])
+        ->middleware('throttle:ai-resume')
+        ->name('candidate.career.analyze');
+    Route::get('/career/{analysis}', [Candidate\CareerAssistantController::class, 'show'])->name('candidate.career.show');
+    Route::delete('/career/{analysis}', [Candidate\CareerAssistantController::class, 'destroy'])->name('candidate.career.destroy');
+    Route::post('/career/{analysis}/apply', [Candidate\CareerAssistantController::class, 'apply'])->name('candidate.career.apply');
+    Route::patch('/career/skills/{plan}', [Candidate\CareerAssistantController::class, 'updatePlan'])->name('candidate.career.plan.update');
 });
 
 /*

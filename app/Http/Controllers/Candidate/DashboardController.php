@@ -28,6 +28,7 @@ class DashboardController extends Controller
             ->get();
 
         $melas = RozgarMela::query()->upcoming()->with('district')->limit(4)->get();
+        $careerAnalysis = $user->resumeAnalyses()->first();
 
         return view('candidate.dashboard', [
             'user' => $user,
@@ -42,6 +43,7 @@ class DashboardController extends Controller
                 'melas' => $melas->count(),
             ],
             'melas' => $melas,
+            'careerAnalysis' => $careerAnalysis,
         ]);
     }
 }

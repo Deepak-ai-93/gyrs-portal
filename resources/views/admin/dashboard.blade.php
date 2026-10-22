@@ -125,6 +125,25 @@
                 </div>
             </div>
 
+            <section class="panel" style="margin-bottom:var(--space-6);" aria-labelledby="ai-usage-heading">
+                <div class="between">
+                    <div>
+                        <h2 id="ai-usage-heading" style="font-size:1rem;">Career Assistant usage this month</h2>
+                        <p class="text-sm muted" style="margin:0;">Usage and estimated spend from configured token rates.</p>
+                    </div>
+                    <span class="badge badge-info">{{ $aiUsage['requests'] }} AI analyses</span>
+                </div>
+                <div class="cluster" style="margin-top:var(--space-4);">
+                    <span class="badge">{{ number_format($aiUsage['input_tokens']) }} input tokens</span>
+                    <span class="badge">{{ number_format($aiUsage['output_tokens']) }} output tokens</span>
+                    <span class="badge">${{ number_format($aiUsage['spent_usd'], 4) }} spent</span>
+                    @if ($aiUsage['reserved_usd'] > 0)
+                        <span class="badge">${{ number_format($aiUsage['reserved_usd'], 4) }} reserved</span>
+                    @endif
+                    <span class="badge">${{ number_format($aiUsage['budget_usd'], 2) }} monthly cap</span>
+                </div>
+            </section>
+
             <div class="grid grid-2">
                 <x-card title="Recent applications" meta="Latest candidate submissions">
                     @if ($recentApplications->isEmpty())

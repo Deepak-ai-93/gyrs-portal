@@ -401,4 +401,81 @@
             field.focus();
         });
     });
+
+    /* Career Assistant upload and submission feedback */
+    toArray(document, '[data-ai-form]').forEach(function (form) {
+        var fileInput = form.querySelector('[data-file-input]');
+        var fileName = form.querySelector('[data-file-name]');
+        var dropZone = form.querySelector('[data-file-drop]');
+        var progress = form.querySelector('[data-ai-progress]');
+        var progressMessage = form.querySelector('[data-ai-progress-message]');
+        var submitButton = form.querySelector('[data-ai-submit]');
+
+        if (fileInput && fileName) {
+            fileInput.addEventListener('change', function () {
+                var file = fileInput.files && fileInput.files[0];
+                fileName.textContent = file ? 'Selected file: ' + file.name : '';
+                fileName.hidden = !file;
+            });
+        }
+
+        if (fileInput && dropZone) {
+            dropZone.addEventListener('dragover', function (event) {
+                event.preventDefault();
+                dropZone.classList.add('is-dragging');
+            });
+
+            dropZone.addEventListener('dragleave', function () {
+                dropZone.classList.remove('is-dragging');
+            });
+
+            dropZone.addEventListener('drop', function (event) {
+                event.preventDefault();
+                dropZone.classList.remove('is-dragging');
+
+                if (event.dataTransfer && event.dataTransfer.files.length) {
+                    fileInput.files = event.dataTransfer.files;
+                    fileInput.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            });
+        }
+
+        form.addEventListener('submit', function () {
+            if (!progress || !form.checkValidity()) {
+                return;
+            }
+
+            var steps = toArray(form, '[data-ai-step]');
+            var currentStep = 0;
+            var messages = [
+                'Reading your résumé',
+                'Extracting skills and experience',
+                'Matching open vacancies',
+                'Building your skill plan'
+            ];
+
+            progress.hidden = false;
+            form.setAttribute('aria-busy', 'true');
+            if (submitButton) {
+                submitButton.disabled = true;
+            }
+
+            function updateProgress() {
+                steps.forEach(function (step, index) {
+                    step.classList.toggle('is-active', index === currentStep);
+                    step.classList.toggle('is-complete', index < currentStep);
+                });
+
+                if (progressMessage) {
+                    progressMessage.textContent = messages[currentStep];
+                }
+            }
+
+            updateProgress();
+            window.setInterval(function () {
+                currentStep = Math.min(currentStep + 1, messages.length - 1);
+                updateProgress();
+            }, 5000);
+        });
+    });
 })();
