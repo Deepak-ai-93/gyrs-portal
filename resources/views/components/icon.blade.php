@@ -1,4 +1,4 @@
-@props(['name' => null, 'size' => 20, 'label' => null])
+@props(['name' => null, 'size' => 20, 'label' => null, 'solid' => false])
 
 @php
     $icons = [
@@ -39,9 +39,36 @@
         'chevron-down' => '<path d="m6 9 6 6 6-6"/>',
         'inbox' => '<path d="M4 13 6 5h12l2 8v5a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-5Z"/><path d="M4 13h5l1 2h4l1-2h5"/>',
     ];
+
+    // Filled counterparts, used by the mobile tab bar. Shapes are drawn to the
+    // same 24×24 grid and optical size as the outline set above.
+    $solidIcons = [
+        'home' => '<path d="M12 2.7 2.5 10.5a1.3 1.3 0 0 0 .8 2.3h1.1V19a2 2 0 0 0 2 2h3.3v-4.6a2.3 2.3 0 0 1 4.6 0V21h3.3a2 2 0 0 0 2-2v-6.2h1.1a1.3 1.3 0 0 0 .8-2.3L12 2.7Z"/>',
+        'briefcase' => '<path fill-rule="evenodd" d="M4.8 6.6h14.4a2.4 2.4 0 0 1 2.4 2.4v9.4a2.4 2.4 0 0 1-2.4 2.4H4.8a2.4 2.4 0 0 1-2.4-2.4V9a2.4 2.4 0 0 1 2.4-2.4Zm5.4 5.1a1.1 1.1 0 0 0 0 2.2h3.6a1.1 1.1 0 0 0 0-2.2h-3.6Z"/><path d="M8.4 6.6V5.3a2.4 2.4 0 0 1 2.4-2.4h2.4a2.4 2.4 0 0 1 2.4 2.4v1.3h-2V5.3a.4.4 0 0 0-.4-.4h-2.4a.4.4 0 0 0-.4.4v1.3H8.4Z"/>',
+        'search' => '<path fill-rule="evenodd" d="M10.6 3a7.6 7.6 0 1 0 0 15.2 7.6 7.6 0 0 0 0-15.2Zm0 3.4a4.2 4.2 0 1 1 0 8.4 4.2 4.2 0 0 1 0-8.4Z"/><path d="M16.43 14.38 20.63 18.58a1.45 1.45 0 0 1-2.05 2.05L14.38 16.43Z"/>',
+        'user' => '<path d="M12 3.4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"/><path d="M4 21a8 8 0 0 1 16 0Z"/>',
+        'plus' => '<path d="M10.1 5.3a1.9 1.9 0 0 1 3.8 0v4.8h4.8a1.9 1.9 0 0 1 0 3.8h-4.8v4.8a1.9 1.9 0 0 1-3.8 0v-4.8H5.3a1.9 1.9 0 0 1 0-3.8h4.8V5.3Z"/>',
+        'sparkles' => '<path d="M10.1 2.9Q11.88 8.33 17.3 10.1 11.88 11.88 10.1 17.3 8.33 11.88 2.9 10.1 8.33 8.33 10.1 2.9Z"/><path d="M18.9 15.7Q19.6 17.89 21.8 18.6 19.6 19.31 18.9 21.5 18.2 19.31 16 18.6 18.2 17.89 18.9 15.7Z"/>',
+        'logout' => '<path d="M10.3 10.3h6.1a1.7 1.7 0 0 1 0 3.4h-6.1v4.3L3.1 12 10.3 6v4.3Z"/><path d="M16.4 3.5h2.9a2 2 0 0 1 2 2v13a2 2 0 0 1-2 2h-2.9a1.15 1.15 0 0 1-1.15-1.15V18.2h3.95V5.8h-3.95V4.65A1.15 1.15 0 0 1 16.4 3.5Z"/>',
+        'shield' => '<path fill-rule="evenodd" d="M11.3 2.7a1.8 1.8 0 0 1 1.4 0l7 3a1.8 1.8 0 0 1 1 1.6V11c0 5-3.2 8.6-7.7 10.9a1.7 1.7 0 0 1-1.5 0C7.2 19.6 3.3 16 3.3 11V7.3a1.8 1.8 0 0 1 1-1.6l7-3Zm-3.21 9.61a1.15 1.15 0 0 1 1.62 0L11.2 12.18l3.99-3.99a1.15 1.15 0 0 1 1.62 1.62L11.2 15.42 8.09 12.31Z"/>',
+    ];
+
+    $solid = (bool) $solid;
+    $isSolid = $solid && $name && isset($solidIcons[$name]);
 @endphp
 
-@if ($name && isset($icons[$name]))
+@if ($name && $isSolid)
+    <svg
+        class="icon icon-{{ $name }} icon-solid"
+        width="{{ $size }}"
+        height="{{ $size }}"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        stroke="none"
+        focusable="false"
+        @if ($label) role="img" aria-label="{{ $label }}" @else aria-hidden="true" @endif
+    >{!! $solidIcons[$name] !!}</svg>
+@elseif ($name && isset($icons[$name]))
     <svg
         class="icon icon-{{ $name }}"
         width="{{ $size }}"
