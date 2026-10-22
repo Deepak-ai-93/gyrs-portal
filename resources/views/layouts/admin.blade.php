@@ -15,6 +15,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Admin panel — GYRS Portal')</title>
     <meta name="description" content="@yield('meta_description', 'GYRS Portal administration for job vacancies, candidate verification and application audit.')">
+    @include('partials.dev-hmr-guard')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="layout-admin">

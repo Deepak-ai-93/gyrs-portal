@@ -7,6 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Candidate sign in — GYRS')</title>
     <meta name="description" content="@yield('meta_description', 'Sign in or create your free GYRS candidate account to apply for verified opportunities across Gujarat.')">
+    @include('partials.dev-hmr-guard')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="layout-auth has-tabbar">

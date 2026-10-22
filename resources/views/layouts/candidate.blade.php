@@ -15,6 +15,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Candidate workspace — GYRS')</title>
     <meta name="description" content="@yield('meta_description', 'GYRS candidate workspace: save interested jobs, manage your profile and discover AI-matched vacancies.')">
+    @include('partials.dev-hmr-guard')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="layout-candidate has-tabbar">

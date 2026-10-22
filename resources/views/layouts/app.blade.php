@@ -15,6 +15,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'GYRS Portal — Gujarat Youth Rojgar Setu')</title>
     <meta name="description" content="@yield('meta_description', 'GYRS — the official Gujarat employment and placement portal. Explore verified public and private vacancies across all 33 districts.')">
+    @include('partials.dev-hmr-guard')
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="layout-app @unless (request()->routeIs('admin.*')) has-tabbar @endunless">
