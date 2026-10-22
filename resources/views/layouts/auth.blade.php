@@ -9,7 +9,7 @@
     <meta name="description" content="@yield('meta_description', 'Sign in or create your free GYRS candidate account to apply for verified opportunities across Gujarat.')">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="layout-auth">
+<body class="layout-auth has-tabbar">
     <a class="skip-link" href="#auth-panel">Skip to the sign-in form</a>
 
     <main class="auth-shell">
@@ -43,5 +43,7 @@
             </div>
         </section>
     </main>
+
+    @include('partials.mobile-tabbar')
 </body>
 </html>

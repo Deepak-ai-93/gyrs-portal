@@ -43,7 +43,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
     <script defer src="{{ asset('js/public-motion.js') }}"></script>
 </head>
-<body class="layout-public">
+<body class="layout-public has-tabbar">
     @if (request()->routeIs('home'))
         <div class="preloader" id="gyrs-preloader" aria-hidden="true">
             <div class="preloader-stage">
@@ -257,6 +257,8 @@
             </div>
         </div>
     </footer>
+
+    @include('partials.mobile-tabbar')
 
     @stack('scripts')
 </body>

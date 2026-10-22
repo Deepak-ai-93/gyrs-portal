@@ -5025,3 +5025,104 @@ html.is-preloading body {
   }
 }
 
+
+/* ── Mobile quick-access tab bar ─────────────────────────────────────── */
+
+.mobile-tabbar {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .has-tabbar {
+    padding-bottom: calc(66px + env(safe-area-inset-bottom));
+  }
+
+  .mobile-tabbar {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 80;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    align-items: stretch;
+    gap: 2px;
+    padding: 6px 6px calc(6px + env(safe-area-inset-bottom));
+    border-top: 1px solid var(--color-border);
+    background: var(--color-surface);
+    box-shadow: 0 -8px 24px rgb(79 80 79 / 7%);
+  }
+
+  .mobile-tabbar-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    min-height: 50px;
+    padding: 4px 2px;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--color-muted);
+    font: inherit;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    line-height: 1.1;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: color 0.16s ease;
+  }
+
+  .mobile-tabbar-item:hover {
+    color: var(--color-heading);
+    text-decoration: none;
+  }
+
+  .mobile-tabbar-item:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: -2px;
+  }
+
+  .mobile-tabbar-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 24px;
+    border-radius: 999px;
+    transition: background-color 0.16s ease, color 0.16s ease;
+  }
+
+  .mobile-tabbar-item.is-active {
+    color: var(--color-heading);
+  }
+
+  .mobile-tabbar-item.is-active .mobile-tabbar-icon {
+    background: var(--color-subtle);
+  }
+
+  .mobile-tabbar-item.is-active .mobile-tabbar-label {
+    font-weight: 600;
+  }
+
+  .mobile-tabbar-label {
+    display: block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .mobile-tabbar-form {
+    display: contents;
+  }
+}
+
+@media print {
+  .mobile-tabbar {
+    display: none !important;
+  }
+}

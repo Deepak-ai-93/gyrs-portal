@@ -17,7 +17,7 @@
     <meta name="description" content="@yield('meta_description', 'GYRS — the official Gujarat employment and placement portal. Explore verified public and private vacancies across all 33 districts.')">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="layout-app">
+<body class="layout-app @unless (request()->routeIs('admin.*')) has-tabbar @endunless">
     <a class="skip-link" href="#main">Skip to main content</a>
 
     <header class="site-header">
@@ -61,5 +61,9 @@
             </div>
         </div>
     </footer>
+
+    @unless (request()->routeIs('admin.*'))
+        @include('partials.mobile-tabbar')
+    @endunless
 </body>
 </html>

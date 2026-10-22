@@ -17,7 +17,7 @@
     <meta name="description" content="@yield('meta_description', 'GYRS candidate workspace: save interested jobs, manage your profile and discover AI-matched vacancies.')">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
-<body class="layout-candidate">
+<body class="layout-candidate has-tabbar">
     <a class="skip-link" href="#main">Skip to main content</a>
 
     @php($user = auth()->user())
@@ -96,5 +96,7 @@
             </div>
         </div>
     </footer>
+
+    @include('partials.mobile-tabbar', ['context' => 'candidate'])
 </body>
 </html>
