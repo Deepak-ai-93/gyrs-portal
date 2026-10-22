@@ -382,4 +382,23 @@
             }
         });
     });
+
+    /* Password visibility toggles */
+    toArray(document, '[data-password-toggle]').forEach(function (button) {
+        button.addEventListener('click', function () {
+            var control = button.closest('.input-control');
+            var field = control ? control.querySelector('input') : null;
+
+            if (!field) {
+                return;
+            }
+
+            var reveal = field.type === 'password';
+            field.type = reveal ? 'text' : 'password';
+            button.classList.toggle('is-revealed', reveal);
+            button.setAttribute('aria-pressed', reveal ? 'true' : 'false');
+            button.setAttribute('aria-label', reveal ? 'Hide password' : 'Show password');
+            field.focus();
+        });
+    });
 })();
