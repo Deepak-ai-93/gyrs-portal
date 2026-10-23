@@ -4,7 +4,6 @@
 
 @php
     $profile = $latest?->extracted_profile ?? [];
-    $latestCompleted = $latest?->isCompleted() ?? false;
     $latestSkills = collect($profile['skills'] ?? [])->pluck('name')->filter()->take(6);
 @endphp
 
@@ -26,43 +25,10 @@
 
     <section class="section" style="padding-top:var(--space-6);">
         <div class="container">
-            @if ($latestCompleted)
-                <div class="career-latest panel panel-accent">
-                    <div class="career-latest-main">
-                        <span class="badge badge-success"><x-icon name="check-circle" :size="13" /> Analysis ready</span>
-                        <h2 style="margin:var(--space-3) 0 var(--space-2);">{{ $profile['summary'] ?? 'Your résumé analysis is ready.' }}</h2>
-                        <p class="text-sm muted" style="margin:0;">
-                            {{ $latest->sourceLabel() }} · analysed {{ $latest->completed_at?->diffForHumans() ?? 'recently' }}
-                            @if ($latest->is_ai_generated)
-                                · AI-assisted
-                            @else
-                                · local analysis
-                            @endif
-                        </p>
-                        @if ($latestSkills->isNotEmpty())
-                            <div class="badge-row" style="margin-top:var(--space-3);">
-                                @foreach ($latestSkills as $skill)
-                                    <span class="badge">{{ $skill }}</span>
-                                @endforeach
-                            </div>
-                        @endif
-                    </div>
-                    <div class="career-latest-actions">
-                        <x-button variant="primary" :href="route('candidate.career.show', $latest)">View my results</x-button>
-                        <x-button variant="outline" :href="route('candidate.career.index') . '#analyse'">Analyse again</x-button>
-                    </div>
-                </div>
-            @elseif ($latest && $latest->status === \App\Models\ResumeAnalysis::STATUS_FAILED)
-                <div class="alert alert-danger" style="margin-bottom:var(--space-6);">
-                    <strong>We could not finish the last analysis.</strong>
-                    <p style="margin:8px 0 0;">{{ $latest->error_message ?: 'Please try again with a PDF, DOCX or pasted text.' }}</p>
-                </div>
-            @endif
-
             @if (session('rate_limit'))
                 <div class="alert alert-warning" role="alert" style="margin-bottom:var(--space-6);">
-                    <strong>Daily analysis limit reached.</strong>
-                    <p style="margin:8px 0 0;">Please try again tomorrow. Your existing results are still available.</p>
+                    <strong>Analysis limit reached.</strong>
+                    <p style="margin:8px 0 0;">Please try again later. Your existing results are still available.</p>
                 </div>
             @endif
 

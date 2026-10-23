@@ -15,6 +15,15 @@
         </a>
 
         <a
+            href="{{ route('candidate.career.index') }}"
+            class="mobile-tabbar-item @if (request()->routeIs('candidate.career.*')) is-active @endif"
+            @if (request()->routeIs('candidate.career.*')) aria-current="page" @endif
+        >
+            <span class="mobile-tabbar-icon"><x-icon name="file" :size="20" solid /></span>
+            <span class="mobile-tabbar-label">Career</span>
+        </a>
+
+        <a
             href="{{ route('candidate.interested.index') }}"
             class="mobile-tabbar-item @if (request()->routeIs('candidate.interested.index')) is-active @endif"
             @if (request()->routeIs('candidate.interested.index')) aria-current="page" @endif
