@@ -115,148 +115,87 @@
 
                 <div class="hero-visual" data-motion-visual aria-hidden="true">
                     <div class="hero-art-stage">
-                        <svg class="hero-art-svg" viewBox="0 0 540 480" width="540" height="480" aria-hidden="true" focusable="false">
+                        <svg class="hero-art-svg hero-opportunity-art" viewBox="0 0 560 460" width="560" height="460" aria-hidden="true" focusable="false">
                             <defs>
-                                <!-- Summit Ambient Glow -->
-                                <radialGradient id="hero-summit-glow" cx="50%" cy="50%" r="50%">
-                                    <stop offset="0%" stop-color="var(--color-focus)" stop-opacity="0.22" />
-                                    <stop offset="50%" stop-color="var(--color-heading)" stop-opacity="0.05" />
-                                    <stop offset="100%" stop-color="var(--color-heading)" stop-opacity="0" />
+                                <radialGradient id="hero-map-wash" cx="52%" cy="44%" r="58%">
+                                    <stop offset="0" stop-color="var(--color-focus)" stop-opacity=".15" />
+                                    <stop offset="1" stop-color="var(--color-focus)" stop-opacity="0" />
                                 </radialGradient>
-                                <!-- Skill Upgrade Reactor Glow -->
-                                <radialGradient id="hero-reactor-glow" cx="50%" cy="50%" r="50%">
-                                    <stop offset="0%" stop-color="var(--color-focus)" stop-opacity="0.18" />
-                                    <stop offset="60%" stop-color="var(--color-heading)" stop-opacity="0.03" />
-                                    <stop offset="100%" stop-color="var(--color-heading)" stop-opacity="0" />
-                                </radialGradient>
-                                <!-- Energy Ascent Pipeline Gradient -->
-                                <linearGradient id="hero-ascent-line" x1="0%" y1="100%" x2="100%" y2="0%">
-                                    <stop offset="0%" stop-color="var(--color-muted)" stop-opacity="0.3" />
-                                    <stop offset="45%" stop-color="var(--color-focus)" stop-opacity="0.9" />
-                                    <stop offset="100%" stop-color="var(--color-heading)" stop-opacity="0.9" />
+                                <linearGradient id="hero-route" x1="0" y1="1" x2="1" y2="0">
+                                    <stop offset="0" stop-color="var(--color-muted)" stop-opacity=".35" />
+                                    <stop offset="1" stop-color="var(--color-heading)" stop-opacity=".8" />
                                 </linearGradient>
-                                <filter id="hero-card-shadow" x="-15%" y="-15%" width="130%" height="135%">
-                                    <feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#4f504f" flood-opacity="0.09" />
+                                <filter id="hero-art-shadow" x="-20%" y="-20%" width="140%" height="150%">
+                                    <feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="var(--color-heading)" flood-opacity=".13" />
                                 </filter>
+                                <pattern id="hero-map-dots" width="18" height="18" patternUnits="userSpaceOnUse">
+                                    <circle cx="2" cy="2" r="1" fill="var(--color-border-strong)" opacity=".55" />
+                                </pattern>
                             </defs>
 
-                            <!-- Ambient Halos -->
-                            <circle cx="415" cy="100" r="160" fill="url(#hero-summit-glow)" />
-                            <circle cx="260" cy="235" r="130" fill="url(#hero-reactor-glow)" />
+                            <circle cx="300" cy="220" r="220" fill="url(#hero-map-wash)" />
+                            <circle cx="300" cy="220" r="190" fill="url(#hero-map-dots)" opacity=".48" />
 
-                            <!-- Background Isometric Grid Perspective -->
-                            <g class="hero-grid-matrix" stroke="var(--color-border)" stroke-width="1" opacity="0.6">
-                                <path d="M40 400 L260 270 L480 400" fill="none" />
-                                <path d="M70 360 L260 250 L450 360" fill="none" stroke-dasharray="3 4" />
-                                <path d="M100 320 L260 230 L420 320" fill="none" />
-                                <path d="M130 280 L260 210 L390 280" fill="none" stroke-dasharray="3 4" />
-                                <line x1="260" y1="210" x2="260" y2="420" stroke="var(--color-border-strong)" stroke-width="1.2" />
-                                <line x1="140" y1="280" x2="60" y2="420" />
-                                <line x1="380" y1="280" x2="460" y2="420" />
+                            <!-- A winding route links districts to the opportunity card. -->
+                            <path d="M55 352C108 336 116 293 153 282S195 304 218 267 219 215 251 204" fill="none" stroke="var(--color-border-strong)" stroke-width="2" stroke-dasharray="4 7" />
+                            <path class="hero-art-route" d="M55 352C108 336 116 293 153 282S195 304 218 267 219 215 251 204" fill="none" stroke="url(#hero-route)" stroke-width="3" stroke-linecap="round" stroke-dasharray="12 9" />
+
+                            <!-- Abstract district network keeps the location story illustrative, not geographic. -->
+                            <g class="hero-art-map" fill="none" stroke="var(--color-border-strong)" stroke-width="1.2" opacity=".7">
+                                <path d="M76 98c24-16 41-12 57-25l31 8 15 24 32 5 14 28-16 20 8 26-27 17-4 30-28 9-18 25-31-9-22 15-28-14-21 5-14-25-22-10 8-28-15-22 15-23-3-29 24-17z" />
+                                <path d="m96 102 12 39-20 36 32 26-8 43m27-174-9 40 30 22-18 32 27 31m40-105-37 20 19 30-20 22m-82-3 39-9 23 21 29-7m-81 47 43-12 18-23 31-4" />
+                            </g>
+                            <g class="hero-art-map-districts" fill="var(--color-surface)" stroke="var(--color-heading)" stroke-width="2">
+                                <circle cx="98" cy="164" r="5" /><circle cx="152" cy="120" r="5" /><circle cx="190" cy="194" r="5" />
+                                <circle cx="124" cy="231" r="5" /><circle cx="211" cy="145" r="5" />
+                            </g>
+                            <g class="hero-art-map-pin" transform="translate(184 101)">
+                                <path d="M16 0C7 0 0 7 0 16c0 12 16 29 16 29s16-17 16-29C32 7 25 0 16 0Z" fill="var(--color-heading)" />
+                                <circle cx="16" cy="16" r="5" fill="var(--color-surface)" />
                             </g>
 
-                            <!-- ── STAGE 01: Profile & Assessment Pedestal ── -->
-                            <g class="hero-step-01">
-                                <!-- Base Isometric Pedestal -->
-                                <polygon points="50,375 120,340 190,375 120,410" fill="var(--color-surface)" stroke="var(--color-border-strong)" stroke-width="1.5" />
-                                <polygon points="50,375 120,410 120,422 50,387" fill="var(--color-subtle)" stroke="var(--color-border)" />
-                                <polygon points="120,410 190,375 190,387 120,422" fill="var(--color-border)" stroke="var(--color-border-strong)" />
-                                <!-- Center Hub Dot -->
-                                <circle cx="120" cy="375" r="6" fill="var(--color-heading)" />
-                                <circle cx="120" cy="375" r="12" fill="none" stroke="var(--color-border-strong)" stroke-width="1.5" />
-                                <text x="120" y="440" text-anchor="middle" font-size="10" font-weight="700" fill="var(--color-muted)" font-family="Inter, system-ui, sans-serif" letter-spacing="0.05em">LEVEL 01 · PROFILE</text>
+                            <!-- Opportunity finder panel -->
+                            <g class="hero-art-panel" filter="url(#hero-art-shadow)">
+                                <rect x="222" y="92" width="300" height="266" rx="20" fill="var(--color-surface)" stroke="var(--color-border)" stroke-width="1.3" />
+                                <path d="M242 92h260a20 20 0 0 1 20 20v34H222v-34a20 20 0 0 1 20-20Z" fill="var(--color-surface-raised)" />
+                                <circle cx="244" cy="119" r="4" fill="var(--color-border-strong)" />
+                                <circle cx="259" cy="119" r="4" fill="var(--color-border-strong)" />
+                                <circle cx="274" cy="119" r="4" fill="var(--color-border-strong)" />
+                                <path d="M239 168h92" stroke="var(--color-border)" stroke-width="7" stroke-linecap="round" />
+                                <path d="M239 184h148" stroke="var(--color-border-strong)" stroke-width="3" stroke-linecap="round" />
+                                <text x="239" y="211" fill="var(--color-heading)" font-family="Inter, system-ui, sans-serif" font-size="13" font-weight="700">Explore opportunities</text>
+                                <text x="239" y="230" fill="var(--color-muted)" font-family="Inter, system-ui, sans-serif" font-size="10">Across Gujarat, in one place</text>
+                                <rect x="239" y="249" width="266" height="48" rx="10" fill="var(--color-surface-raised)" stroke="var(--color-border)" />
+                                <circle cx="260" cy="273" r="10" fill="var(--color-subtle)" />
+                                <path d="M256 273h8m-4-4v8" stroke="var(--color-heading)" stroke-width="1.5" stroke-linecap="round" />
+                                <path d="M279 267h104" stroke="var(--color-border-strong)" stroke-width="4" stroke-linecap="round" />
+                                <path d="M279 279h72" stroke="var(--color-border)" stroke-width="3" stroke-linecap="round" />
+                                <rect x="239" y="307" width="266" height="34" rx="9" fill="var(--color-subtle)" />
+                                <circle cx="257" cy="324" r="6" fill="none" stroke="var(--color-heading)" stroke-width="1.5" />
+                                <path d="M257 320v4l3 2" fill="none" stroke="var(--color-heading)" stroke-width="1.3" stroke-linecap="round" />
+                                <path d="M271 324h81" stroke="var(--color-border-strong)" stroke-width="3" stroke-linecap="round" />
                             </g>
 
-                            <!-- ── STAGE 02: Skill Upgrade Reactor Pedestal ── -->
-                            <g class="hero-step-02">
-                                <!-- Elevated Isometric Pedestal -->
-                                <polygon points="190,240 260,205 330,240 260,275" fill="var(--color-surface)" stroke="var(--color-border-strong)" stroke-width="1.5" />
-                                <polygon points="190,240 260,275 260,290 190,255" fill="var(--color-subtle)" stroke="var(--color-border)" />
-                                <polygon points="260,275 330,240 330,255 260,290" fill="var(--color-border)" stroke="var(--color-border-strong)" />
-
-                                <!-- Gyro Orbit Ring around Skill Hub -->
-                                <ellipse cx="260" cy="240" rx="44" ry="22" fill="none" stroke="var(--color-focus)" stroke-width="1.5" stroke-dasharray="6 4" class="hero-orbit-spin" />
-                                <circle cx="260" cy="218" r="3.5" fill="var(--color-heading)" />
-
-                                <!-- Center Reactor Core -->
-                                <circle cx="260" cy="238" r="8" fill="var(--color-heading)" />
-                                <circle cx="260" cy="238" r="16" fill="none" stroke="var(--color-focus)" stroke-width="1.2" opacity="0.6" />
-
-                                <!-- Ascending Skill Chevrons -->
-                                <path d="M255 198 L260 192 L265 198" fill="none" stroke="var(--color-heading)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-                                <path d="M255 188 L260 182 L265 188" fill="none" stroke="var(--color-focus)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-
-                                <text x="260" y="308" text-anchor="middle" font-size="10" font-weight="700" fill="var(--color-heading)" font-family="Inter, system-ui, sans-serif" letter-spacing="0.05em">LEVEL 02 · SKILL UPGRADE</text>
+                            <!-- Floating location and access cues -->
+                            <g class="hero-art-district-tag" filter="url(#hero-art-shadow)">
+                                <rect x="28" y="276" width="142" height="48" rx="14" fill="var(--color-surface)" stroke="var(--color-border)" />
+                                <circle cx="52" cy="300" r="12" fill="var(--color-subtle)" />
+                                <path d="M52 307s6-5 6-10a6 6 0 1 0-12 0c0 5 6 10 6 10Zm0-8a2 2 0 1 0 0-4 2 2 0 0 0 0 4Z" fill="none" stroke="var(--color-heading)" stroke-width="1.4" />
+                                <text x="72" y="298" fill="var(--color-heading)" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="700">33 districts</text>
+                                <text x="72" y="312" fill="var(--color-muted)" font-family="Inter, system-ui, sans-serif" font-size="8.5">Search close to home</text>
+                            </g>
+                            <g class="hero-art-free-tag" filter="url(#hero-art-shadow)">
+                                <rect x="342" y="378" width="168" height="48" rx="14" fill="var(--color-surface)" stroke="var(--color-border)" />
+                                <circle cx="367" cy="402" r="12" fill="var(--color-success-soft)" />
+                                <path d="m362 402 3 3 6-7" fill="none" stroke="var(--color-success)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                                <text x="387" y="400" fill="var(--color-heading)" font-family="Inter, system-ui, sans-serif" font-size="10" font-weight="700">Free to get started</text>
+                                <text x="387" y="414" fill="var(--color-muted)" font-family="Inter, system-ui, sans-serif" font-size="8.5">Make your next move</text>
                             </g>
 
-                            <!-- ── STAGE 03: The Summit Peak (Goal Achieved!) ── -->
-                            <g class="hero-step-03">
-                                <!-- Summit Pillar Pedestal -->
-                                <polygon points="350,110 420,75 490,110 420,145" fill="var(--color-surface)" stroke="var(--color-heading)" stroke-width="2" />
-                                <polygon points="350,110 420,145 420,162 350,127" fill="var(--color-subtle)" stroke="var(--color-border-strong)" />
-                                <polygon points="420,145 490,110 490,127 420,162" fill="var(--color-border-strong)" stroke="var(--color-heading)" />
-
-                                <!-- Summit Goal Banner & Trophy Crest -->
-                                <line x1="420" y1="75" x2="420" y2="28" stroke="var(--color-heading)" stroke-width="2.5" stroke-linecap="round" />
-                                <path d="M420 30 L456 42 L420 54 Z" fill="var(--color-heading)" />
-                                <circle cx="420" cy="28" r="4" fill="var(--color-focus)" />
-
-                                <!-- Celebratory Starburst Rays on Goal Summit -->
-                                <g class="hero-goal-sparks">
-                                    <line x1="420" y1="14" x2="420" y2="4" stroke="var(--color-heading)" stroke-width="2" stroke-linecap="round" />
-                                    <line x1="432" y1="18" x2="440" y2="10" stroke="var(--color-heading)" stroke-width="2" stroke-linecap="round" />
-                                    <line x1="436" y1="28" x2="446" y2="28" stroke="var(--color-heading)" stroke-width="2" stroke-linecap="round" />
-                                    <line x1="408" y1="18" x2="400" y2="10" stroke="var(--color-heading)" stroke-width="2" stroke-linecap="round" />
-                                    <line x1="404" y1="28" x2="394" y2="28" stroke="var(--color-heading)" stroke-width="2" stroke-linecap="round" />
-                                </g>
-
-                                <!-- Pulsing Goal Beacon Ring -->
-                                <circle cx="420" cy="75" r="14" fill="none" stroke="var(--color-focus)" stroke-width="1.8" class="hero-summit-pulse" />
-
-                                <text x="420" y="178" text-anchor="middle" font-size="10.5" font-weight="800" fill="var(--color-heading)" font-family="Inter, system-ui, sans-serif" letter-spacing="0.06em">LEVEL 03 · GOAL ACHIEVED</text>
-                            </g>
-
-                            <!-- ── Continuous Ascending Energy Trajectory ── -->
-                            <path class="hero-ascent-track" d="M120 375 C160 350, 200 280, 260 238 C320 196, 360 130, 420 75" fill="none" stroke="var(--color-border-strong)" stroke-width="2" stroke-dasharray="4 4" />
-                            <path class="hero-ascent-pulse" d="M120 375 C160 350, 200 280, 260 238 C320 196, 360 130, 420 75" fill="none" stroke="url(#hero-ascent-line)" stroke-width="3.5" stroke-linecap="round" />
-
-                            <!-- Milestone Waypoint Nodes -->
-                            <circle cx="120" cy="375" r="4.5" fill="var(--color-heading)" />
-                            <circle cx="260" cy="238" r="5" fill="var(--color-heading)" />
-                            <circle cx="420" cy="75" r="5.5" fill="var(--color-heading)" />
-
-                            <!-- ── Floating Milestone Card 1: Skill Upgrade Engine ── -->
-                            <g class="hero-float-card hero-float-card-1" transform="translate(18, 145)" filter="url(#hero-card-shadow)">
-                                <rect width="186" height="66" rx="12" fill="var(--color-surface)" stroke="var(--color-border)" stroke-width="1" />
-                                <circle cx="26" cy="26" r="13" fill="var(--color-subtle)" />
-                                <text x="26" y="30" text-anchor="middle" font-size="13">⚡</text>
-                                <text x="48" y="22" font-size="11.5" font-weight="700" fill="var(--color-heading)" font-family="Inter, system-ui, sans-serif">Skill Upgrade +42%</text>
-                                <text x="48" y="37" font-size="9.5" fill="var(--color-muted)" font-family="Inter, system-ui, sans-serif">Technical &amp; Core Certifications</text>
-                                <!-- Mini Readiness Progress Bar -->
-                                <rect x="48" y="46" width="124" height="4" rx="2" fill="var(--color-border)" />
-                                <rect x="48" y="46" width="108" height="4" rx="2" fill="var(--color-heading)" class="hero-progress-fill" />
-                            </g>
-
-                            <!-- ── Floating Milestone Card 2: Summit Goal Achieved ── -->
-                            <g class="hero-float-card hero-float-card-2" transform="translate(295, 12)" filter="url(#hero-card-shadow)">
-                                <rect width="210" height="64" rx="12" fill="var(--color-surface)" stroke="var(--color-heading)" stroke-width="1.5" />
-                                <circle cx="28" cy="26" r="14" fill="var(--color-subtle)" />
-                                <text x="28" y="31" text-anchor="middle" font-size="14">🏆</text>
-                                <text x="50" y="22" font-size="12" font-weight="800" fill="var(--color-heading)" font-family="Inter, system-ui, sans-serif">Goal Achieved!</text>
-                                <text x="50" y="37" font-size="9.5" fill="var(--color-muted)" font-family="Inter, system-ui, sans-serif">Verified Appointment Letter</text>
-                                <g transform="translate(50, 45)">
-                                    <rect width="68" height="15" rx="7.5" fill="var(--color-success-soft)" />
-                                    <text x="34" y="11" text-anchor="middle" font-size="8.5" font-weight="700" fill="var(--color-success)" font-family="Inter, system-ui, sans-serif">✓ OFFER READY</text>
-                                </g>
-                            </g>
-
-                            <!-- ── Floating Milestone Card 3: AI Smart Recommendation ── -->
-                            <g class="hero-float-card hero-float-card-3" transform="translate(280, 350)" filter="url(#hero-card-shadow)">
-                                <rect width="195" height="54" rx="12" fill="var(--color-surface)" stroke="var(--color-border)" stroke-width="1" />
-                                <circle cx="26" cy="27" r="13" fill="var(--color-subtle)" />
-                                <text x="26" y="31" text-anchor="middle" font-size="13">🎯</text>
-                                <text x="48" y="22" font-size="11" font-weight="700" fill="var(--color-heading)" font-family="Inter, system-ui, sans-serif">Smart Match: 98%</text>
-                                <text x="48" y="38" font-size="9.5" fill="var(--color-muted)" font-family="Inter, system-ui, sans-serif">33 Districts · 1,450+ Roles</text>
+                            <g class="hero-art-spark" fill="var(--color-focus)">
+                                <path d="m477 52 4 12 12 4-12 4-4 12-4-12-12-4 12-4z" />
+                                <circle cx="204" cy="382" r="3" />
+                                <circle cx="520" cy="228" r="3" />
                             </g>
                         </svg>
                     </div>

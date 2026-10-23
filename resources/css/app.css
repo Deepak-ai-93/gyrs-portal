@@ -1518,6 +1518,53 @@ body.modal-open {
   overflow: visible;
 }
 
+.hero-inner > * {
+  min-width: 0;
+}
+
+.hero-art-stage {
+  max-width: 560px;
+}
+
+.hero-opportunity-art .hero-art-route {
+  animation: heroRouteTravel 4.5s linear infinite;
+}
+
+.hero-opportunity-art .hero-art-map-pin {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: heroPinDrop 3.8s ease-in-out infinite;
+}
+
+.hero-opportunity-art .hero-art-spark {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: heroSpark 3.2s ease-in-out infinite;
+}
+
+@keyframes heroRouteTravel {
+  to { stroke-dashoffset: -84; }
+}
+
+@keyframes heroPinDrop {
+  0%, 72%, 100% { transform: translateY(0); }
+  82% { transform: translateY(-6px); }
+  90% { transform: translateY(0); }
+}
+
+@keyframes heroSpark {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-opportunity-art .hero-art-route,
+  .hero-opportunity-art .hero-art-map-pin,
+  .hero-opportunity-art .hero-art-spark {
+    animation: none;
+  }
+}
+
 /* ── Hero SVG micro-animations ── */
 
 /* Gyro orbit ring spinning around the skill-upgrade reactor */
@@ -1809,12 +1856,31 @@ body.modal-open {
 }
 
 @media (max-width: 640px) {
+  .hero {
+    padding-top: clamp(40px, 11vw, 56px);
+  }
+
+  .hero-inner {
+    gap: var(--space-4);
+  }
+
   .hero-visual {
-    max-width: 360px;
+    width: 100%;
+    max-width: 460px;
   }
 
   .hero-title {
-    font-size: 2.25rem;
+    font-size: clamp(2rem, 9vw, 2.5rem);
+  }
+
+  .hero-badge {
+    max-width: 100%;
+    font-size: 0.75rem;
+  }
+
+  .hero-trust {
+    gap: var(--space-2) var(--space-4);
+    font-size: 0.75rem;
   }
 }
 
@@ -2003,6 +2069,24 @@ body.modal-open {
 
 .search-panel > .btn:hover {
   background: var(--color-border);
+}
+
+@media (max-width: 1100px) {
+  .search-panel {
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  }
+
+  .search-seg:nth-child(2) {
+    border-right: 0;
+  }
+
+  .search-seg:nth-child(3) {
+    border-top: 1px solid var(--color-border);
+  }
+
+  .search-panel > .btn {
+    border-top: 1px solid var(--color-border-strong);
+  }
 }
 
 .chip-row {
