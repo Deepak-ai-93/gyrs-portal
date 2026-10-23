@@ -14,8 +14,9 @@ class ProfileController extends Controller
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $user = $request->user();
+        $phoneChanged = $user->phone !== $request->input('phone');
 
-        DB::transaction(function () use ($request, $user) {
+        DB::transaction(function () use ($request, $user, $phoneChanged) {
             $user->update([
                 'name' => $request->string('name')->trim()->value(),
                 'email' => $request->input('email') ?: null,
@@ -24,6 +25,11 @@ class ProfileController extends Controller
                 'qualification' => $request->string('qualification')->trim()->value(),
                 'cgpa' => $request->input('cgpa'),
             ]);
+
+            // A new mobile number has not been proven yet: require a fresh OTP.
+            if ($phoneChanged) {
+                $user->forceFill(['phone_verified_at' => null])->save();
+            }
 
             $ids = collect($request->input('skills', []))
                 ->filter(fn ($skill) => is_string($skill) && trim($skill) !== '')

@@ -39,6 +39,13 @@ Route::prefix('candidate')->group(function () {
         Route::get('/login', [Auth\CandidateLoginController::class, 'create'])->name('candidate.login');
         Route::post('/login', [Auth\CandidateLoginController::class, 'store']);
 
+        Route::post('/otp/request', [Auth\CandidateOtpController::class, 'requestCode'])
+            ->middleware('throttle:otp-request')
+            ->name('candidate.otp.request');
+        Route::post('/otp/verify', [Auth\CandidateOtpController::class, 'verifyCode'])
+            ->middleware('throttle:otp-verify')
+            ->name('candidate.otp.verify');
+
         Route::get('/register', [Auth\CandidateRegisterController::class, 'create'])->name('candidate.register');
         Route::post('/register', [Auth\CandidateRegisterController::class, 'store']);
     });
@@ -72,6 +79,14 @@ Route::prefix('candidate')->middleware(['auth', 'role:candidate'])->group(functi
     Route::get('/dashboard', [Candidate\DashboardController::class, 'index'])->name('candidate.dashboard');
     Route::patch('/profile', [Candidate\ProfileController::class, 'update'])->name('candidate.profile.update');
     Route::get('/interested', [Candidate\InterestedJobController::class, 'index'])->name('candidate.interested.index');
+
+    Route::get('/phone/verify', [Auth\CandidateOtpController::class, 'verifyPhone'])->name('candidate.phone.verify');
+    Route::post('/phone/verify', [Auth\CandidateOtpController::class, 'sendPhoneCode'])
+        ->middleware('throttle:otp-request')
+        ->name('candidate.phone.send');
+    Route::post('/phone/confirm', [Auth\CandidateOtpController::class, 'confirmPhone'])
+        ->middleware('throttle:otp-verify')
+        ->name('candidate.phone.confirm');
 
     Route::get('/career', [Candidate\CareerAssistantController::class, 'index'])->name('candidate.career.index');
     Route::post('/career/analyze', [Candidate\CareerAssistantController::class, 'store'])

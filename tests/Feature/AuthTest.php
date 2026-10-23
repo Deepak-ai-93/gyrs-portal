@@ -87,7 +87,7 @@ class AuthTest extends TestCase
             'skills' => ['Python', 'SQL'],
         ]);
 
-        $response->assertRedirect(route('candidate.dashboard'));
+        $response->assertRedirect(route('candidate.phone.verify'));
         $this->assertDatabaseHas('users', [
             'email' => 'new.candidate@example.com',
             'role' => User::ROLE_CANDIDATE,

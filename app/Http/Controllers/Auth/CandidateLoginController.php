@@ -13,9 +13,15 @@ use Illuminate\Validation\ValidationException;
 
 class CandidateLoginController extends Controller
 {
-    public function create(): View
+    public function create(Request $request): View
     {
-        return view('candidate.auth.login');
+        if ($request->boolean('reset')) {
+            $request->session()->forget('otp_phone');
+        }
+
+        return view('candidate.auth.login', [
+            'method' => $request->query('method') === 'otp' ? 'otp' : 'password',
+        ]);
     }
 
     public function store(LoginRequest $request): RedirectResponse

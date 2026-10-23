@@ -7,11 +7,14 @@ use App\Http\Requests\Candidate\RegisterRequest;
 use App\Models\District;
 use App\Models\Skill;
 use App\Models\User;
+use App\Services\OtpService;
+use App\Support\PhoneNumber;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Throwable;
 
 class CandidateRegisterController extends Controller
 {
@@ -22,7 +25,7 @@ class CandidateRegisterController extends Controller
         ]);
     }
 
-    public function store(RegisterRequest $request): RedirectResponse
+    public function store(RegisterRequest $request, OtpService $otp): RedirectResponse
     {
         $candidate = DB::transaction(function () use ($request) {
             $candidate = User::create([
@@ -46,8 +49,17 @@ class CandidateRegisterController extends Controller
         Auth::login($candidate);
         $request->session()->regenerate();
 
-        return redirect()->route('candidate.dashboard')
-            ->with('status', 'Registration successful. Welcome to GYRS.');
+        try {
+            $otp->request($candidate, OtpService::PURPOSE_VERIFY_PHONE, $request->ip());
+
+            return redirect()->route('candidate.phone.verify')
+                ->with('status', 'Account created. Enter the code we sent to '.PhoneNumber::mask($candidate->phone).' to verify your mobile number.');
+        } catch (Throwable $exception) {
+            report($exception);
+
+            return redirect()->route('candidate.dashboard')
+                ->with('warning', 'Registration successful. We could not send the verification SMS right now — verify your mobile number from your dashboard.');
+        }
     }
 
     /**

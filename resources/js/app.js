@@ -383,6 +383,35 @@
         });
     });
 
+    /* OTP resend cooldown */
+    toArray(document, '[data-otp-resend]').forEach(function (button) {
+        var seconds = parseInt(button.getAttribute('data-otp-seconds'), 10) || 0;
+
+        if (seconds <= 0) {
+            return;
+        }
+
+        var label = button.textContent.trim();
+        var remaining = seconds;
+
+        button.disabled = true;
+        button.setAttribute('aria-live', 'polite');
+        button.textContent = 'Resend in ' + remaining + 's';
+
+        var timer = window.setInterval(function () {
+            remaining -= 1;
+
+            if (remaining <= 0) {
+                window.clearInterval(timer);
+                button.disabled = false;
+                button.textContent = label;
+                return;
+            }
+
+            button.textContent = 'Resend in ' + remaining + 's';
+        }, 1000);
+    });
+
     /* Password visibility toggles */
     toArray(document, '[data-password-toggle]').forEach(function (button) {
         button.addEventListener('click', function () {

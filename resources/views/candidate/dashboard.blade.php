@@ -40,6 +40,9 @@
                             @if ($user->district)<span><x-icon name="map-pin" :size="14" /> {{ $user->district->name }}</span>@endif
                             @if ($user->email)<span><x-icon name="mail" :size="14" /> {{ $user->email }}</span>@endif
                             @if ($user->phone)<span><x-icon name="phone" :size="14" /> {{ $user->phone }}</span>@endif
+                            @if ($user->phone && $user->phone_verified_at)
+                                <span><x-icon name="check-circle" :size="14" /> Mobile verified</span>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -49,6 +52,14 @@
                     <x-button variant="ghost" size="sm" :href="route('candidate.interested.index')">My interested jobs</x-button>
                 </div>
             </div>
+
+            @if ($user->phone && ! $user->phone_verified_at)
+                <x-alert variant="warning">
+                    <strong>Verify your mobile number.</strong>
+                    Confirm your number to enable one-time-code sign-in and get application updates by SMS.
+                    <a href="{{ route('candidate.phone.verify') }}">Verify now</a>
+                </x-alert>
+            @endif
 
             <div class="progress-block">
                 <div class="progress-head">
