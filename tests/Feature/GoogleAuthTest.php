@@ -160,6 +160,27 @@ class GoogleAuthTest extends TestCase
         $this->assertEquals('google-uid-admin', $admin->google_id);
     }
 
+    public function test_callback_logs_in_existing_admin_when_initiated_from_candidate_page(): void
+    {
+        $admin = User::factory()->admin()->create([
+            'email' => 'gyrsportal@gmail.com',
+            'google_id' => null,
+        ]);
+
+        $this->mockGoogleUser([
+            'id' => 'google-uid-gyrsportal',
+            'name' => 'Super Administrator',
+            'email' => 'gyrsportal@gmail.com',
+        ]);
+
+        // Even if the OAuth flow was initiated from the candidate page:
+        $response = $this->withSession(['google_auth_role' => User::ROLE_CANDIDATE])
+            ->get(route('auth.google.callback'));
+
+        $response->assertRedirect(route('admin.dashboard'));
+        $this->assertAuthenticatedAs($admin);
+    }
+
     public function test_callback_rejects_admin_login_if_no_admin_account_exists(): void
     {
         $this->mockGoogleUser([

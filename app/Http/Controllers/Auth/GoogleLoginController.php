@@ -76,6 +76,10 @@ class GoogleLoginController extends Controller
             $googleUser = Socialite::driver('google')
                 ->redirectUrl($this->getRedirectUrl())
                 ->user();
+
+            session()->forget('google_auth_role');
+
+            return $this->handleGoogleLogin($googleUser, $role);
         } catch (\Throwable $e) {
             session()->forget('google_auth_role');
             Log::error('Google OAuth callback failed: '.$e->getMessage(), [
@@ -85,67 +89,19 @@ class GoogleLoginController extends Controller
             return redirect()->route($loginRoute)
                 ->with('error', 'Google sign-in failed. Please try again.');
         }
-
-        session()->forget('google_auth_role');
-
-        // ── Admin flow ─────────────────────────────────────────────────
-        if ($role === User::ROLE_ADMIN) {
-            return $this->handleAdminLogin($googleUser);
-        }
-
-        // ── Candidate flow ─────────────────────────────────────────────
-        return $this->handleCandidateLogin($googleUser);
     }
 
     /**
-     * Admin: only allow Google sign-in for existing admin accounts.
-     * We never auto-create admin accounts via OAuth.
+     * Authenticate an existing user or register a new candidate.
      */
-    private function handleAdminLogin($googleUser): RedirectResponse
+    private function handleGoogleLogin($googleUser, string $role): RedirectResponse
     {
-        $user = User::where('email', $googleUser->getEmail())
-            ->where('role', User::ROLE_ADMIN)
-            ->first();
-
-        if (! $user) {
-            return redirect()->route('admin.login')
-                ->with('error', 'No administrator account found for this Google account.');
-        }
-
-        // Link Google ID and sync avatar / email verification if needed.
-        $updates = [];
-        if (! $user->google_id) {
-            $updates['google_id'] = $googleUser->getId();
-        }
-        if (! $user->avatar && $googleUser->getAvatar()) {
-            $updates['avatar'] = $googleUser->getAvatar();
-        }
-        if (! $user->email_verified_at) {
-            $updates['email_verified_at'] = now();
-        }
-        if (! empty($updates)) {
-            $user->forceFill($updates)->save();
-        }
-
-        Auth::login($user);
-        request()->session()->regenerate();
-
-        return redirect()->intended(route('admin.dashboard'));
-    }
-
-    /**
-     * Candidate: find an existing user by google_id or email, or create a
-     * brand-new candidate account automatically.
-     */
-    private function handleCandidateLogin($googleUser): RedirectResponse
-    {
+        // 1. Find existing account by Google ID or verified Email
         $user = User::where('google_id', $googleUser->getId())->first()
-            ?? User::where('email', $googleUser->getEmail())
-                ->where('role', User::ROLE_CANDIDATE)
-                ->first();
+            ?? User::where('email', $googleUser->getEmail())->first();
 
         if ($user) {
-            // Link Google ID and sync avatar / email verification if needed.
+            // Link Google ID and sync avatar / email verification if not yet set
             $updates = [];
             if (! $user->google_id) {
                 $updates['google_id'] = $googleUser->getId();
@@ -163,10 +119,18 @@ class GoogleLoginController extends Controller
             Auth::login($user, remember: true);
             request()->session()->regenerate();
 
-            return redirect()->intended(route('candidate.dashboard'));
+            return $user->isAdmin()
+                ? redirect()->intended(route('admin.dashboard'))
+                : redirect()->intended(route('candidate.dashboard'));
         }
 
-        // Auto-register a new candidate with safe name fallback.
+        // 2. Admin accounts cannot be auto-created via OAuth
+        if ($role === User::ROLE_ADMIN) {
+            return redirect()->route('admin.login')
+                ->with('error', 'No administrator account found for this Google account.');
+        }
+
+        // 3. Auto-register a new candidate with safe name fallback
         $rawName = (string) ($googleUser->getName() ?: $googleUser->getNickname());
         if (trim($rawName) === '') {
             $emailParts = explode('@', (string) $googleUser->getEmail());
