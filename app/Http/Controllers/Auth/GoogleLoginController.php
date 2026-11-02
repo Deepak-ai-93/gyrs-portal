@@ -7,11 +7,32 @@ use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
 class GoogleLoginController extends Controller
 {
+    /**
+     * Determine the redirect URL for Google OAuth callback.
+     * Uses config services.google.redirect if set (resolving relative paths to full URLs),
+     * otherwise defaults to route('auth.google.callback').
+     */
+    protected function getRedirectUrl(): string
+    {
+        $redirect = config('services.google.redirect');
+
+        if (! empty($redirect)) {
+            if (str_starts_with($redirect, 'http://') || str_starts_with($redirect, 'https://')) {
+                return $redirect;
+            }
+
+            return url($redirect);
+        }
+
+        return route('auth.google.callback');
+    }
+
     /**
      * Redirect the user to Google's OAuth consent screen.
      *
@@ -29,7 +50,7 @@ class GoogleLoginController extends Controller
         session(['google_auth_role' => $role]);
 
         return Socialite::driver('google')
-            ->redirectUrl(url('/auth/google/callback'))
+            ->redirectUrl($this->getRedirectUrl())
             ->redirect();
     }
 
@@ -38,16 +59,33 @@ class GoogleLoginController extends Controller
      */
     public function callback(Request $request): RedirectResponse
     {
+        $role = session('google_auth_role', User::ROLE_CANDIDATE);
+        $loginRoute = ($role === User::ROLE_ADMIN) ? 'admin.login' : 'candidate.login';
+
+        if ($request->has('error')) {
+            session()->forget('google_auth_role');
+            $errorDescription = $request->query('error_description') ?: 'Google sign-in was cancelled.';
+            Log::warning('Google OAuth callback returned error: '.$request->query('error'), [
+                'description' => $errorDescription,
+            ]);
+
+            return redirect()->route($loginRoute)->with('error', $errorDescription);
+        }
+
         try {
             $googleUser = Socialite::driver('google')
-                ->redirectUrl(url('/auth/google/callback'))
+                ->redirectUrl($this->getRedirectUrl())
                 ->user();
         } catch (\Throwable $e) {
-            return redirect()->route('candidate.login')
+            session()->forget('google_auth_role');
+            Log::error('Google OAuth callback failed: '.$e->getMessage(), [
+                'exception' => $e,
+            ]);
+
+            return redirect()->route($loginRoute)
                 ->with('error', 'Google sign-in failed. Please try again.');
         }
 
-        $role = session('google_auth_role', User::ROLE_CANDIDATE);
         session()->forget('google_auth_role');
 
         // ── Admin flow ─────────────────────────────────────────────────
@@ -74,12 +112,19 @@ class GoogleLoginController extends Controller
                 ->with('error', 'No administrator account found for this Google account.');
         }
 
-        // Link Google ID if not already linked.
+        // Link Google ID and sync avatar / email verification if needed.
+        $updates = [];
         if (! $user->google_id) {
-            $user->update([
-                'google_id' => $googleUser->getId(),
-                'avatar' => $googleUser->getAvatar(),
-            ]);
+            $updates['google_id'] = $googleUser->getId();
+        }
+        if (! $user->avatar && $googleUser->getAvatar()) {
+            $updates['avatar'] = $googleUser->getAvatar();
+        }
+        if (! $user->email_verified_at) {
+            $updates['email_verified_at'] = now();
+        }
+        if (! empty($updates)) {
+            $user->forceFill($updates)->save();
         }
 
         Auth::login($user);
@@ -100,12 +145,19 @@ class GoogleLoginController extends Controller
                 ->first();
 
         if ($user) {
-            // Link Google ID if signing in by email match for the first time.
+            // Link Google ID and sync avatar / email verification if needed.
+            $updates = [];
             if (! $user->google_id) {
-                $user->update([
-                    'google_id' => $googleUser->getId(),
-                    'avatar' => $googleUser->getAvatar(),
-                ]);
+                $updates['google_id'] = $googleUser->getId();
+            }
+            if (! $user->avatar && $googleUser->getAvatar()) {
+                $updates['avatar'] = $googleUser->getAvatar();
+            }
+            if (! $user->email_verified_at) {
+                $updates['email_verified_at'] = now();
+            }
+            if (! empty($updates)) {
+                $user->forceFill($updates)->save();
             }
 
             Auth::login($user, remember: true);
@@ -114,9 +166,16 @@ class GoogleLoginController extends Controller
             return redirect()->intended(route('candidate.dashboard'));
         }
 
-        // Auto-register a new candidate.
+        // Auto-register a new candidate with safe name fallback.
+        $rawName = (string) ($googleUser->getName() ?: $googleUser->getNickname());
+        if (trim($rawName) === '') {
+            $emailParts = explode('@', (string) $googleUser->getEmail());
+            $cleanPrefix = str_replace(['.', '_', '-'], ' ', $emailParts[0] ?? '');
+            $rawName = trim($cleanPrefix) !== '' ? Str::headline($cleanPrefix) : 'Candidate';
+        }
+
         $user = User::create([
-            'name' => $googleUser->getName(),
+            'name' => $rawName,
             'email' => $googleUser->getEmail(),
             'google_id' => $googleUser->getId(),
             'avatar' => $googleUser->getAvatar(),
@@ -125,6 +184,8 @@ class GoogleLoginController extends Controller
             'enrollment_id' => $this->nextEnrollmentId(),
             'status' => User::STATUS_PENDING,
         ]);
+
+        $user->forceFill(['email_verified_at' => now()])->save();
 
         Auth::login($user, remember: true);
         request()->session()->regenerate();

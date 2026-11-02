@@ -47,5 +47,7 @@ __pycache__/
 # Editors / logs
 *.bak
 *.tmp
+*.err
+postgres
 
 .vercel

@@ -59,7 +59,7 @@ Please confirm in detail:
 ## Message 2 — Notification templates preview (short, send anytime)
 
 ```whatsapp
-*GYRS Portal — Notification Templates Live Demo* 🔔
+*GYRS Portal — Notification Templates Live Demo* 
 
 Open this page to see EXACTLY what a candidate receives:
 https://gyrs-portal.vercel.app/notification-preview.html
